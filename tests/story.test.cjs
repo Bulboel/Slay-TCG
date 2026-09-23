@@ -1,0 +1,28 @@
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8');
+const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
+new vm.Script(script);
+const nodes=new Map();
+function node(){return {textContent:'',disabled:false,children:[],style:{},classList:{toggle(){},remove(){},add(){}},setAttribute(){},replaceChildren(){this.children=[]},append(x){this.children.push(x)}}}
+const ctx={console,story:{part2:'complete',part3:'new'},economy:{storyRewards:{part3:false}},storySequence:[],storyStep:0,storyAfter:null,AudioEngine:{setTrack(){}},document:{createElement:node},$:id=>{if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},saveStory(){},awardGold(n){ctx.gold=(ctx.gold||0)+n},showChapterBooster(){ctx.rewards=(ctx.rewards||0)+1},showStoryMenu(){},gold:0,rewards:0};
+vm.createContext(ctx);
+vm.runInContext(script.slice(script.indexOf('const storySprites='),script.indexOf('function startChapter1()')),ctx);
+vm.runInContext(script.slice(script.indexOf('function startCabinPart()'),script.indexOf('function previewChapter2()')),ctx);
+ctx.startCabinPart();
+assert.equal(ctx.storySequence.length,22);
+assert.equal(ctx.storyStep,0);
+for(let i=0;i<6;i++)ctx.nextStoryBeat();
+assert.equal(ctx.story.cabinStep,6);
+assert.match(nodes.get('#storyText').textContent,/Kala et Bolduc/);
+assert.equal(nodes.get('#storyCast').children.length,3);
+ctx.startCabinPart();assert.equal(ctx.storyStep,6,'Resume keeps the current beat');
+nodes.get('#storyPreviousBtn').onclick();assert.equal(ctx.storyStep,5);
+while(ctx.storyStep<ctx.storySequence.length-1)ctx.nextStoryBeat();
+assert.equal(nodes.get('#storyLocation').textContent,'Berdésa');
+ctx.nextStoryBeat();assert.equal(ctx.story.part3,'complete');assert.equal(ctx.gold,50);assert.equal(ctx.rewards,1);
+ctx.story.pendingReward=false;ctx.startCabinPart();assert.equal(ctx.storyStep,0);
+ctx.finishCabinPart();assert.equal(ctx.gold,50);assert.equal(ctx.rewards,1,'Replay grants no duplicate reward');
+assert(!html.includes('assets/cards/c43.webp'));assert(!html.includes('assets/cards/c50.webp'));
+console.log('PASS: syntax, 22 cabin beats, cast, back, resume, flashback destination, completion and replay.');
