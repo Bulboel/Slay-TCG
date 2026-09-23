@@ -8,6 +8,8 @@ const nodes=new Map();
 function node(){return {textContent:'',disabled:false,children:[],style:{},classList:{toggle(){},remove(){},add(){}},setAttribute(){},replaceChildren(){this.children=[]},append(x){this.children.push(x)}}}
 const ctx={console,story:{part2:'complete',part3:'new'},economy:{storyRewards:{part3:false}},storySequence:[],storyStep:0,storyAfter:null,AudioEngine:{setTrack(){}},document:{createElement:node},$:id=>{if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},saveStory(){},awardGold(n){ctx.gold=(ctx.gold||0)+n},showChapterBooster(){ctx.rewards=(ctx.rewards||0)+1},showStoryMenu(){},gold:0,rewards:0};
 vm.createContext(ctx);
+ctx.collection={};
+vm.runInContext(fs.readFileSync('collection-updates.js','utf8'),ctx);
 vm.runInContext(script.slice(script.indexOf('const storySprites='),script.indexOf('function startChapter1()')),ctx);
 vm.runInContext(script.slice(script.indexOf('function startCabinPart()'),script.indexOf('function previewChapter2()')),ctx);
 ctx.startCabinPart();

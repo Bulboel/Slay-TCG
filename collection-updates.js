@@ -71,14 +71,16 @@ function continueBoosters() {
   if (collection.pendingPack) { showBooster(collection.pendingPack.context); return; }
   if (collection.shopQueue > 0) { showBooster('shop'); return; }
   if (collection.starterBoosters > 0) { showBooster('starter'); return; }
+  if (story.pendingReward || collection.storyBoosterQueue?.length) { showBooster('chapter'); return; }
   if (boosterContext === 'chapter') { renderStoryMenu(); openPanel('#storyScreen'); }
   else openShop('Les cartes ont rejoint votre collection.');
 }
 function renderBoosterProgress() {
   const box = $('#boosterProgress'); if (!box) return;
   const p = pityProgress(), next = 25 - p.opened % 25;
-  box.querySelector('strong').textContent = `Un nouveau départ • ${p.opened} boosters ouverts`;
-  box.querySelector('progress').value = p.opened % 25;
+  box.querySelector('strong').textContent = `Un nouveau départ • ${p.opened % 50} / 50 boosters`;
+  box.querySelector('progress').max = 50;
+  box.querySelector('progress').value = p.opened % 50;
   box.querySelector('p').textContent = `${next} avant le prochain choix. Tous les 25 : rare ou Souvenir alternatif ; tous les 50 : alternative au choix, à la place du choix précédent. Une parallèle garantie au plus tard au 200e booster de cette série.`;
   box.querySelector('button').classList.toggle('hidden',!p.pending.length && !collection.pendingPack && !(collection.shopQueue > 0));
   box.querySelector('button').textContent = p.pending.length ? `Choisir une récompense (${p.pending.length})` : 'Reprendre les boosters';
@@ -86,19 +88,38 @@ function renderBoosterProgress() {
 function showPity() {
   const reward = pityProgress().pending[0]; if (!reward) { continueBoosters(); return; }
   const dialog = $('#pityDialog'), grid = $('#pityGrid'); grid.replaceChildren();
-  $('#pityTitle').textContent = `Palier ${reward.milestone} • votre carte au choix`;
+  const displayedMilestone = reward.milestone % 50 || 50;
+  $('#pityTitle').textContent = `Palier ${displayedMilestone} • votre carte au choix`;
   $('#pityIntro').textContent = reward.type === 'alternative' ? 'Choisissez une alternative de la série Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif de la série Un nouveau départ.';
   for (const card of rewardCandidates(reward)) {
     const item = document.createElement('article'); item.className = 'reward-option';
-    const zoom = document.createElement('button'); zoom.className = 'reward-art'; zoom.innerHTML = previewMarkup(card); zoom.setAttribute('aria-label','Agrandir '+card.name); zoom.onclick = () => openCardZoom(card);
-    const label = document.createElement('p'); label.textContent = `${card.name} • ${ownedCopies(card.id) ? 'Déjà possédée' : 'Nouvelle carte'}`;
+    const label = document.createElement('p'); label.textContent = card.name;
     const choose = document.createElement('button'); choose.className = 'menu-btn'; choose.textContent = 'Choisir';
-    choose.onclick = () => { if (!confirm(`Ajouter « ${card.name} » à votre collection pour le palier ${reward.milestone} ?`)) return;
+    choose.setAttribute('aria-label', 'Choisir ' + card.name);
+    choose.onclick = () => { if (!confirm(`Ajouter « ${card.name} » à votre collection pour le palier ${displayedMilestone} ?`)) return;
       if (claimPityCard(card.id,reward.milestone)) { dialog.classList.add('hidden'); renderCollection();renderDeckBuilder();continueBoosters(); }
     };
-    item.append(zoom,label,choose); grid.append(item);
+    item.append(label,choose); grid.append(item);
   }
   $('#boosterReveal').classList.add('hidden'); dialog.classList.remove('hidden');
+}
+
+function queueStoryBooster(part) {
+  // Part 3 already awarded a booster before this update; keep that entitlement.
+  collection.storyBoosterQueue ||= [];
+  if (!story.boosterRewards) {
+    story.boosterRewards = {part3:!!economy.storyRewards.part3};
+    if (story.pendingReward && economy.storyRewards.part3 && !collection.storyBoosterQueue.includes('part3')) collection.storyBoosterQueue.push('part3');
+  }
+  if (story.boosterRewards[part]) return;
+  story.boosterRewards[part] = true;
+  collection.storyBoosterQueue.push(part);
+  story.pendingReward = true;
+}
+function recoverStoryBoosters() {
+  // Restore the two rewards omitted by older versions, once per completed part.
+  for (const part of ['part1','part2']) if (story[part] === 'complete') queueStoryBooster(part);
+  if (collection.storyBoosterQueue?.length) story.pendingReward = true;
 }
 
 function validStats(values) { return Array.isArray(values) && values.length === 4 && values.every(v => Number.isInteger(v) && v >= 0 && v <= 10); }
@@ -135,6 +156,7 @@ function downloadStats(content,name,type) {
   const url = URL.createObjectURL(new Blob([content],{type})), link = document.createElement('a'); link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function initCollectionUpdates() {
+  recoverStoryBoosters();saveCollection();saveStory();
   document.body.insertAdjacentHTML('beforeend', `
     <section id="statsScreen" class="panel-screen hidden"><div class="panel-card">
       <h2>Vérifier et corriger les statistiques</h2>
