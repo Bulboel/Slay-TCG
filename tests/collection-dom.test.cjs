@@ -109,3 +109,16 @@ assert.equal($('#tutorialNext').disabled,false);assert.equal($('#tutorialPractic
 run('closeTutorial()');assert.deepEqual(plain('progressPayload()'),beforeTutorial,'Tutorial does not mutate progress or deck');
 dom.window.close();
 console.log('PASS: full page boot, stats editor, deck launch, foil, booster zoom, ten-pack persistence, double-click guard, pity choice and save import.');
+run(`collection.counts.p03=10;collection.foils.p03=1;renderDeckBuilder()`);
+const deckVisual=$('#deckGrid [data-card-id="p03"] .card');
+const cardsBefore=plain('activeDeck().cards');
+deckVisual.click();
+assert.equal($('#cardZoom').classList.contains('hidden'),false);
+assert.equal($('#cardZoomName').textContent,run("catalogById('p03').name"));
+assert.deepEqual(plain('activeDeck().cards'),cardsBefore,'Zoom does not add or remove a card');
+assert.equal($('#cardZoomVisual .card').classList.contains('is-foil'),true);
+run(`closeCardZoom()`);
+deckVisual.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+assert.equal($('#cardZoom').classList.contains('hidden'),false);
+assert.equal($('#deckGrid .locked .card')?.hasAttribute('role'),false,'Undiscovered cards stay hidden');
+console.log('PASS: deck card zoom by click and keyboard preserves the deck and shows foil.');

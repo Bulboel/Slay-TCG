@@ -35,3 +35,9 @@
  #gameApp .side.player{grid-column:1;grid-row:1/4}#gameApp .side.ai{grid-column:3;grid-row:1/4}#gameApp .score{grid-column:2;grid-row:1}#gameApp .board-wrap{grid-column:2;grid-row:2}#gameApp .memory-zone{grid-column:2;grid-row:3}
  #gameApp .message{grid-column:1;grid-row:3;align-self:end;z-index:2}#gameApp .hand{flex-wrap:wrap;align-content:center;height:calc(100% - 60px);gap:4px}#gameApp .hand .card{height:44%;max-width:30%;flex:none}#gameApp .memory-hint{display:none}
 }
+
+/* Keep every decoration inside the card below its collection counters. */
+.collection-item>.card{isolation:isolate;z-index:0}
+.collection-item>.collection-copy-count,.collection-item>.collection-foil-count{z-index:20;pointer-events:none}
+.deck-card .card[role=button]{pointer-events:auto;cursor:zoom-in}
+.deck-card .card[role=button]:focus-visible{outline:3px solid #255879;outline-offset:4px}
