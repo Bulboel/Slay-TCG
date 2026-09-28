@@ -10,7 +10,7 @@ const run=code=>vm.runInContext(code,ctx),plain=code=>JSON.parse(JSON.stringify(
 for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
 run(main);run('initCollectionUpdates();initCollectionPolish()');
 const $=s=>w.document.querySelector(s);
-assert.equal($('#statsCard').options.length,115);
+assert.equal($('#statsCard').options.length,123);
 run(`collection.counts=Object.fromEntries(pool.map(c=>[c.id,3]));collection.foils={p03:1};collection.starterBoosters=0;
 decks=[{id:'test',name:'Test',cards:['p03','p03','p05','p14','p104'].map(id=>pool.findIndex(c=>c.id===id))}];activeDeckId='test';renderDeckBuilder();`);
 assert.match($('#deckCount').textContent,/2 \/ 2 rares/);
@@ -122,3 +122,15 @@ deckVisual.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true
 assert.equal($('#cardZoom').classList.contains('hidden'),false);
 assert.equal($('#deckGrid .locked .card')?.hasAttribute('role'),false,'Undiscovered cards stay hidden');
 console.log('PASS: deck card zoom by click and keyboard preserves the deck and shows foil.');
+
+assert.equal(run(`memoryById('dreamers')`),undefined);
+for(let i=0;i<20;i++)assert.equal(run(`freshMemoryDeck().includes('dreamers')`),false);
+run(`restoreStoryMatch({mode:'story-mine',board:Array(9).fill(null),hands:{p:[],a:[]},turn:'p',memoryDeck:['rest','dreamers','rock']})`);
+assert.deepEqual(plain('memoryDeck'),['rest','rock']);
+for(const id of ['collectionSort','deckSort']){
+ assert([...$('#'+id).options].some(o=>o.value==='name-desc'));
+ assert([...$('#'+id).options].some(o=>o.value==='rarity-desc'));
+ $('#'+id).value='rarity-desc';$('#'+id).dispatchEvent(new w.Event('change'));
+ assert.equal(JSON.parse(w.localStorage.getItem('hackenia-'+id)),'rarity-desc');
+}
+console.log('PASS: removed Souvenir, legacy story pile migration and persisted inverse sorts.');

@@ -35,3 +35,5 @@ Le monogramme a été adapté avec l’outil de génération d’images à parti
 `node tests/story.test.cjs` et `node tests/collection.test.cjs` ne nécessitent aucune dépendance. `node tests/collection-dom.test.cjs` nécessite `jsdom`. Ce dernier vérifie le démarrage de la page, le tri, les cadres, le tutoriel, les récompenses et la reprise de la partie 4.
 
 Le tri par quantité affiche les illustrations les plus possédées en premier. En duel mobile, le plateau, les mains et la pioche Souvenir tiennent dans la hauteur disponible ; la chronique est accessible par Historique.
+
+Mise à jour du set : 136 cartes, dont les cinq Hydrelithes majeures eau/feu/foudre/glace/vent, Hackénia, la cathédrale de Forfalla et le temple de Heaum. Numérotation : héros, personnages, créatures, objets/scènes, lieux, alternatives, parallèles, Divines, puis Souvenirs. Les identifiants et positions internes des decks restent inchangés. Tris alphabétique et rareté disponibles dans les deux sens. La compagnie du rêve est retirée de la pioche et des anciennes parties restaurées.

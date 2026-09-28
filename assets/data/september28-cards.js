@@ -1,4 +1,4 @@
-// Values are ordered top, right, bottom, left. Les Sans-chiffres: E=3, B=8 (author confirmed).
+// Values: top, right, bottom, left. E=3 and B=8 on Les Sans-chiffres.
 window.HACKENIA_NEW_CARDS = [
   {
     "id": "p96",
@@ -593,6 +593,142 @@ window.HACKENIA_NEW_CARDS = [
       "src": "assets/cards/september28/c4.webp",
       "x": 2,
       "y": 1
+    }
+  },
+  {
+    "id": "p129",
+    "name": "Hackénia",
+    "v": [
+      0,
+      8,
+      8,
+      1
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p129.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p130",
+    "name": "Hydrelithe majeure d’eau",
+    "v": [
+      9,
+      7,
+      4,
+      10
+    ],
+    "element": "water",
+    "rarity": "rare",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p130.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p131",
+    "name": "Hydrelithe majeure de feu",
+    "v": [
+      8,
+      9,
+      8,
+      6
+    ],
+    "element": "fire",
+    "rarity": "rare",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p131.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p132",
+    "name": "Hydrelithe majeure de foudre",
+    "v": [
+      8,
+      8,
+      7,
+      9
+    ],
+    "element": "lightning",
+    "rarity": "rare",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p132.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p133",
+    "name": "Hydrelithe majeure de glace",
+    "v": [
+      7,
+      9,
+      10,
+      4
+    ],
+    "element": "ice",
+    "rarity": "rare",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p133.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p134",
+    "name": "Hydrelithe majeure de vent",
+    "v": [
+      9,
+      8,
+      5,
+      9
+    ],
+    "element": "wind",
+    "rarity": "rare",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p134.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p135",
+    "name": "La cathédrale de Forfalla",
+    "v": [
+      3,
+      9,
+      7,
+      0
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p135.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p136",
+    "name": "Le temple de Heaum",
+    "v": [
+      6,
+      1,
+      1,
+      8
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-evening/p136.webp",
+      "full": true
     }
   }
 ];

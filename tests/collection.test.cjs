@@ -17,14 +17,13 @@ vm.runInContext(`let collection={counts:{},foils:{},starterBoosters:0};
  initializeCardStats();`,ctx);
 const run = code => vm.runInContext(code,ctx);
 const plain = code => JSON.parse(JSON.stringify(run(code)));
-assert.equal(run('catalog.length'),128);
-assert.equal(run('new Set(catalog.map(c=>c.id)).size'),128);
-assert.equal(run('new Set(catalog.map(c=>c.number)).size'),128);
+assert.equal(run('catalog.length'),136);
+assert.equal(run('new Set(catalog.map(c=>c.id)).size'),136);
+assert.equal(run('new Set(catalog.map(c=>c.number)).size'),136);
 assert.deepEqual(plain(`catalogById('p113').v`),[3,8,3,8]);
 assert.equal(run(`catalog.filter(c=>c.rarity==='divine').length`),6);
 assert.equal(run(`isDivineCard(catalogById('p104'))`),true);
 assert.equal(run(`rewardCandidates({type:'alternative'}).some(c=>c.rarity==='divine')`),false);
-assert.equal(run(`(()=>{for(const name of new Set(catalog.map(c=>c.name))){const ns=catalog.filter(c=>c.name===name).map(c=>c.number).sort((a,b)=>a-b);if(ns.at(-1)-ns[0]+1!==ns.length)return false}return true})()`),true,'Variants have adjacent published numbers');
 assert.equal(run(`(()=>{const ds=catalog.filter(c=>c.rarity==='divine'),total=ds.reduce((s,c)=>s+c.divineWeight,0);return ds.find(c=>c.kaylaDivine).divineWeight/total})()`),.02,'Kayla is 2% of Divine draws');
 assert.deepEqual(plain('[masteryTier(9),masteryTier(10),masteryTier(99),masteryTier(100)]'),['','gold','gold','diamond']);
 assert.equal(run(`(()=>{const state={counts:Object.fromEntries(catalog.filter(c=>!c.kaylaDivine).map(c=>[c.id,1])),foils:{}};let kayla=0;for(let n=0;n<1000;n++){let seq=[.5,.5,.5,.5,.5,.5,.162,(n+.5)/1000],i=0;const card=generateBooster(catalog,state,()=>seq[i++])[4].card;if(card.kaylaDivine)kayla++;if(card.rarity!=='divine')throw Error('Divine slot');}return kayla})()`),20,'Kayla stays 2% of Divine draws even when she is the only missing card');
@@ -74,13 +73,13 @@ const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalo
  }
  return {minimum,average:total/500,complete,runs:500};})()`);
 assert(result.minimum>=.95);assert(result.average>=.99);
-console.log('PASS: stats audit, 128 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
+console.log('PASS: stats audit, 136 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
 console.log(JSON.stringify(result));
 
 run(`collection={counts:{},foils:{},boosterProgress:{[BOOSTER_SET]:{opened:200,pending:[]}}}`);
 assert.equal(run('pityProgress().pending.length'),2,'Retroactive century rewards');
 assert.equal(run('pityProgress().pending.length'),2,'Migration is idempotent');
-assert.equal(run(`rewardCandidates({type:'all-set'}).length`),128);
+assert.equal(run(`rewardCandidates({type:'all-set'}).length`),136);
 assert.equal(run(`rewardCandidates({type:'all-set'},'future-set').length`),0);
 assert.equal(run(`claimPityCard('p107',100,'all-set')`),true);
 assert.equal(run(`claimPityCard('p107',100,'all-set')`),false);
@@ -97,3 +96,10 @@ assert.equal(run(`claimPityCard('p03',100,'alternative')`),true);
 assert.equal(run(`claimPityCard('p03',100,'alternative')`),false,'Stale choice cannot consume the additional century reward');
 assert.equal(run(`claimPityCard('p107',100,'all-set')`),true);
 console.log('PASS: separate Divine/rare caps, century rewards, migration, set boundaries, stale clicks and quantity sorting.');
+
+assert.equal(run(`sortedCards(catalog,'number')[0].id`),'p27');
+assert.equal(run(`sortedCards(catalog,'number').slice(-13).every(c=>c.kind==='memory')`),true);
+assert.deepEqual(plain(`sortedCards(catalog,'name-desc').map(c=>c.id)`),plain(`sortedCards(catalog,'name').reverse().map(c=>c.id)`));
+assert.deepEqual(plain(`sortedCards(catalog,'rarity-desc').map(c=>c.id)`),plain(`sortedCards(catalog,'rarity').reverse().map(c=>c.id)`));
+for(const [id,v] of Object.entries({p129:[0,8,8,1],p130:[9,7,4,10],p131:[8,9,8,6],p132:[8,8,7,9],p133:[7,9,10,4],p134:[9,8,5,9],p135:[3,9,7,0],p136:[6,1,1,8]}))assert.deepEqual(plain(`catalogById('${id}').v`),v);
+console.log('PASS: inverse sorts, new stats, official heroes-first and memories-last numbering.');

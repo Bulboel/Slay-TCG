@@ -6,6 +6,8 @@ function assignCardNumbers(cards) {
 }
 function cardNumber(card) { return '#' + String(card.number || catalogById(card.id)?.number || 0).padStart(3,'0'); }
 function sortedCards(cards, mode = 'number') {
+  if (mode === 'name-desc') return sortedCards(cards,'name').reverse();
+  if (mode === 'rarity-desc') return sortedCards(cards,'rarity').reverse();
   return [...cards].sort((a,b) => {
     if (mode === 'quantity') { const q = ownedCopies(b.id) - ownedCopies(a.id); if (q) return q; }
     if (mode === 'rarity') { const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]; if (r) return r; }
@@ -32,8 +34,8 @@ function initCollectionPolish() {
   for (const [panel,id,renderFn] of [['#collectionScreen','collectionSort',renderCollection],['#deckScreen','deckSort',renderDeckBuilder]]) {
     const label = document.createElement('label'); label.className='catalog-sort';label.textContent='Trier les cartes : ';
     const select=document.createElement('select');select.id=id;select.setAttribute('aria-label','Ordre des cartes');
-    for (const [value,text] of [['number','Numéro'],['name','Nom (A → Z)'],['rarity','Rareté'],['quantity','Quantité (plus possédées)']]) { const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option); }
-    const saved=readSaved('hackenia-'+id,'number');select.value=['number','name','rarity','quantity'].includes(saved)?saved:'number';
+    for (const [value,text] of [['number','Ordre officiel du set'],['name','Nom (A → Z)'],['name-desc','Nom (Z → A)'],['rarity','Rareté (croissante)'],['rarity-desc','Rareté (décroissante)'],['quantity','Quantité (plus possédées)']]) { const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option); }
+    const saved=readSaved('hackenia-'+id,'number');select.value=['number','name','name-desc','rarity','rarity-desc','quantity'].includes(saved)?saved:'number';
     select.onchange=()=>{try{localStorage.setItem('hackenia-'+id,JSON.stringify(select.value))}catch{}renderFn()};label.append(select);
     $(panel+' .panel-card').insertBefore(label,$(panel==='#collectionScreen'?'#collectionGrid':'#deckGrid'));
   }
