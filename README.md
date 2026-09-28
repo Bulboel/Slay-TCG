@@ -24,7 +24,7 @@ Ouvrez `index.html` dans un navigateur, ou activez GitHub Pages dans **Settings 
 - Tri indépendant de la collection et des decks par numéro, nom ou rareté.
 - Cadres purement visuels : 10 exemplaires d’un même identifiant = doré ; 100 = diamant. Les exemplaires foil sont déjà inclus dans le total. Les variantes ont des compteurs séparés.
 - Cinquième emplacement toujours foil et jouable, sans Souvenirs : 10 % rare, 5 % alternative, 1 % parallèle, 0,5 % Divine. La protection parallèle au 200e booster reste prioritaire si aucune n’est possédée.
-- À l’intérieur des Divines, Kayla représente 2 % des tirages, chacune des cinq autres 19,6 %. La préférence pour les cartes manquantes ne s’applique jamais à cette rareté. Les Divines comptent dans la limite de trois rares par deck et ne sont pas proposées aux paliers 25/50.
+- À l’intérieur des Divines, Kayla représente 2 % des tirages, chacune des cinq autres 19,6 %. La préférence pour les cartes manquantes ne s’applique jamais à cette rareté. Les decks sont limités à deux rares (variantes rares comprises) et une Divine, pour les joueurs comme pour les IA. Les Divines ne sont pas proposées aux paliers 25/50, mais le bonus supplémentaire de chaque 100 boosters permet de choisir dans tout le set, Kayla comprise. Les anciens compteurs reçoivent aussi leurs bonus de 100, une seule fois.
 - Partie 4 : défi obligatoire de la torche, reprise du duel, épilogue de l’araignée blanche et récompense de première réussite.
 - Tutoriel avec exercice de capture sans effet sur la sauvegarde. Icônes Android/iOS adaptées au monogramme H du dos des cartes.
 
@@ -33,3 +33,5 @@ Le monogramme a été adapté avec l’outil de génération d’images à parti
 ### Vérification
 
 `node tests/story.test.cjs` et `node tests/collection.test.cjs` ne nécessitent aucune dépendance. `node tests/collection-dom.test.cjs` nécessite `jsdom`. Ce dernier vérifie le démarrage de la page, le tri, les cadres, le tutoriel, les récompenses et la reprise de la partie 4.
+
+Le tri par quantité affiche les illustrations les plus possédées en premier. En duel mobile, le plateau, les mains et la pioche Souvenir tiennent dans la hauteur disponible ; la chronique est accessible par Historique.

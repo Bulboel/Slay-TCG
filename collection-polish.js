@@ -7,6 +7,7 @@ function assignCardNumbers(cards) {
 function cardNumber(card) { return '#' + String(card.number || catalogById(card.id)?.number || 0).padStart(3,'0'); }
 function sortedCards(cards, mode = 'number') {
   return [...cards].sort((a,b) => {
+    if (mode === 'quantity') { const q = ownedCopies(b.id) - ownedCopies(a.id); if (q) return q; }
     if (mode === 'rarity') { const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]; if (r) return r; }
     if (mode === 'name' || mode === 'rarity') { const n = a.name.localeCompare(b.name,'fr'); if (n) return n; }
     return a.number - b.number;
@@ -31,8 +32,8 @@ function initCollectionPolish() {
   for (const [panel,id,renderFn] of [['#collectionScreen','collectionSort',renderCollection],['#deckScreen','deckSort',renderDeckBuilder]]) {
     const label = document.createElement('label'); label.className='catalog-sort';label.textContent='Trier les cartes : ';
     const select=document.createElement('select');select.id=id;select.setAttribute('aria-label','Ordre des cartes');
-    for (const [value,text] of [['number','Numéro'],['name','Nom (A → Z)'],['rarity','Rareté']]) { const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option); }
-    const saved=readSaved('hackenia-'+id,'number');select.value=['number','name','rarity'].includes(saved)?saved:'number';
+    for (const [value,text] of [['number','Numéro'],['name','Nom (A → Z)'],['rarity','Rareté'],['quantity','Quantité (plus possédées)']]) { const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option); }
+    const saved=readSaved('hackenia-'+id,'number');select.value=['number','name','rarity','quantity'].includes(saved)?saved:'number';
     select.onchange=()=>{try{localStorage.setItem('hackenia-'+id,JSON.stringify(select.value))}catch{}renderFn()};label.append(select);
     $(panel+' .panel-card').insertBefore(label,$(panel==='#collectionScreen'?'#collectionGrid':'#deckGrid'));
   }
@@ -40,6 +41,12 @@ function initCollectionPolish() {
   document.querySelector('.sigil').innerHTML='<img src="assets/icons/hackenia-192.png" alt="H d’Hackénia">';
   renderCollection();renderDeckBuilder();
   initTutorial();
+  const historyButton=document.createElement('button');historyButton.className='ghost mobile-history';historyButton.textContent='Historique';historyButton.setAttribute('aria-expanded','false');
+  const history=document.querySelector('.history-panel');
+  const toggleHistory=()=>{const open=history.classList.toggle('history-open');historyButton.setAttribute('aria-expanded',String(open));};
+  historyButton.onclick=toggleHistory;document.querySelector('#gameApp .actions').append(historyButton);
+  const close=document.createElement('button');close.className='mobile-history';close.textContent='Fermer';close.onclick=toggleHistory;history.querySelector('.history-head').append(close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&history.classList.contains('history-open'))toggleHistory()});
 }
 
 const TUTORIAL_STEPS = [
@@ -49,8 +56,8 @@ const TUTORIAL_STEPS = [
   {title:'Identique',text:'En règle Identique, au moins deux contacts doivent avoir des valeurs égales en même temps. Exemple : 4 face à 4 et 7 face à 7. Les cartes adverses concernées sont capturées. Une seule égalité ne suffit pas ; une carte alliée peut compléter le deuxième contact.'},
   {title:'Addition',text:'En règle Addition, calculez la somme des deux valeurs à chaque contact. Deux sommes égales déclenchent les captures : par exemple 2 + 7 et 5 + 4 donnent toutes deux 9. Les captures classiques par valeur supérieure restent actives.'},
   {title:'Clair, Obscur et Souvenirs',text:'Clair montre la main adverse ; Obscur la cache. Après une pose, vous pouvez piocher un Souvenir ou passer. Chaque joueur dispose de deux pioches ; le Maître du Jeu coûte deux orbes. Les effets peuvent aider ou gêner : consultez la chronique du duel.'},
-  {title:'Construire votre deck',text:'Un deck contient cinq cartes : deux exemplaires maximum du même nom, variantes comprises, et trois rares ou Divines maximum. Une alternative de commune ne compte pas comme rare. Les cadres doré/diamant et le foil sont des effets visuels, sans bonus de puissance.'},
-  {title:'Collectionner',text:'Les boosters contiennent cinq cartes. La dernière est une carte jouable foil, jamais un Souvenir. Tous les 25 boosters, choisissez une rare ou un Souvenir alternatif ; au palier 50, une alternative remplace ce choix. Le compteur repart ensuite à zéro. Les Divines ne font pas partie de ces choix.'}
+  {title:'Construire votre deck',text:'Un deck contient cinq cartes : deux exemplaires maximum du même nom, variantes comprises, et deux rares maximum et une Divine maximum. Une alternative de commune ne compte pas comme rare. Les cadres doré/diamant et le foil sont des effets visuels, sans bonus de puissance.'},
+  {title:'Collectionner',text:'Les boosters contiennent cinq cartes. La dernière est une carte jouable foil, jamais un Souvenir. Tous les 25 boosters, choisissez une rare ou un Souvenir alternatif ; au palier 50, une alternative remplace ce choix. Le compteur repart ensuite à zéro. Tous les 100 boosters du set, un choix supplémentaire ouvre toute sa collection, Divines comprises.'}
 ];
 let tutorialStep=0, tutorialSelected=false, tutorialSolved=false;
 function openTutorial() { tutorialStep=0;tutorialSelected=false;tutorialSolved=false;renderTutorial();$('#tutorialDialog').classList.remove('hidden');$('#tutorialClose').focus(); }

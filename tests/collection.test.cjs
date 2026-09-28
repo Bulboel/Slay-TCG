@@ -22,7 +22,7 @@ assert.equal(run('new Set(catalog.map(c=>c.id)).size'),128);
 assert.equal(run('new Set(catalog.map(c=>c.number)).size'),128);
 assert.deepEqual(plain(`catalogById('p113').v`),[3,8,3,8]);
 assert.equal(run(`catalog.filter(c=>c.rarity==='divine').length`),6);
-assert.equal(run(`isRareCard(catalogById('p104'))`),true);
+assert.equal(run(`isDivineCard(catalogById('p104'))`),true);
 assert.equal(run(`rewardCandidates({type:'alternative'}).some(c=>c.rarity==='divine')`),false);
 assert.equal(run(`(()=>{for(const name of new Set(catalog.map(c=>c.name))){const ns=catalog.filter(c=>c.name===name).map(c=>c.number).sort((a,b)=>a-b);if(ns.at(-1)-ns[0]+1!==ns.length)return false}return true})()`),true,'Variants have adjacent published numbers');
 assert.equal(run(`(()=>{const ds=catalog.filter(c=>c.rarity==='divine'),total=ds.reduce((s,c)=>s+c.divineWeight,0);return ds.find(c=>c.kaylaDivine).divineWeight/total})()`),.02,'Kayla is 2% of Divine draws');
@@ -32,13 +32,13 @@ for (const [id,v] of Object.entries({p10:[7,7,2,2],p31:[1,5,6,2],p37:[4,4,3,5],p
 assert.equal(run(`isRareCard(catalogById('p03'))`),false);
 assert.equal(run(`isRareCard(catalogById('p05'))`),true);
 run(`collection.counts=Object.fromEntries(pool.map(c=>[c.id,5]));const deckOf=ids=>({cards:ids.map(id=>pool.findIndex(c=>c.id===id))});`);
-assert.equal(run(`validDeck(deckOf(['p05','p14','p28','p03','p07']))`),true);
+assert.equal(run(`validDeck(deckOf(['p05','p14','p104','p03','p07']))`),true);
 assert.equal(run(`validDeck(deckOf(['p05','p14','p28','p33','p03']))`),false);
 assert.equal(run(`validDeck(deckOf(['p03','p07','p12','p22','p24']))`),true,'Five common alternatives are legal');
 assert.equal(run(`validDeck(deckOf(['p03','p03','p04','p07','p12']))`),false,'Two copies per name across illustrations');
 run(`collection.foils.p03=1`);
 assert.deepEqual(plain(`deckCardsWithFoil(deckOf(['p03','p03','p07','p12','p22'])).map(c=>c.foil)`),[true,false,false,false,false]);
-for(let i=0;i<100;i++)assert.equal(run('randomLegalHand().filter(isRareCard).length<=3'),true);
+for(let i=0;i<100;i++)assert.equal(run('randomLegalHand().filter(isRareCard).length<=2'),true);
 assert.equal(run('validStats([0,10,5,2])'),true);
 for(const input of ['[1,2,3]','[1,2,3,11]','[1,2,3,1.5]','[1,2,3,"4"]'])assert.equal(run(`validStats(${input})`),false);
 assert.throws(()=>run('validateStatMap({p00:[1,2,3,4]})'));
@@ -70,9 +70,30 @@ const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalo
   }
   const found=standard.filter(c=>state.counts[c.id]>0).length/standard.length;minimum=Math.min(minimum,found);total+=found;if(found===1)complete++;
   if(!catalog.some(c=>c.rarity==='parallel'&&state.counts[c.id]>0))throw Error('No parallel');
-  if(pityProgress(state).pending.length!==8)throw Error('Pity milestones');
+  if(pityProgress(state).pending.length!==10)throw Error('Pity milestones');
  }
  return {minimum,average:total/500,complete,runs:500};})()`);
 assert(result.minimum>=.95);assert(result.average>=.99);
 console.log('PASS: stats audit, 128 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
 console.log(JSON.stringify(result));
+
+run(`collection={counts:{},foils:{},boosterProgress:{[BOOSTER_SET]:{opened:200,pending:[]}}}`);
+assert.equal(run('pityProgress().pending.length'),2,'Retroactive century rewards');
+assert.equal(run('pityProgress().pending.length'),2,'Migration is idempotent');
+assert.equal(run(`rewardCandidates({type:'all-set'}).length`),128);
+assert.equal(run(`rewardCandidates({type:'all-set'},'future-set').length`),0);
+assert.equal(run(`claimPityCard('p107',100,'all-set')`),true);
+assert.equal(run(`claimPityCard('p107',100,'all-set')`),false);
+run(`collection=JSON.parse(JSON.stringify(collection))`);
+assert.equal(run('pityProgress().pending.length'),1);
+run(`collection.counts=Object.fromEntries(pool.map(c=>[c.id,5]))`);
+assert.equal(run(`validDeck(deckOf(['p104','p107','p03','p07','p12']))`),false);
+assert.equal(run(`validDeck(deckOf(['p05','p14','p28','p03','p07']))`),false);
+for(let i=0;i<500;i++)assert.equal(run('randomLegalHand().filter(isDivineCard).length<=1'),true);
+run(`collection.counts.p03=100`);
+assert.equal(run(`sortedCards(pool,'quantity')[0].id`),'p03');
+run(`collection={counts:{},foils:{}};for(let n=0;n<100;n++)recordBoosterOpening();pityProgress().pending=pityProgress().pending.filter(r=>r.milestone===100)`);
+assert.equal(run(`claimPityCard('p03',100,'alternative')`),true);
+assert.equal(run(`claimPityCard('p03',100,'alternative')`),false,'Stale choice cannot consume the additional century reward');
+assert.equal(run(`claimPityCard('p107',100,'all-set')`),true);
+console.log('PASS: separate Divine/rare caps, century rewards, migration, set boundaries, stale clicks and quantity sorting.');

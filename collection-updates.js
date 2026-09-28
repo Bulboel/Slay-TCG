@@ -5,12 +5,14 @@ let publishedStats = {}, localStats = {};
 
 function isRareCard(card) {
   if (!card || card.kind !== 'playable') return false;
-  if (card.rarity === 'rare' || card.rarity === 'divine') return true;
+  if (card.rarity === 'rare') return true;
   return ['alternative', 'parallel'].includes(card.rarity) && pool.some(base => base.name === card.name && base.rarity === 'rare');
 }
+function isDivineCard(card) { return card?.rarity === 'divine'; }
+function deckDivineCount(deck) { return deck.cards.filter(i => isDivineCard(pool[i])).length; }
 function deckRareCount(deck) { return deck.cards.filter(i => isRareCard(pool[i])).length; }
 function validDeck(deck) {
-  return !!deck && deck.cards.length === 5 && deckRareCount(deck) <= 3 && deck.cards.every(i =>
+  return !!deck && deck.cards.length === 5 && deckRareCount(deck) <= 2 && deckDivineCount(deck) <= 1 && deck.cards.every(i =>
     pool[i] && deckNameCount(deck, pool[i].name) <= 2 && deck.cards.filter(n => n === i).length <= ownedCopies(pool[i].id));
 }
 function deckCardsWithFoil(deck) {
@@ -22,7 +24,7 @@ function deckCardsWithFoil(deck) {
 function randomLegalHand() {
   const hand = [];
   for (const card of shuffle(pool)) {
-    if (hand.filter(c => c.name === card.name).length >= 2 || (isRareCard(card) && hand.filter(isRareCard).length >= 3)) continue;
+    if ((isDivineCard(card) && hand.some(isDivineCard)) || hand.filter(c => c.name === card.name).length >= 2 || (isRareCard(card) && hand.filter(isRareCard).length >= 2)) continue;
     hand.push(card); if (hand.length === 5) break;
   }
   return hand;
@@ -32,18 +34,27 @@ function pityProgress(state = collection, setId = BOOSTER_SET) {
   const p = state.boosterProgress[setId] ||= {opened:0, pending:[]};
   if (!Number.isSafeInteger(p.opened) || p.opened < 0) p.opened = 0;
   if (!Array.isArray(p.pending)) p.pending = [];
+  const earned = Math.floor(p.opened / 100);
+  if (!Number.isSafeInteger(p.centuryRewards) || p.centuryRewards < 0) p.centuryRewards = 0;
+  // A persisted watermark prevents duplicate rewards, including after importing older saves.
+  for (let n = p.centuryRewards + 1; n <= earned; n++) {
+    if (!p.pending.some(r => r.type === 'all-set' && r.milestone === n * 100))
+      p.pending.push({milestone:n * 100,type:'all-set'});
+  }
+  p.centuryRewards = Math.max(p.centuryRewards, earned);
   return p;
 }
 function recordBoosterOpening(state = collection, setId = BOOSTER_SET) {
   const p = pityProgress(state,setId); p.opened++;
   if (p.opened % 25 === 0) p.pending.push({milestone:p.opened,type:p.opened % 50 === 0 ? 'alternative' : 'rare-or-memory'});
+  pityProgress(state,setId);
 }
 function rewardCandidates(reward, setId = BOOSTER_SET) {
-  return catalog.filter(c => c.setId === setId && (reward.type === 'alternative' ? c.rarity === 'alternative' : c.rarity === 'rare' || (c.kind === 'memory' && c.rarity === 'alternative')));
+  return catalog.filter(c => c.setId === setId && (reward.type === 'all-set' ? true : reward.type === 'alternative' ? c.rarity === 'alternative' : c.rarity === 'rare' || (c.kind === 'memory' && c.rarity === 'alternative')));
 }
-function claimPityCard(id, milestone) {
+function claimPityCard(id, milestone, type) {
   const p = pityProgress(), reward = p.pending[0];
-  if (!reward || reward.milestone !== milestone || !rewardCandidates(reward).some(c => c.id === id)) return false;
+  if (!reward || (type && reward.type !== type) || reward.milestone !== milestone || !rewardCandidates(reward).some(c => c.id === id)) return false;
   collection.counts[id] = ownedCopies(id) + 1;
   p.pending.shift(); saveCollection(); return true;
 }
@@ -100,23 +111,23 @@ function renderBoosterProgress() {
   box.querySelector('strong').textContent = `Un nouveau départ • ${p.opened % 50} / 50 boosters`;
   box.querySelector('progress').max = 50;
   box.querySelector('progress').value = p.opened % 50;
-  box.querySelector('p').textContent = `${next} avant le prochain choix. Tous les 25 : rare ou Souvenir alternatif ; tous les 50 : alternative au choix, à la place du choix précédent. Une parallèle garantie au plus tard au 200e booster de cette série.`;
+  box.querySelector('p').textContent = `${next} avant le prochain choix. Bonus collection complète : ${p.opened % 100}/100 boosters. Tous les 100, un choix supplémentaire parmi TOUT le set, Divines comprises. Tous les 25 : rare ou Souvenir alternatif ; tous les 50 : alternative au choix, à la place du choix précédent. Une parallèle garantie au plus tard au 200e booster de cette série.`;
   box.querySelector('button').classList.toggle('hidden',!p.pending.length && !collection.pendingPack && !(collection.shopQueue > 0));
   box.querySelector('button').textContent = p.pending.length ? `Choisir une récompense (${p.pending.length})` : 'Reprendre les boosters';
 }
 function showPity() {
   const reward = pityProgress().pending[0]; if (!reward) { continueBoosters(); return; }
   const dialog = $('#pityDialog'), grid = $('#pityGrid'); grid.replaceChildren();
-  const displayedMilestone = reward.milestone % 50 || 50;
+  const displayedMilestone = reward.type === 'all-set' ? 100 : reward.milestone % 50 || 50;
   $('#pityTitle').textContent = `Palier ${displayedMilestone} • votre carte au choix`;
-  $('#pityIntro').textContent = reward.type === 'alternative' ? 'Choisissez une alternative de la série Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif de la série Un nouveau départ.';
+  $('#pityIntro').textContent = reward.type === 'all-set' ? 'Bonus des 100 boosters : choisissez une carte de tout le set Un nouveau départ, Divines comprises. Ce choix s’ajoute à celui des 50 boosters.' : reward.type === 'alternative' ? 'Choisissez une alternative de la série Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif de la série Un nouveau départ.';
   for (const card of rewardCandidates(reward)) {
     const item = document.createElement('article'); item.className = 'reward-option';
-    const label = document.createElement('p'); label.textContent = `${card.name} — ${ownedCopies(card.id) ? 'Déjà possédée ×' + ownedCopies(card.id) : 'Non possédée'}`;
+    const label = document.createElement('p'); label.textContent = `${card.name} · ${rarityLabels[card.rarity]} · ${cardNumber(card)} — ${ownedCopies(card.id) ? 'Déjà possédée ×' + ownedCopies(card.id) : 'Non possédée'}`;
     const choose = document.createElement('button'); choose.className = 'menu-btn'; choose.textContent = 'Choisir';
     choose.setAttribute('aria-label', 'Choisir ' + card.name);
     choose.onclick = () => { if (!confirm(`Ajouter « ${card.name} » à votre collection pour le palier ${displayedMilestone} ?`)) return;
-      if (claimPityCard(card.id,reward.milestone)) { dialog.classList.add('hidden'); renderCollection();renderDeckBuilder();continueBoosters(); }
+      if (claimPityCard(card.id,reward.milestone,reward.type)) { dialog.classList.add('hidden'); renderCollection();renderDeckBuilder();continueBoosters(); }
     };
     item.append(label,choose); grid.append(item);
   }
@@ -175,7 +186,7 @@ function downloadStats(content,name,type) {
   const url = URL.createObjectURL(new Blob([content],{type})), link = document.createElement('a'); link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function initCollectionUpdates() {
-  recoverStoryBoosters();saveCollection();saveStory();
+  recoverStoryBoosters();pityProgress();saveCollection();saveStory();
   document.body.insertAdjacentHTML('beforeend', `
     <section id="statsScreen" class="panel-screen hidden"><div class="panel-card">
       <h2>Vérifier et corriger les statistiques</h2>
