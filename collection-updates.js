@@ -5,7 +5,7 @@ let publishedStats = {}, localStats = {};
 
 function isRareCard(card) {
   if (!card || card.kind !== 'playable') return false;
-  if (card.rarity === 'rare') return true;
+  if (card.rarity === 'rare' || card.rarity === 'divine') return true;
   return ['alternative', 'parallel'].includes(card.rarity) && pool.some(base => base.name === card.name && base.rarity === 'rare');
 }
 function deckRareCount(deck) { return deck.cards.filter(i => isRareCard(pool[i])).length; }
@@ -16,7 +16,7 @@ function validDeck(deck) {
 function deckCardsWithFoil(deck) {
   const used = {};
   return deck.cards.map(i => { const card = pool[i]; used[card.id] = (used[card.id] || 0) + 1;
-    return {...card, v:[...card.v], foil:used[card.id] <= (collection.foils?.[card.id] || 0)};
+    return {...card, v:[...card.v], mastery:masteryTier(ownedCopies(card.id)), foil:used[card.id] <= (collection.foils?.[card.id] || 0)};
   });
 }
 function randomLegalHand() {
@@ -62,8 +62,27 @@ function generateBooster(cards, state, rng = Math.random, setId = BOOSTER_SET) {
   const fourth = rng(); pulls.push(pick(fourth < .20 ? rares : fourth < .55 ? uncommons : commonPlayable));
   const foil = rng(), parallels = of('parallel');
   const needsParallel = pityProgress(state,setId).opened >= 199 && !parallels.some(c => state.counts[c.id] > 0);
-  pulls.push(pick(needsParallel || foil < .01 ? parallels : foil < .06 ? of('alternative') : foil < .16 ? rares : [...commons,...uncommons]));
+  const divines = of('divine');
+  if (!needsParallel && foil >= .16 && foil < .165 && divines.length) {
+    // Never apply missing-card preference to Divines: Kayla must stay exceptionally rare.
+    let ticket = rng() * divines.reduce((sum,c)=>sum+(c.divineWeight||1),0);
+    let divine = divines[divines.length-1];
+    for (const card of divines) { ticket -= card.divineWeight||1; if(ticket<0){divine=card;break;} }
+    pulls.push(divine);
+  } else {
+    const foilCandidates = needsParallel || foil < .01 ? parallels : foil < .06 ? of('alternative') : foil < .16 ? rares : [...commons,...uncommons];
+    pulls.push(pick(foilCandidates.filter(card => card.kind === 'playable')));
+  }
   return pulls.map((card,i) => ({card,foil:i === 4,slot:rarityLabels[card.rarity] + (i === 4 ? ' foil' : '')}));
+}
+function repairPendingFoil(pulls) {
+  const last = pulls[4];
+  if (last?.card.kind === 'memory') {
+    const candidates = catalog.filter(c => c.kind === 'playable' && c.setId === last.card.setId && c.rarity === last.card.rarity);
+    last.card = candidates[Math.floor(Math.random() * candidates.length)];
+    last.foil = true;
+    last.slot = rarityLabels[last.card.rarity] + ' foil';
+  }
 }
 function continueBoosters() {
   if (pityProgress().pending.length) { showPity(); return; }
@@ -93,7 +112,7 @@ function showPity() {
   $('#pityIntro').textContent = reward.type === 'alternative' ? 'Choisissez une alternative de la série Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif de la série Un nouveau départ.';
   for (const card of rewardCandidates(reward)) {
     const item = document.createElement('article'); item.className = 'reward-option';
-    const label = document.createElement('p'); label.textContent = card.name;
+    const label = document.createElement('p'); label.textContent = `${card.name} — ${ownedCopies(card.id) ? 'Déjà possédée ×' + ownedCopies(card.id) : 'Non possédée'}`;
     const choose = document.createElement('button'); choose.className = 'menu-btn'; choose.textContent = 'Choisir';
     choose.setAttribute('aria-label', 'Choisir ' + card.name);
     choose.onclick = () => { if (!confirm(`Ajouter « ${card.name} » à votre collection pour le palier ${displayedMilestone} ?`)) return;
@@ -184,7 +203,7 @@ function initCollectionUpdates() {
   $('#statsExport').onclick=()=>downloadStats(JSON.stringify({...window.HACKENIA_CARD_STATS,...localStats},null,2),'hackenia-corrections.json','application/json');
   $('#statsImport').onclick=()=>$('#statsImportFile').click();
   $('#statsImportFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const clean=validateStatMap(JSON.parse(await file.text()));localStats={...localStats,...clean};saveLocalStats();renderStatsCard();$('#statsStatus').textContent='Corrections importées sur cet appareil.'}catch(err){$('#statsStatus').textContent=err.message}finally{e.target.value=''}};
-  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><small>Le compteur commence avec cette mise à jour ; les anciennes ouvertures n’étaient pas enregistrées. Emplacement 4 : 20 % rare. Foil : 1 % parallèle, 5 % alternative, 10 % rare. Les cartes manquantes sont favorisées dans chaque catégorie. Les boosters utilisent uniquement les pièces gagnées en jeu.</small><button class="menu-btn hidden">Reprendre</button>';
+  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><small>Le compteur commence avec cette mise à jour ; les anciennes ouvertures n’étaient pas enregistrées. Emplacement 4 : 20 % rare. Foil (sans Souvenirs) : 1 % parallèle, 5 % alternative, 10 % rare, 0,5 % Divine. Kayla Divine : 0,01 % par booster (environ 1 sur 10 000), les autres Divines : 0,098 % chacune. Les cartes manquantes sont favorisées, sauf les Divines. Les probabilités ne garantissent pas une Divine après un nombre donné d’ouvertures. Les boosters utilisent uniquement les pièces gagnées en jeu.</small><button class="menu-btn hidden">Reprendre</button>';
   box.querySelector('button').onclick=continueBoosters;$('#shopScreen .shop-grid').before(box);
   const rewards=document.createElement('button');rewards.className='menu-btn secondary';rewards.textContent='Progression des boosters';rewards.onclick=()=>openShop();$('#collectionScreen .panel-actions').append(rewards);
   $('#pityLater').onclick=()=>{$('#pityDialog').classList.add('hidden');openShop('Votre choix est conservé. Vous pourrez le récupérer avant la prochaine ouverture.')};

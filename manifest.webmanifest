@@ -1,0 +1,14 @@
+{
+  "name": "Triade d’Hackénia",
+  "short_name": "Hackénia",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071d2d",
+  "theme_color": "#071d2d",
+  "icons": [
+    {"src":"assets/icons/hackenia-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"assets/icons/hackenia-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
+}

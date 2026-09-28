@@ -7,6 +7,7 @@ const features = fs.readFileSync('collection-updates.js','utf8');
 new vm.Script(main);new vm.Script(features);
 const ctx = vm.createContext({console,window:{},Math,saveCollection(){},readSaved:()=>({})});
 vm.runInContext(fs.readFileSync('assets/data/card-stats.js','utf8'),ctx);
+for(const file of ['assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js'])vm.runInContext(fs.readFileSync(file,'utf8'),ctx);
 vm.runInContext(features,ctx);
 vm.runInContext(main.slice(0,main.indexOf('const memoryCards=')),ctx);
 vm.runInContext(main.split('\n').find(line=>line.startsWith('function shuffle(')),ctx);
@@ -16,8 +17,17 @@ vm.runInContext(`let collection={counts:{},foils:{},starterBoosters:0};
  initializeCardStats();`,ctx);
 const run = code => vm.runInContext(code,ctx);
 const plain = code => JSON.parse(JSON.stringify(run(code)));
-assert.equal(run('catalog.length'),95);
-assert.equal(run('new Set(catalog.map(c=>c.id)).size'),95);
+assert.equal(run('catalog.length'),128);
+assert.equal(run('new Set(catalog.map(c=>c.id)).size'),128);
+assert.equal(run('new Set(catalog.map(c=>c.number)).size'),128);
+assert.deepEqual(plain(`catalogById('p113').v`),[3,8,3,8]);
+assert.equal(run(`catalog.filter(c=>c.rarity==='divine').length`),6);
+assert.equal(run(`isRareCard(catalogById('p104'))`),true);
+assert.equal(run(`rewardCandidates({type:'alternative'}).some(c=>c.rarity==='divine')`),false);
+assert.equal(run(`(()=>{for(const name of new Set(catalog.map(c=>c.name))){const ns=catalog.filter(c=>c.name===name).map(c=>c.number).sort((a,b)=>a-b);if(ns.at(-1)-ns[0]+1!==ns.length)return false}return true})()`),true,'Variants have adjacent published numbers');
+assert.equal(run(`(()=>{const ds=catalog.filter(c=>c.rarity==='divine'),total=ds.reduce((s,c)=>s+c.divineWeight,0);return ds.find(c=>c.kaylaDivine).divineWeight/total})()`),.02,'Kayla is 2% of Divine draws');
+assert.deepEqual(plain('[masteryTier(9),masteryTier(10),masteryTier(99),masteryTier(100)]'),['','gold','gold','diamond']);
+assert.equal(run(`(()=>{const state={counts:Object.fromEntries(catalog.filter(c=>!c.kaylaDivine).map(c=>[c.id,1])),foils:{}};let kayla=0;for(let n=0;n<1000;n++){let seq=[.5,.5,.5,.5,.5,.5,.162,(n+.5)/1000],i=0;const card=generateBooster(catalog,state,()=>seq[i++])[4].card;if(card.kaylaDivine)kayla++;if(card.rarity!=='divine')throw Error('Divine slot');}return kayla})()`),20,'Kayla stays 2% of Divine draws even when she is the only missing card');
 for (const [id,v] of Object.entries({p10:[7,7,2,2],p31:[1,5,6,2],p37:[4,4,3,5],p40:[3,4,7,4],p42:[8,6,2,4],p44:[7,3,7,2],p48:[0,6,6,3],p86:[8,1,8,1],p88:[9,3,1,2],p90:[4,7,0,3],p91:[0,0,8,8],p95:[5,2,6,10]})) assert.deepEqual(plain(`catalogById('${id}').v`),v);
 assert.equal(run(`isRareCard(catalogById('p03'))`),false);
 assert.equal(run(`isRareCard(catalogById('p05'))`),true);
@@ -45,6 +55,8 @@ assert.equal(run(`claimPityCard('p03',50)`),true,'Pending choice survives serial
 assert.equal(run('pityProgress().pending.length'),0);
 run(`collection={counts:{},foils:{}};pityProgress().opened=199;`);
 assert.equal(run(`generateBooster(catalog,collection,()=>.99)[4].card.rarity`),'parallel');
+run(`const oldPack=generateBooster(catalog,collection);oldPack[4]={card:catalogById('s06'),foil:true};repairPendingFoil(oldPack)`);
+assert.equal(run('oldPack[4].card.kind'),'playable');assert.equal(run('oldPack[4].card.rarity'),'alternative');assert.equal(run('oldPack[4].foil'),true);
 // Fixed independent seeds, not a favorable hand-picked sample.
 const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalog.filter(c=>['common','uncommon','rare'].includes(c.rarity));
  for(let seed=1;seed<=500;seed++){
@@ -52,6 +64,7 @@ const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalo
   for(let n=0;n<200;n++){
    const pack=generateBooster(catalog,state,rng);
    if(pack.length!==5||pack[0].card.rarity!=='common'||pack[1].card.rarity!=='common'||!['common','uncommon'].includes(pack[2].card.rarity)||!['common','uncommon','rare'].includes(pack[3].card.rarity)||pack.filter(p=>p.foil).length!==1)throw Error('Invalid slots');
+   if(pack[4].card.kind!=='playable')throw Error('Souvenir in foil slot');
    for(const p of pack)state.counts[p.card.id]=(state.counts[p.card.id]||0)+1;
    recordBoosterOpening(state);
   }
@@ -61,5 +74,5 @@ const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalo
  }
  return {minimum,average:total/500,complete,runs:500};})()`);
 assert(result.minimum>=.95);assert(result.average>=.99);
-console.log('PASS: stats audit, 95 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
+console.log('PASS: stats audit, 128 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
 console.log(JSON.stringify(result));
