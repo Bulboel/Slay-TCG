@@ -51,3 +51,19 @@
  .card-zoom-dialog:has(.hand-zoom-nav:not(.hidden)){padding-bottom:92px}
  .hand-zoom-nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:5;margin:0;padding:6px 12px;border:1px solid #87612e;border-radius:12px;background:#f4e0af;box-shadow:0 4px 18px #35200b66;white-space:nowrap}
 }
+.booster-pull.angel-pending .card{visibility:hidden}.booster-pull.angel-pending{pointer-events:none}
+.booster-angel-stage{position:fixed;inset:0;z-index:160;pointer-events:none;overflow:hidden;--angel-color:#ffdd83}
+.booster-angel-stage.parallel{--angel-color:#b8ebff}.booster-angel-stage.divine{--angel-color:#e7c0ff}
+.angel-origin{position:absolute;left:var(--angel-x);top:var(--angel-y);width:0;height:0}
+.booster-angel{position:absolute;width:200px;height:234px;left:-100px;top:-117px;filter:drop-shadow(0 0 12px #fffbd2) drop-shadow(0 0 24px var(--angel-color));animation:angelFlight 2.7s ease-in-out both}
+.angel-left-wing{transform-origin:112px 155px;animation:angelWingLeft .75s ease-in-out infinite alternate}.angel-right-wing{transform-origin:128px 155px;animation:angelWingRight .75s ease-in-out infinite alternate}
+.angel-burst{position:absolute;inset:-140px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,#fffbe9 0 5%,var(--angel-color) 14%,transparent 65%);animation:angelBurst 2.7s ease-out both}
+.angel-rings{position:absolute;left:-95px;top:-95px;width:190px;height:190px;border:2px solid #fff1bc;border-radius:50%;box-shadow:0 0 30px var(--angel-color),inset 0 0 30px var(--angel-color);animation:angelRing 2.7s ease-out both}
+.angel-spark{position:absolute;left:0;top:0;font-style:normal;color:#fff7c9;font-size:20px;text-shadow:0 0 12px var(--angel-color);animation:angelSpark 2.5s var(--spark-delay) ease-out both}
+.angel-skip{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);pointer-events:auto;border:1px solid #ffe8a7;border-radius:20px;background:#352411ec;color:#fff5d9;padding:10px 18px;font-weight:700;cursor:pointer}
+@keyframes angelFlight{0%{opacity:0;transform:translateY(25px) scale(.3)}18%,38%{opacity:1;transform:translateY(0) scale(1)}65%{opacity:1;transform:translateY(-65px) scale(.95)}100%{opacity:0;transform:translateY(-250px) scale(.55)}}
+@keyframes angelWingLeft{to{transform:rotate(-14deg) scaleX(.85)}}@keyframes angelWingRight{to{transform:rotate(14deg) scaleX(.85)}}
+@keyframes angelBurst{0%{opacity:0;transform:scale(.1)}18%{opacity:.9;transform:scale(1.1)}55%{opacity:.25}100%{opacity:0;transform:scale(1.5)}}
+@keyframes angelRing{0%{opacity:0;transform:scale(.1)}25%{opacity:.7}65%,100%{opacity:0;transform:scale(1.8)}}
+@keyframes angelSpark{0%{opacity:0;transform:translate(0,20px) scale(.2)}30%{opacity:1}100%{opacity:0;transform:translate(var(--spark-x),calc(var(--spark-y) - 140px)) scale(.3)}}
+@media(prefers-reduced-motion:reduce){.booster-angel-stage{display:none}}

@@ -883,5 +883,90 @@ window.HACKENIA_NEW_CARDS = [
       "src": "assets/cards/september28-night/p145.webp",
       "full": true
     }
+  },
+  {
+    "id": "p146",
+    "name": "Forfalla",
+    "v": [
+      1,
+      1,
+      2,
+      8
+    ],
+    "element": "neutral",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/set-finale/p146.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p147",
+    "name": "Les énergies élémentaires",
+    "v": [
+      7,
+      4,
+      4,
+      7
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/set-finale/p147.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p148",
+    "name": "Réussite critique",
+    "v": [
+      8,
+      10,
+      8,
+      10
+    ],
+    "element": "multi",
+    "rarity": "alternative",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/set-finale/p148.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p149",
+    "name": "Salle du conseil",
+    "v": [
+      5,
+      8,
+      5,
+      5
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/set-finale/p149.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p150",
+    "name": "“Ses personnes hautaines franchement…”",
+    "v": [
+      8,
+      1,
+      1,
+      6
+    ],
+    "element": "earth",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/set-finale/p150.webp",
+      "full": true
+    }
   }
 ];

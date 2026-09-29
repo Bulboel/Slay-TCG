@@ -10,7 +10,7 @@ const run=code=>vm.runInContext(code,ctx),plain=code=>JSON.parse(JSON.stringify(
 for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
 run(main);run('initCollectionUpdates();initCollectionPolish();initNavigationPolish()');
 const $=s=>w.document.querySelector(s);
-assert.equal($('#statsCard').options.length,132);
+assert.equal($('#statsCard').options.length,137);
 run(`collection.counts=Object.fromEntries(pool.map(c=>[c.id,3]));collection.foils={p03:1};collection.starterBoosters=0;
 decks=[{id:'test',name:'Test',cards:['p03','p03','p05','p14','p104'].map(id=>pool.findIndex(c=>c.id===id))}];activeDeckId='test';renderDeckBuilder();`);
 assert.match($('#deckCount').textContent,/2 \/ 2 rares/);
@@ -149,3 +149,11 @@ assert.equal($('#cardZoomName').textContent,'Le pèlerin');assert.equal($('#hand
 run(`closeCardZoom();blindHands.p=true;render();inspectHand('p')`);assert.equal($('#cardZoom').classList.contains('hidden'),true,'Loupe cannot reveal a blinded hand');
 assert($('#collectionScreen .catalog-backbar'));assert($('#deckScreen .catalog-backbar'));
 console.log('PASS: part 5 victory gate, resume, one-time rewards, hand zoom privacy and navigation.');
+
+run(`collection.pendingPack=null;collection.boosterProgress={};collection.starterBoosters=0;showBooster('shop');window.angelDone=0;animateBoosterAngel({card:catalogById('p148')},()=>window.angelDone++)`);
+assert($('.booster-angel-stage'));assert($('#boosterCards .booster-pull:last-child').classList.contains('angel-pending'));
+$('.angel-skip').click();assert.equal(w.angelDone,1);assert.equal($('.booster-angel-stage'),null);
+run(`animateBoosterAngel({card:catalogById('p29')},()=>window.angelDone++)`);assert.equal(w.angelDone,2);assert.equal($('.booster-angel-stage'),null);
+w.matchMedia=()=>({matches:true});run(`animateBoosterAngel({card:catalogById('p107')},()=>window.angelDone++)`);assert.equal(w.angelDone,3);assert.equal($('.booster-angel-stage'),null);
+w.matchMedia=()=>({matches:false});run(`animateBoosterAngel({card:catalogById('p30')},()=>window.angelDone++);cancelBoosterAngel()`);assert.equal(w.angelDone,3);assert.equal($('.booster-angel-stage'),null);
+console.log('PASS: angel reveal rarity gate, skip, cancellation and reduced motion.');
