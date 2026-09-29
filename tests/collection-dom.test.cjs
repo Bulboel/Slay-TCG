@@ -173,3 +173,16 @@ run('showBooster("shop");openBoosterPack();showBooster("shop")');flush();assert.
 assert.equal($('#boosterContinueBtn').disabled,true);
 assert(fs.statSync(run("catalogById('p150').image.src")).size>10000,'Card 94 has a nonempty illustration');
 console.log('PASS: sequential reveal, skip, revisit, claim gate, stable pack and cancelled opening timers.');
+
+// Export refreshes the local load slot as well as the downloaded file.
+let exportedText='';const NativeBlob=w.Blob;w.Blob=class{constructor(parts){exportedText=parts.join('')}};
+w.URL.createObjectURL=()=> 'blob:test-save';w.URL.revokeObjectURL=()=>{};
+run(`saveSlotActive=false;economy={gold:41,storyRewards:{}};writeSaveSlot(null);saveSlotActive=false;economy.gold=987;matchInProgress=false;exportProgress()`);
+assert.equal(JSON.parse(exportedText).profile.economy.gold,987);
+assert.equal(JSON.parse(w.localStorage.getItem('hackenia-save-slot')).profile.economy.gold,987);
+assert.equal(JSON.parse(w.localStorage.getItem('hackenia-economy')).gold,987);
+run('economy.gold=0;restoreSavedGame()');assert.equal(run('economy.gold'),987);
+run('economy.gold=0;exportProgress()');assert.equal(JSON.parse(exportedText).profile.economy.gold,0,'Zero coins must stay zero');
+w.Blob=NativeBlob;
+run(`dragState=null;locked=false;turn='p';startDrag({pointerType:'touch',button:0},'p',0,$('#playerHand .card'))`);assert.equal(run('dragState'),null,'Touch scrolling does not start a drag');
+console.log('PASS: export and local load slot retain exact current gold, including zero; touch does not start a drag.');
