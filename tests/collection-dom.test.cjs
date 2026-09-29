@@ -8,9 +8,9 @@ const ctx=dom.getInternalVMContext(),w=dom.window,timers=[];
 w.setTimeout=fn=>{timers.push(fn);return timers.length};w.setInterval=()=>0;w.requestAnimationFrame=()=>0;w.confirm=()=>true;
 const run=code=>vm.runInContext(code,ctx),plain=code=>JSON.parse(JSON.stringify(run(code)));
 for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
-run(main);run('initCollectionUpdates();initCollectionPolish()');
+run(main);run('initCollectionUpdates();initCollectionPolish();initNavigationPolish()');
 const $=s=>w.document.querySelector(s);
-assert.equal($('#statsCard').options.length,123);
+assert.equal($('#statsCard').options.length,132);
 run(`collection.counts=Object.fromEntries(pool.map(c=>[c.id,3]));collection.foils={p03:1};collection.starterBoosters=0;
 decks=[{id:'test',name:'Test',cards:['p03','p03','p05','p14','p104'].map(id=>pool.findIndex(c=>c.id===id))}];activeDeckId='test';renderDeckBuilder();`);
 assert.match($('#deckCount').textContent,/2 \/ 2 rares/);
@@ -134,3 +134,18 @@ for(const id of ['collectionSort','deckSort']){
  assert.equal(JSON.parse(w.localStorage.getItem('hackenia-'+id)),'rarity-desc');
 }
 console.log('PASS: removed Souvenir, legacy story pile migration and persisted inverse sorts.');
+
+run(`story={...defaultStory(),part4:'complete'};collection.storyBoosterQueue=[];story.pendingReward=false;economy={gold:0,storyRewards:{}};decks=defaultDecks();activeDeckId=decks[0].id;renderStoryMenu()`);
+assert.equal($('#chapter1Part5Btn').disabled,false);
+run(`startFinalMinePart();nextStoryBeat();startFinalMinePart()`);assert.equal(run('storyStep'),1);
+run(`startFinalMineGame();board[0]={card:hands.p.shift(),owner:'p'};saveStoryMatch();board=[];startFinalMinePart()`);assert.equal(run('board[0].owner'),'p');
+assert.equal($('#rightLabel').textContent,'L’araignée géante');
+run(`endFinalMineGame({p:4,a:5});finishFinalMinePart()`);assert.equal(run('story.part5'),'retry');assert.equal(run('economy.gold'),0);
+run(`startFinalMineGame();endFinalMineGame({p:5,a:4});showFinalMineVictory();nextStoryBeat();startFinalMinePart()`);assert.equal(run('storyStep'),1);
+assert.match(run('storySequence[0].text'),/gourdin/);assert.match(run('storySequence[3].text'),/portail/);
+run(`finishFinalMinePart();finishFinalMinePart()`);assert.equal(run('economy.gold'),50);assert.deepEqual(plain('collection.storyBoosterQueue'),['part5']);assert.equal(run('story.part5'),'complete');
+run(`$('#turnCover').classList.add('hidden');passing=false;hands={p:[playerCard(catalogById('p140')),playerCard(catalogById('p27'))],a:[]};blindHands={p:false,a:false};turn='p';locked=false;gameType='ai';render();inspectHand('p')`);
+assert.equal($('#cardZoomName').textContent,'Le pèlerin');assert.equal($('#handZoomPosition').textContent,'1 / 2');$('#handZoomNext').click();assert.equal($('#cardZoomName').textContent,'Kala');
+run(`closeCardZoom();blindHands.p=true;render();inspectHand('p')`);assert.equal($('#cardZoom').classList.contains('hidden'),true,'Loupe cannot reveal a blinded hand');
+assert($('#collectionScreen .catalog-backbar'));assert($('#deckScreen .catalog-backbar'));
+console.log('PASS: part 5 victory gate, resume, one-time rewards, hand zoom privacy and navigation.');

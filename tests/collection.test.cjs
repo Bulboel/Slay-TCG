@@ -17,9 +17,9 @@ vm.runInContext(`let collection={counts:{},foils:{},starterBoosters:0};
  initializeCardStats();`,ctx);
 const run = code => vm.runInContext(code,ctx);
 const plain = code => JSON.parse(JSON.stringify(run(code)));
-assert.equal(run('catalog.length'),136);
-assert.equal(run('new Set(catalog.map(c=>c.id)).size'),136);
-assert.equal(run('new Set(catalog.map(c=>c.number)).size'),136);
+assert.equal(run('catalog.length'),145);
+assert.equal(run('new Set(catalog.map(c=>c.id)).size'),145);
+assert.equal(run('new Set(catalog.map(c=>c.number)).size'),145);
 assert.deepEqual(plain(`catalogById('p113').v`),[3,8,3,8]);
 assert.equal(run(`catalog.filter(c=>c.rarity==='divine').length`),6);
 assert.equal(run(`isDivineCard(catalogById('p104'))`),true);
@@ -73,13 +73,13 @@ const result = run(`(()=>{let minimum=1,total=0,complete=0;const standard=catalo
  }
  return {minimum,average:total/500,complete,runs:500};})()`);
 assert(result.minimum>=.95);assert(result.average>=.99);
-console.log('PASS: stats audit, 136 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
+console.log('PASS: stats audit, 145 cards, deck limits, foil copies, import validation, pity, persistence and 100,000 booster openings.');
 console.log(JSON.stringify(result));
 
 run(`collection={counts:{},foils:{},boosterProgress:{[BOOSTER_SET]:{opened:200,pending:[]}}}`);
 assert.equal(run('pityProgress().pending.length'),2,'Retroactive century rewards');
 assert.equal(run('pityProgress().pending.length'),2,'Migration is idempotent');
-assert.equal(run(`rewardCandidates({type:'all-set'}).length`),136);
+assert.equal(run(`rewardCandidates({type:'all-set'}).length`),145);
 assert.equal(run(`rewardCandidates({type:'all-set'},'future-set').length`),0);
 assert.equal(run(`claimPityCard('p107',100,'all-set')`),true);
 assert.equal(run(`claimPityCard('p107',100,'all-set')`),false);
@@ -103,3 +103,5 @@ assert.deepEqual(plain(`sortedCards(catalog,'name-desc').map(c=>c.id)`),plain(`s
 assert.deepEqual(plain(`sortedCards(catalog,'rarity-desc').map(c=>c.id)`),plain(`sortedCards(catalog,'rarity').reverse().map(c=>c.id)`));
 for(const [id,v] of Object.entries({p129:[0,8,8,1],p130:[9,7,4,10],p131:[8,9,8,6],p132:[8,8,7,9],p133:[7,9,10,4],p134:[9,8,5,9],p135:[3,9,7,0],p136:[6,1,1,8]}))assert.deepEqual(plain(`catalogById('${id}').v`),v);
 console.log('PASS: inverse sorts, new stats, official heroes-first and memories-last numbering.');
+
+assert.deepEqual(plain("catalogById('p140').v"),[1,3,3,7]);

@@ -41,3 +41,13 @@
 .collection-item>.collection-copy-count,.collection-item>.collection-foil-count{z-index:20;pointer-events:none}
 .deck-card .card[role=button]{pointer-events:auto;cursor:zoom-in}
 .deck-card .card[role=button]:focus-visible{outline:3px solid #255879;outline-offset:4px}
+#collectionScreen .panel-card,#deckScreen .panel-card{padding-top:0}
+.catalog-backbar{position:sticky;top:0;z-index:30;padding:12px 0;margin-bottom:16px;background:#ead39e;box-shadow:0 5px 10px #66451933;text-align:left}
+.catalog-backbar .menu-btn{padding:10px 14px;font-size:.75rem}
+.hand-inspect{font:700 10px system-ui;padding:3px 6px;border:1px solid #8b652f;border-radius:6px;background:#fff0c7;color:#432c13;cursor:zoom-in;letter-spacing:0;text-transform:none}
+.hand-zoom-nav{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:14px}.hand-zoom-nav button{min-width:44px;min-height:44px;border-radius:8px;border:1px solid #73502b;background:#fff0c7;color:#432c13;cursor:pointer}
+@media(max-width:700px){
+ .card-zoom-close{position:fixed;top:24px;right:24px;z-index:5}
+ .card-zoom-dialog:has(.hand-zoom-nav:not(.hidden)){padding-bottom:92px}
+ .hand-zoom-nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:5;margin:0;padding:6px 12px;border:1px solid #87612e;border-radius:12px;background:#f4e0af;box-shadow:0 4px 18px #35200b66;white-space:nowrap}
+}

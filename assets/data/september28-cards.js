@@ -1,4 +1,4 @@
-// Values: top, right, bottom, left. E=3 and B=8 on Les Sans-chiffres.
+// Values: top, right, bottom, left. Le pèlerin: L=7, I=1, E=3. Les Sans-chiffres: E=3, B=8.
 window.HACKENIA_NEW_CARDS = [
   {
     "id": "p96",
@@ -728,6 +728,159 @@ window.HACKENIA_NEW_CARDS = [
     "kind": "playable",
     "image": {
       "src": "assets/cards/september28-evening/p136.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p137",
+    "name": "La guilde des artisans cuisiniers",
+    "v": [
+      2,
+      5,
+      2,
+      7
+    ],
+    "element": "multi",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p137.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p138",
+    "name": "La taverne du Griffon doré",
+    "v": [
+      7,
+      4,
+      3,
+      2
+    ],
+    "element": "earth",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p138.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p139",
+    "name": "La transe de Bulba",
+    "v": [
+      6,
+      6,
+      4,
+      7
+    ],
+    "element": "wind",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p139.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p140",
+    "name": "Le pèlerin",
+    "v": [
+      1,
+      3,
+      3,
+      7
+    ],
+    "element": "multi",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p140.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p141",
+    "name": "Le tableau de primes",
+    "v": [
+      1,
+      8,
+      8,
+      2
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p141.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p142",
+    "name": "Les bébés élémentaires",
+    "v": [
+      3,
+      3,
+      6,
+      3
+    ],
+    "element": "multi",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p142.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p143",
+    "name": "Les gardes de Lunargent",
+    "v": [
+      7,
+      7,
+      6,
+      3
+    ],
+    "element": "neutral",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p143.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p144",
+    "name": "Sauvetage de justesse",
+    "v": [
+      8,
+      8,
+      5,
+      2
+    ],
+    "element": "wind",
+    "rarity": "uncommon",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p144.webp",
+      "full": true
+    }
+  },
+  {
+    "id": "p145",
+    "name": "Velcan",
+    "v": [
+      4,
+      5,
+      6,
+      5
+    ],
+    "element": "earth",
+    "rarity": "common",
+    "kind": "playable",
+    "image": {
+      "src": "assets/cards/september28-night/p145.webp",
       "full": true
     }
   }

@@ -53,7 +53,7 @@ function initCollectionPolish() {
 
 const TUTORIAL_STEPS = [
   {title:'Votre premier duel',text:'Chaque joueur reçoit cinq cartes. À tour de rôle, posez-en une sur une case libre du plateau de 3 × 3. Après neuf poses, le joueur qui contrôle le plus de cartes sur le plateau gagne.'},
-  {title:'Lire une carte',text:'Les quatre valeurs correspondent au haut, à la droite, au bas et à la gauche. A vaut 10 ; 0 vaut zéro. Sur Les Sans-chiffres, E vaut 3 et B vaut 8. Seuls les côtés qui se touchent se comparent : jamais les diagonales.'},
+  {title:'Lire une carte',text:'Les quatre valeurs correspondent au haut, à la droite, au bas et à la gauche. A vaut 10 ; 0 vaut zéro. Sur Les Sans-chiffres, E vaut 3 et B vaut 8. Sur Le pèlerin, L vaut 7, I vaut 1 et E vaut 3. Seuls les côtés qui se touchent se comparent : jamais les diagonales.'},
   {title:'À vous : capturer une carte',text:'La carte adverse au centre a 3 à gauche. Sélectionnez votre carte (6 à droite), puis posez-la juste à sa gauche. 6 est supérieur à 3 : la carte adverse change de couleur.',practice:true},
   {title:'Identique',text:'En règle Identique, au moins deux contacts doivent avoir des valeurs égales en même temps. Exemple : 4 face à 4 et 7 face à 7. Les cartes adverses concernées sont capturées. Une seule égalité ne suffit pas ; une carte alliée peut compléter le deuxième contact.'},
   {title:'Addition',text:'En règle Addition, calculez la somme des deux valeurs à chaque contact. Deux sommes égales déclenchent les captures : par exemple 2 + 7 et 5 + 4 donnent toutes deux 9. Les captures classiques par valeur supérieure restent actives.'},
@@ -79,4 +79,22 @@ function initTutorial() {
   for(const parent of ['#startupScreen .menu-actions','#menuScreen .menu-actions']){const button=document.createElement('button');button.className='menu-btn secondary';button.textContent='Apprendre à jouer';button.onclick=openTutorial;$(parent).append(button)}
   $('#tutorialClose').onclick=closeTutorial;$('#tutorialPrevious').onclick=()=>{if(tutorialStep>0){tutorialStep--;renderTutorial()}};$('#tutorialNext').onclick=()=>{if(TUTORIAL_STEPS[tutorialStep].practice&&!tutorialSolved)return;if(tutorialStep===TUTORIAL_STEPS.length-1){closeTutorial();return}tutorialStep++;renderTutorial()};
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTutorial()});
+}
+
+function inspectHand(owner,requested=0){
+ const holder=$(owner==='p'?'#playerHand':'#aiHand');
+ if(passing||$('#turnCover').classList.contains('hidden')===false)return;
+ const visible=hands[owner].filter((c,i)=>holder.children[i]&&!holder.children[i].classList.contains('card-back'));
+ if(!visible.length)return;
+ const index=(requested+visible.length)%visible.length;openCardZoom(visible[index]);
+ const nav=$('#handZoomNav');nav.classList.remove('hidden');$('#handZoomPosition').textContent=`${index+1} / ${visible.length}`;
+ $('#handZoomPrevious').onclick=()=>inspectHand(owner,index-1);$('#handZoomNext').onclick=()=>inspectHand(owner,index+1);
+ $('#handZoomPrevious').disabled=visible.length<2;$('#handZoomNext').disabled=visible.length<2;document.querySelector('.card-zoom-dialog').scrollTop=0;
+}
+function initNavigationPolish(){
+ for(const panel of ['#collectionScreen','#deckScreen']){
+  const bar=document.createElement('div');bar.className='catalog-backbar';const button=document.createElement('button');button.className='menu-btn secondary';button.textContent='← Retour au menu';button.onclick=showMenu;bar.append(button);$(panel+' .panel-card').prepend(bar);
+ }
+ $('#cardZoomStats').after(Object.assign(document.createElement('div'),{id:'handZoomNav',className:'hand-zoom-nav hidden',innerHTML:'<button id="handZoomPrevious" aria-label="Carte précédente">←</button><span id="handZoomPosition"></span><button id="handZoomNext" aria-label="Carte suivante">→</button>'}));
+ for(const owner of ['p','a']){const button=document.createElement('button');button.className='hand-inspect';button.textContent='Loupe';button.setAttribute('aria-label',owner==='p'?'Agrandir les cartes de votre main':'Agrandir les cartes visibles de cette main');button.onclick=()=>inspectHand(owner);document.querySelector(owner==='p'?'.side.player .player-label':'.side.ai .player-label').append(button)}
 }
