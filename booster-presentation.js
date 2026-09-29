@@ -1,5 +1,5 @@
 // Presentation only: the saved pack and collection are still managed by the game.
-let boosterPresentation = {index:0,seen:-1,busy:false,timers:[],generation:0};
+let boosterPresentation = {index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:0};
 function queueBoosterPresentation(fn,delay){
  const generation=boosterPresentation.generation;
  const timer=setTimeout(()=>{if(generation===boosterPresentation.generation)fn()},delay);
@@ -7,7 +7,7 @@ function queueBoosterPresentation(fn,delay){
 }
 function resetBoosterPresentation(){
  for(const timer of boosterPresentation.timers)clearTimeout(timer);
- boosterPresentation={index:0,seen:-1,busy:false,timers:[],generation:boosterPresentation.generation+1};
+ boosterPresentation={index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:boosterPresentation.generation+1};
  document.querySelector('#boosterSequenceControls')?.classList.add('hidden');
  document.querySelector('#boosterCards')?.classList.remove('sequence');
 }
@@ -24,21 +24,23 @@ function beginBoosterPresentation(){
 }
 function renderBoosterStepControls(){
  const {index,seen,busy}=boosterPresentation;
+ document.querySelector('.booster-zoom-hint').textContent=seen<4?'Ouverture automatique · Touchez la carte pour faire une pause et zoomer.':'Touchez une carte révélée pour l’agrandir.';
  $('#boosterSequenceStatus').textContent=`Carte ${index+1} / 5${index===4?' · La carte foil':''}`;
  const dots=$('#boosterStepDots');dots.replaceChildren();
  for(let i=0;i<5;i++){
   const button=document.createElement('button');button.textContent=String(i+1);
   button.setAttribute('aria-label',i<=seen?`Revoir la carte ${i+1}`:`Carte ${i+1} à découvrir`);
-  button.setAttribute('aria-current',i===index?'step':'false');button.disabled=busy||i>seen;
+  button.setAttribute('aria-current',i===index?'step':'false');button.disabled=busy||seen<4;
   button.onclick=()=>showBoosterStep(i);dots.append(button);
  }
- $('#boosterNextBtn').classList.toggle('hidden',index===4);$('#boosterNextBtn').disabled=busy;
+ $('#boosterNextBtn').classList.toggle('hidden',seen<4||index===4);$('#boosterNextBtn').disabled=busy;
  $('#boosterSkipAll').classList.toggle('hidden',seen===4);$('#boosterSkipAll').disabled=busy;
  const claim=$('#boosterContinueBtn');claim.classList.toggle('hidden',seen<4);claim.disabled=seen<4||busy;
 }
 function showBoosterStep(index){
  if(boosterPresentation.busy||index<0||index>4)return;
  const fresh=index>boosterPresentation.seen;
+ const stepToken=++boosterPresentation.stepToken;
  boosterPresentation.index=index;boosterPresentation.busy=fresh;
  const pulls=[...document.querySelectorAll('#boosterCards .booster-pull')];
  pulls.forEach((el,i)=>{
@@ -52,6 +54,15 @@ function showBoosterStep(index){
  const finish=()=>{
   pull.classList.remove('turning');boosterPresentation.seen=Math.max(index,boosterPresentation.seen);boosterPresentation.busy=false;
   pull.tabIndex=0;pull.setAttribute('aria-label','Agrandir '+pendingBooster[index].card.name);renderBoosterStepControls();
+  if(index<4){
+   const advance=()=>{
+    if(stepToken!==boosterPresentation.stepToken)return;
+    // Let players inspect a card and wait while the app is in the background.
+    if(document.hidden||!$('#cardZoom').classList.contains('hidden')){queueBoosterPresentation(advance,250);return}
+    showBoosterStep(index+1);
+   };
+   queueBoosterPresentation(advance,1400);
+  }
  };
  const flip=()=>{
   pull.classList.remove('face-down');pull.classList.add('turning');AudioEngine.sfx('reveal');

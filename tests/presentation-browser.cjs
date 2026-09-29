@@ -12,8 +12,8 @@ const {chromium}=require('playwright');
   await seed();await page.locator('#boosterPack').click();await page.waitForFunction(()=>boosterPresentation.seen===0&&!boosterPresentation.busy);
   assert.equal(await page.locator('#boosterCards .booster-pull:visible').count(),1);assert(await page.locator('#boosterContinueBtn').isDisabled());
   await page.locator('#boosterCards .active .card').click();assert(await page.locator('#cardZoom').isVisible());await page.locator('#cardZoomClose').click();
-  for(let i=1;i<4;i++){await page.locator('#boosterNextBtn').click();await page.waitForFunction(i=>boosterPresentation.seen===i&&!boosterPresentation.busy,i)}
-  await page.locator('#boosterNextBtn').click();await page.waitForSelector('.booster-angel-stage');
+  assert(await page.locator('#boosterNextBtn').isHidden());
+  await page.waitForSelector('.booster-angel-stage',{timeout:20000});
   assert(await page.evaluate(()=>{const a=$('.angel-origin').getBoundingClientRect(),c=$('#boosterCards .active .booster-flipper').getBoundingClientRect();return Math.abs(a.x-c.x-c.width/2)<1&&Math.abs(a.y-c.y-c.height/2)<1}),'Angel centred');
   await page.locator('.angel-skip').click();await page.waitForFunction(()=>boosterPresentation.seen===4&&!boosterPresentation.busy);assert(await page.locator('#boosterContinueBtn').isEnabled());
   await page.locator('#boosterStepDots button').first().click();assert.equal(await page.locator('#boosterCards .active .catalog-number').textContent(),'#005');
