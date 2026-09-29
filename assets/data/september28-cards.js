@@ -965,7 +965,7 @@ window.HACKENIA_NEW_CARDS = [
     "rarity": "common",
     "kind": "playable",
     "image": {
-      "src": "assets/cards/set-finale/p150.webp",
+      "src": "assets/cards/set-finale/p150-fixed.webp",
       "full": true
     }
   }

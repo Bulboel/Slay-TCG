@@ -7,7 +7,7 @@ const dom=new JSDOM(html,{url:'https://bulboel.github.io/Slay-TCG/',runScripts:'
 const ctx=dom.getInternalVMContext(),w=dom.window,timers=[];
 w.setTimeout=fn=>{timers.push(fn);return timers.length};w.setInterval=()=>0;w.requestAnimationFrame=()=>0;w.confirm=()=>true;
 const run=code=>vm.runInContext(code,ctx),plain=code=>JSON.parse(JSON.stringify(run(code)));
-for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
+for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','booster-presentation.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
 run(main);run('initCollectionUpdates();initCollectionPolish();initNavigationPolish()');
 const $=s=>w.document.querySelector(s);
 assert.equal($('#statsCard').options.length,137);
@@ -157,3 +157,19 @@ run(`animateBoosterAngel({card:catalogById('p29')},()=>window.angelDone++)`);ass
 w.matchMedia=()=>({matches:true});run(`animateBoosterAngel({card:catalogById('p107')},()=>window.angelDone++)`);assert.equal(w.angelDone,3);assert.equal($('.booster-angel-stage'),null);
 w.matchMedia=()=>({matches:false});run(`animateBoosterAngel({card:catalogById('p30')},()=>window.angelDone++);cancelBoosterAngel()`);assert.equal(w.angelDone,3);assert.equal($('.booster-angel-stage'),null);
 console.log('PASS: angel reveal rarity gate, skip, cancellation and reduced motion.');
+
+// Booster presentation never changes or claims the saved pack on its own.
+timers.length=0;w.matchMedia=()=>({matches:true});
+run(`collection.boosterProgress={};collection.pendingPack={context:'shop',pulls:['p04','p27','p147','p29','p150'].map((id,i)=>({id,foil:i===4,slot:'Test'}))};showBooster('shop');beginBoosterPresentation()`);
+const savedPack=plain('collection.pendingPack');
+const flush=()=>{let guard=0;while(timers.length){assert(++guard<100,'Finite presentation timers');timers.shift()()}};
+flush();assert.equal(run('boosterPresentation.seen'),0);assert.equal($('#boosterContinueBtn').disabled,true);
+assert.equal($('#boosterCards .active').getAttribute('aria-hidden'),'false');
+$('#boosterNextBtn').click();flush();assert.equal(run('boosterPresentation.seen'),1);
+$('#boosterSkipAll').click();flush();assert.equal(run('boosterPresentation.seen'),4);assert.equal($('#boosterContinueBtn').disabled,false);
+assert.deepEqual(plain('collection.pendingPack'),savedPack,'Presentation does not reroll or claim cards');
+$('#boosterStepDots button').click();assert.equal(run('boosterPresentation.index'),0);assert.equal($('#boosterContinueBtn').disabled,false);
+run('showBooster("shop");openBoosterPack();showBooster("shop")');flush();assert.equal(run('boosterPresentation.seen'),-1,'Stale opening timers cannot reveal a replacement screen');
+assert.equal($('#boosterContinueBtn').disabled,true);
+assert(fs.statSync(run("catalogById('p150').image.src")).size>10000,'Card 94 has a nonempty illustration');
+console.log('PASS: sequential reveal, skip, revisit, claim gate, stable pack and cancelled opening timers.');

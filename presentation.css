@@ -1,0 +1,83 @@
+/* Ink, emerald and warm brass: the adventurers' gaming table. */
+#menuScreen{background:linear-gradient(90deg,#071d20e8,#071d2099 58%,#071d2033),url('assets/menu-tavern.webp') center/cover no-repeat;isolation:isolate;padding:28px;align-items:center}
+#menuScreen:before{background:radial-gradient(ellipse at 60% 30%,transparent 20%,#031114aa 100%)}
+#menuScreen .adventure-menu{width:min(94vw,860px);padding:26px 34px 20px;background:linear-gradient(125deg,#112d32ee,#11292ada);border:2px solid #102022;border-radius:18px 6px 18px 6px;box-shadow:0 0 0 1px #ceac6a,0 12px 0 #07141899,0 25px 75px #0008;backdrop-filter:blur(3px);text-align:left;overflow:hidden}
+#menuScreen .menu-card:before{content:'';inset:8px;border:1px solid #be9c5744;pointer-events:none;border-radius:10px 2px;z-index:-1}
+.adventure-heading{display:flex;align-items:center;gap:12px;min-height:42px}.menu-crest{width:40px;height:40px;border:1px solid #b89a59;border-radius:10px}.menu-edition{color:#d7bc7a;font-size:10px;letter-spacing:.2em;font-weight:800}
+#menuScreen .menu-wallet{margin:0 0 0 auto;padding:7px 12px;min-height:34px;font-size:12px;background:#081e22;box-shadow:none;border:1px solid #a98646;color:#f8dfa4;white-space:nowrap}
+#menuScreen .wallet-display:before{width:18px;height:18px}
+#menuScreen .menu-title{font:900 clamp(32px,5.8vw,60px)/1 Georgia,serif;letter-spacing:-.04em;color:#fff0c8;margin:16px 0 0;text-shadow:2px 3px 0 #061517,-1px -1px 0 #061517;text-transform:none}
+#menuScreen .menu-title span{color:#f0c16d}#menuScreen .menu-subtitle{color:#bdccbf;font:400 13px/1.5 system-ui;margin:10px 0 22px}
+#menuScreen .menu-actions{max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#menuScreen .menu-btn{display:flex;align-items:center;text-align:left;gap:13px;min-width:0;min-height:70px;padding:12px 18px;background:linear-gradient(130deg,#244b4c,#173538);border:2px solid #071a1c;border-top-color:#809480;border-radius:9px 3px 9px 3px;box-shadow:0 3px 0 #051719,0 0 0 1px #697b61;color:#f8e9c7;font-size:16px;font-weight:800;letter-spacing:.01em;text-transform:none;transition:transform .18s,background .18s}
+#menuScreen .menu-btn:hover{background:linear-gradient(130deg,#34625d,#204444);transform:translateY(-2px);filter:none}
+#menuScreen .menu-btn:focus-visible{outline:3px solid #ffdc7f;outline-offset:4px}
+#menuScreen .menu-btn small{display:block;color:#bdcfc3;font-size:11px;line-height:1.5;font-weight:400;margin-top:3px}
+#menuScreen .menu-icon{width:34px;flex-shrink:0;font:30px/1 Georgia;color:#efc874;text-align:center;text-shadow:2px 2px #06191c}
+#menuScreen .quick{background:linear-gradient(125deg,#487755,#235345);border-top-color:#a6b98a}
+#menuScreen #shopBtn{background:linear-gradient(125deg,#745436,#453c2c);border-top-color:#bd9b65}
+#menuScreen .adventure-story{grid-column:1/-1;display:block;position:relative;overflow:hidden;min-height:148px;padding:26px 24px;background:linear-gradient(90deg,#c78e41,#f4d08a 70%,#b58849);color:#292a21;border-color:#1f2420;box-shadow:0 4px 0 #071719,0 0 0 1px #d5b979}
+#menuScreen .adventure-story:hover{background:linear-gradient(90deg,#d59d4c,#fada98 70%,#c19652)}
+.menu-eyebrow{display:block;font-size:10px;letter-spacing:.1em;font-weight:900;position:relative;z-index:2}.adventure-story strong{display:block;font:900 32px/1.25 Georgia;margin:7px 0;position:relative;z-index:2}.menu-caption{font-size:12px;font-weight:500;position:relative;z-index:2}.story-arrow{position:absolute;left:55%;top:55px;font-size:30px}
+.menu-card-fan{position:absolute;right:55px;bottom:-22px;width:110px;height:154px;transform:rotate(12deg);pointer-events:none}.menu-card-fan i{position:absolute;inset:0;border:2px solid #403825;border-radius:9px;background:url('assets/card-back-official.webp') center/cover;box-shadow:0 6px 12px #211d1c77}.menu-card-fan i:first-child{transform:translate(-68px,12px) rotate(-24deg)}.menu-card-fan i:nth-child(2){transform:translate(-30px,-3px) rotate(-12deg);background-image:url('assets/cards/set-finale/p148.webp')}.menu-card-fan i:last-child{transform:translate(18px,12px) rotate(10deg)}
+#menuScreen .menu-utility,#menuScreen .menu-actions>button:last-child:not([id]){min-height:34px;padding:7px 12px;justify-content:center;font-size:11px;background:transparent;border:1px solid #80908166;box-shadow:none;border-radius:6px;color:#c8d6c9}
+#menuScreen .menu-actions>button:last-child:not([id]){grid-column:1/-1;justify-self:center;border:0;text-decoration:underline;text-underline-offset:4px;padding:0;min-height:24px}
+.menu-footer{text-align:center;color:#a18f65;font-size:8px;letter-spacing:.17em;margin-top:12px}
+@media(max-width:600px){
+ #menuScreen{padding:12px;background-position:64% center}
+ #menuScreen .adventure-menu{width:100%;padding:17px 16px 12px;margin:auto;border-radius:14px 5px;background:linear-gradient(125deg,#112d32f2,#11292ae6)}
+ .adventure-heading{gap:8px}.menu-crest{width:30px;height:30px}.menu-edition{font-size:8px;letter-spacing:.1em}
+ #menuScreen .menu-wallet{font-size:10px;padding:5px 7px;gap:5px;min-height:28px}#menuScreen .wallet-display:before{width:14px;height:14px}
+ #menuScreen .menu-title{font-size:36px;margin-top:14px}#menuScreen .menu-title span{display:block}#menuScreen .menu-subtitle{font-size:11px;margin:9px 0 16px}
+ #menuScreen .menu-actions{gap:10px}#menuScreen .menu-btn{min-height:64px;padding:10px 8px;gap:6px;font-size:13px}#menuScreen .menu-btn small{font-size:9px;line-height:1.3}#menuScreen .menu-icon{width:25px;font-size:25px}
+ #menuScreen .adventure-story{min-height:126px;padding:20px 12px}.menu-eyebrow{font-size:8px;max-width:180px}.adventure-story strong{font-size:26px}.menu-caption{display:block;max-width:155px;font-size:10px}.story-arrow{display:none}
+ .menu-card-fan{right:13px;bottom:-25px;width:66px;height:94px;transform:rotate(10deg)}.menu-card-fan i:first-child{transform:translate(-35px,10px) rotate(-24deg)}.menu-card-fan i:nth-child(2){transform:translate(-15px,-3px) rotate(-12deg)}
+}
+/* A single centred card, never a horizontal strip. */
+#boosterReveal{display:grid;place-items:center;overflow:auto;padding:12px;background:radial-gradient(ellipse at 50% 40%,#33554b,#071a20 75%)}
+#boosterReveal .booster-card{width:min(100%,620px);min-height:0;margin:auto;padding:22px 20px 18px;border:2px solid #c6a25c;border-radius:18px;background:radial-gradient(circle at 50% 35%,#fae8b6,#ceae72);box-shadow:0 20px 60px #0009}
+#boosterTitle{font-size:clamp(22px,4vw,32px)}#boosterText{font-size:11px;margin:8px auto 12px;max-width:360px}#boosterKicker{font-size:9px;color:#496451}
+#boosterCards:not(.revealed){display:none}
+#boosterCards.sequence{display:grid;grid-template-columns:1fr;grid-auto-flow:row;justify-items:center;overflow:visible;gap:0;padding:0;margin:8px 0;animation:none;perspective:1000px}
+#boosterCards.sequence .booster-pull{display:none;animation:none;transform:none;opacity:1;width:100%;gap:6px;cursor:zoom-in}
+#boosterCards.sequence .booster-pull.active{display:grid}
+#boosterCards.sequence .booster-slot{min-height:0;font-size:9px}
+#boosterCards.sequence .booster-flipper{position:relative;width:min(52vw,230px,calc((100dvh - 295px)*.714));aspect-ratio:5/7;perspective:1000px;isolation:isolate}
+#boosterCards.sequence .card{width:100%;height:100%;margin:0;transform:rotateY(0);backface-visibility:hidden;transition:transform .6s ease;touch-action:manipulation}
+.booster-card-back{display:none}
+#boosterCards.sequence .booster-card-back{display:block;position:absolute;inset:0;border:2px solid #c9a45c;border-radius:14px;background:#163d3e url('assets/card-back-official.webp') center/cover;backface-visibility:hidden;transform:rotateY(-180deg);transition:transform .6s ease;box-shadow:0 12px 25px #30271866}
+#boosterCards.sequence .face-down .card{transform:rotateY(180deg)}#boosterCards.sequence .face-down .booster-card-back{transform:rotateY(0)}
+#boosterCards.sequence .face-down>.rarity-badge,#boosterCards.sequence .face-down>small,#boosterCards.sequence .face-down>.booster-slot{visibility:hidden}
+#boosterCards.sequence .booster-pull:after{display:none}#boosterCards.sequence .rarity-badge{font-size:10px}#boosterCards.sequence .booster-pull>small{font-size:11px}
+.booster-sequence-controls{display:grid;justify-items:center;gap:7px}.booster-sequence-status{font-size:12px;font-weight:800;color:#4a3724}.booster-step-dots{display:flex;gap:9px}.booster-step-dots button{width:28px;height:28px;border:1px solid #896734;border-radius:50%;background:#f9e7b7;color:#523d21;font-size:11px;cursor:pointer}.booster-step-dots button[aria-current=step]{background:#214e47;color:#fff5d1;box-shadow:0 0 0 2px #f7df9c}.booster-step-dots button:disabled{opacity:.45;cursor:default}.booster-step-actions{display:flex;gap:12px;align-items:center;justify-content:center}.booster-step-actions .menu-btn{min-height:42px;padding:9px 17px;font-size:12px}.booster-skip-all{border:0;background:none;text-decoration:underline;color:#543d25;font-size:11px;cursor:pointer;min-height:40px}.booster-skip-all:disabled{opacity:.5}.booster-zoom-hint{font-size:10px;color:#6a5031}
+#boosterContinueBtn{margin-top:10px;min-height:42px;font-size:12px;padding:10px 20px}
+#boosterCards .booster-flipper>.booster-angel-stage{position:absolute;inset:0;overflow:visible;z-index:20}
+#boosterCards .booster-flipper .angel-origin{left:50%;top:50%}
+#boosterCards .booster-flipper .angel-skip{bottom:8px;font-size:10px;padding:7px 10px;white-space:nowrap;min-height:32px}
+@media(max-width:600px){#boosterReveal{padding:8px}#boosterReveal .booster-card{padding:15px 12px;border-radius:14px}#boosterPackStage{min-height:min(48dvh,340px)}#boosterCards.sequence .booster-flipper{width:min(57vw,230px,calc((100dvh - 280px)*.714))}}
+@media(prefers-reduced-motion:reduce){#boosterCards.sequence .card,#boosterCards.sequence .booster-card-back{transition:none}}
+@media(max-height:700px){
+ #boosterReveal .booster-card{padding:10px 12px}
+ #boosterCards.sequence .booster-flipper{width:min(52vw,210px,calc((100dvh - 340px)*.714))}
+ #boosterText{margin:5px auto 7px;font-size:10px}
+ #boosterCards.sequence{margin:4px 0}
+ .booster-sequence-controls{gap:5px}
+ #boosterTitle{font-size:22px}
+ #boosterPackStage{min-height:calc(100dvh - 205px)}
+ #boosterPack{width:min(160px,calc((100dvh - 250px)*.64))}
+}
+@media(max-height:480px) and (min-width:600px){
+ #boosterReveal .booster-card{width:min(100%,760px);display:grid;grid-template-columns:1fr 1fr;column-gap:22px;align-items:center}
+ #boosterKicker,#boosterTitle,#boosterText{grid-column:1;margin:3px auto}
+ #boosterCards.sequence{grid-column:2;grid-row:1/6}
+ #boosterCards.sequence .booster-flipper{width:calc((100dvh - 135px)*.714)}
+ #boosterSequenceControls,#boosterContinueBtn{grid-column:1}
+ #boosterPackStage{grid-column:2;grid-row:1/6;min-height:0;margin:0}
+ #boosterPack{width:calc((100dvh - 95px)*.64)}
+}
+@media(max-width:600px){#menuScreen .menu-utility{min-height:34px}}
+#startupScreen{background:linear-gradient(90deg,#071d20cc,#071d2077),url('assets/menu-tavern.webp') center/cover no-repeat}
+#startupScreen .menu-card{background:#123235ed;border:2px solid #c6a464;box-shadow:0 20px 60px #0009}
+#startupScreen .menu-title{color:#ffe0a1;text-shadow:2px 3px #07191b}
+#startupScreen .menu-subtitle,#startupScreen .startup-note{color:#ced7bf}
+#startupScreen .menu-card:before{color:#eac37e}

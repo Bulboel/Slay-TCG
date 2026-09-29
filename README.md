@@ -41,3 +41,11 @@ Mise à jour du set : 136 cartes, dont les cinq Hydrelithes majeures eau/feu/fou
 Ajout de neuf cartes (145 au total). Le pèlerin utilise L=7, I=1, E=3, soit haut/droite/bas/gauche : 1/3/3/7. Le bouton Loupe des mains ouvre les cartes visibles avec précédent/suivant ; les mains cachées restent protégées. Retour au menu reste fixé en haut des panneaux Collection et Mes decks. Partie 5 : La fin de la mine, duel à gagner contre l’araignée géante, coup final de Bolduc, repos puis portail mystérieux. Reprise sauvegardée et récompense unique de 1 booster + 50 or.
 
 Set Un nouveau départ finalisé à 150 cartes : Réussite critique est la dernière carte jouable (#137), suivie des 13 Souvenirs. Le dernier emplacement alternative/parallèle/Divine déclenche un ange lumineux en SVG animé (2,7 secondes), avec révélation immédiate possible et respect du mouvement réduit. Aucun changement des probabilités.
+
+### Menu et ouverture séquentielle — 29 septembre
+
+Le menu principal adopte une auberge illustrée aux contours encrés, une palette émeraude/or et des accès en deux colonnes sur mobile. Le décor `assets/menu-tavern.webp` a été créé avec l’outil intégré ImageGen puis converti en WebP. Direction du prompt : « Fantasy comic-book tavern, bold ink outlines, teal and amber, oak gaming table, green/gold face-down cards, twenty-sided die, candle lantern, arch window overlooking woodland and a medieval city; calm dark centre for HTML controls; no people, text or UI buttons. »
+
+Les boosters présentent une seule carte à la fois avec retournement, bouton suivant, consultation des cartes déjà vues, zoom et raccourci vers la dernière carte foil. L’ange est ancré au centre du cadre de cette dernière carte. Les transitions respectent la préférence de réduction des animations. Les cartes du paquet restent sauvegardées pendant l’ouverture et ne sont attribuées qu’à la validation finale. L’image vide de la carte #094 a été remplacée depuis l’original, avec une nouvelle URL pour contourner l’ancien cache.
+
+Validation navigateur : `node tests/presentation-browser.cjs` avec Playwright installé (ou `CHROMIUM_EXECUTABLE_PATH` et `@sparticuz/chromium` pour Chromium autonome). Vérifie le déroulement, le zoom, l’ange centré, la reprise du paquet et l’absence de défilement aux formats 320×568, 390×667 et 844×390.
