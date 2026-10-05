@@ -61,14 +61,21 @@ function showBoosterStep(index){
     if(document.hidden||!$('#cardZoom').classList.contains('hidden')){queueBoosterPresentation(advance,250);return}
     showBoosterStep(index+1);
    };
-   queueBoosterPresentation(advance,1400);
+   queueBoosterPresentation(advance,850);
   }
  };
  const flip=()=>{
   pull.classList.remove('face-down');pull.classList.add('turning');AudioEngine.sfx('reveal');
   const rarity=pendingBooster[index].card.rarity;
+  if(rarity==='rare'&&!reduced)burstRareStars(pull);
   if(rarity==='divine')AudioEngine.sfx('divine');else if(['rare','alternative','parallel'].includes(rarity))AudioEngine.sfx('rare');
-  if(reduced)finish();else queueBoosterPresentation(finish,650);
+  if(reduced)finish();else queueBoosterPresentation(finish,450);
  };
- queueBoosterPresentation(()=>{if(index===4)animateBoosterAngel(pendingBooster[index],flip);else flip()},reduced?0:220);
+ queueBoosterPresentation(()=>{if(index===4)animateBoosterAngel(pendingBooster[index],flip);else flip()},reduced?0:130);
+}
+
+function burstRareStars(pull){
+ const burst=document.createElement('span');burst.className='rare-spark-burst';burst.setAttribute('aria-hidden','true');
+ for(let i=0;i<12;i++){const star=document.createElement('i');star.textContent=i%3?'✦':'✧';const side=i%2?1:-1;star.style.cssText=`--spark-side:${side};--spark-top:${18+Math.floor(i/2)*12}%;--spark-dx:${side*(26+(i%3)*15)}px;--spark-dy:${-36+(i%4)*24}px;--spark-delay:${i%3*.035}s`;burst.append(star)}
+ pull.querySelector('.booster-flipper').append(burst);queueBoosterPresentation(()=>burst.remove(),900);
 }

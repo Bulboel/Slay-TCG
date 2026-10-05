@@ -7,7 +7,7 @@ const dom=new JSDOM(html,{url:'https://bulboel.github.io/Slay-TCG/',runScripts:'
 const ctx=dom.getInternalVMContext(),w=dom.window,timers=[];
 w.setTimeout=fn=>{timers.push(fn);return timers.length};w.setInterval=()=>0;w.requestAnimationFrame=()=>0;w.confirm=()=>true;
 const run=code=>vm.runInContext(code,ctx),plain=code=>JSON.parse(JSON.stringify(run(code)));
-for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','collection-polish.js','booster-presentation.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
+for(const file of ['assets/data/card-stats.js','assets/data/september28-cards.js','assets/data/card-numbers.js','duel-touch.js','collection-polish.js','booster-presentation.js','collection-updates.js','story-mine.js'])run(fs.readFileSync(file,'utf8'));
 run(main);run('initCollectionUpdates();initCollectionPolish();initNavigationPolish()');
 const $=s=>w.document.querySelector(s);
 assert.equal($('#statsCard').options.length,137);
@@ -183,5 +183,7 @@ assert.equal(JSON.parse(w.localStorage.getItem('hackenia-economy')).gold,987);
 run('economy.gold=0;restoreSavedGame()');assert.equal(run('economy.gold'),987);
 run('economy.gold=0;exportProgress()');assert.equal(JSON.parse(exportedText).profile.economy.gold,0,'Zero coins must stay zero');
 w.Blob=NativeBlob;
-run(`dragState=null;locked=false;turn='p';startDrag({pointerType:'touch',button:0},'p',0,$('#playerHand .card'))`);assert.equal(run('dragState'),null,'Touch scrolling does not start a drag');
-console.log('PASS: export and local load slot retain exact current gold, including zero; touch does not start a drag.');
+run(`dragState=null;locked=false;turn='p';window.testTouchCard=makeCard(playerCard(catalogById('p27')),'p',0)`);
+const touchDown=new w.Event('pointerdown');Object.assign(touchDown,{pointerType:'touch',isPrimary:true,pointerId:1,clientX:10,clientY:10});w.testTouchCard.dispatchEvent(touchDown);assert.equal(run('dragState'),null,'A stationary touch waits for long press or movement');w.testTouchCard.dispatchEvent(new w.Event('pointercancel'));
+run('renderMemorySkinOptions()');assert($('#memorySkinOptions [data-effect=spider] .memory-skin-choice'));assert.equal($('#memorySkinOptions').children.length,run('memoryCards.length'));
+console.log('PASS: export and local load slot retain exact current gold, including zero; stationary touch waits, and all Souvenir base appearances are available.');

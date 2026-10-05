@@ -1,0 +1,78 @@
+:root{--heading-font:Georgia,'Palatino Linotype',serif;--ui-font:system-ui,-apple-system,'Segoe UI',sans-serif;--forest:#153638;--brass:#c6a15c;--paper:#f3dfaf}
+body,button,input,select,textarea{font-family:var(--ui-font)}
+h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h2{font-family:var(--heading-font);letter-spacing:-.025em}
+#startupScreen .menu-title{font-size:clamp(25px,5.2vw,44px);line-height:1.08;letter-spacing:-.025em;text-align:center;max-width:100%;overflow-wrap:normal}
+#startupScreen .menu-card{padding:48px 24px 30px;width:min(94vw,540px)}
+#menuScreen .menu-title,#menuScreen .menu-subtitle{text-align:center}
+.menu-btn{font-family:var(--ui-font);font-weight:750;letter-spacing:.02em;text-transform:none;background:linear-gradient(135deg,#35655a,#153d39);border:1px solid #c4a666;border-radius:8px 3px;box-shadow:0 3px 0 #081e20;color:#fff0c9}
+.menu-btn.secondary{background:linear-gradient(125deg,#f8e7be,#d9bb7d);border-color:#9b7b44;color:#392b17;box-shadow:0 3px 0 #766039}
+.menu-btn:hover{filter:brightness(1.08);box-shadow:0 4px 0 #081e20}
+.panel-screen,.reward-dialog,.tutorial-dialog,.rules{background:linear-gradient(#071d20d9,#071d20ed),url('assets/menu-tavern.webp') center/cover fixed}
+.panel-card,.rules-card,.card-zoom-dialog{background:linear-gradient(135deg,#193c3e,#102b30);color:#eee0ba;border:1px solid #c9a766;border-radius:16px 5px;box-shadow:0 18px 65px #0009,inset 0 0 0 6px #071f2444}
+.panel-card{padding:40px 28px 26px;scrollbar-color:#a78b54 #173536}
+.panel-card:before{color:#d0ad68;content:'✧';font-size:24px;top:7px}
+.panel-card h2,.rules h2,.card-zoom-copy h2{color:#ffe1a3;font-weight:800;font-size:clamp(25px,4vw,36px);text-align:center}
+.panel-card>p,.panel-card .collection-counter,.panel-card .deck-count,.panel-card .catalog-sort,.panel-card .mastery-note,.panel-card .mastery-status,.rules-card>p,.rules-card ul{color:#d6dbc8}
+.panel-card .collection-head{justify-content:center;flex-wrap:wrap;gap:10px}
+.panel-card .panel-actions{border-top:1px solid #ae91513b;padding-top:18px;margin-top:16px;gap:12px}
+.panel-card .catalog-backbar{background:#193b3e;box-shadow:0 5px 10px #0003;border-bottom:1px solid #b5975544}
+.panel-card :is(select,input:not([type=color]):not([type=range]):not([type=checkbox]),textarea){background:#f6e6bc;color:#342b1c;border:1px solid #a8905b;border-radius:6px;font:inherit;max-width:100%}
+.panel-card :is(.collection-item,.deck-card){background:#23474a;border:1px solid #82946a55;border-radius:11px 4px;box-shadow:0 4px 0 #071f2333}
+.panel-card :is(.collection-kind,.locked-name,.deck-quantity){color:#e5dabc}
+.panel-card .deck-card.chosen{border:2px solid #e5c16e;background:#305d50}
+.panel-card :is(.deck-limit-note,.save-note){background:#315448;color:#ffebbb;border:1px solid #a99e6055}
+.panel-card :is(.shop-offer,.chapter-card,.rule-choice,.pvp-box,.color-box,.audio-options,.transfer-box,.coming-soon,.memory-skin-row){border:1px solid #ba9858;border-radius:12px 4px;background:linear-gradient(135deg,#f5e3b6,#d8bb82);color:#41351e;box-shadow:0 4px 0 #081e2244}
+.panel-card :is(.shop-offer,.chapter-card,.rule-choice,.pvp-box,.color-box,.audio-options,.coming-soon,.memory-skin-row) :is(p,small,strong,h3,label){color:#41351e}
+.panel-card .chapter-card:before{background:radial-gradient(circle at 100% 0,#fff5ce88,transparent 40%)}
+.panel-card .chapter-number{color:#705523}.panel-card .story-part{border-color:#8b713d55;background:#fff8df44;border-radius:7px;padding:12px}
+.panel-card .rule-choice.dark{background:linear-gradient(135deg,#23474c,#15323a);color:#fff0c4}.panel-card .rule-choice.dark :is(strong,small){color:#fff0c4}
+.panel-card :is(.back-choice,.element-choice){border-color:#849b79;background:#23474a;color:#f6e6bf;border-radius:10px 3px}
+.panel-card :is(.back-choice,.element-choice).selected{border-color:#ffdb83;box-shadow:0 0 0 2px #ccaa6388}
+.panel-card .memory-skin-row{padding:16px;margin-top:16px}.panel-card .memory-skin-row h3{font-size:19px;margin-top:0}
+.panel-card .memory-skin-choice{color:#40331c;min-width:0}.panel-card .memory-skin-choice.selected{outline:2px solid #285f50;outline-offset:3px;border-radius:8px}
+.memory-default-art{display:flex;flex-direction:column;justify-content:space-between;align-items:center;width:100px;aspect-ratio:5/7;padding:14px 7px;background:radial-gradient(circle at 50% 30%,var(--memory-accent),#254b50 68%);border:2px solid #c0a46b;border-radius:10px;color:#fff5d4;box-shadow:0 6px 12px #0005}
+.memory-default-art>span{font-size:36px}.panel-card .memory-default-art strong{font-size:10px;color:#fff5d4;text-shadow:0 1px 2px #000}.memory-default-art em{font:italic 11px var(--heading-font);color:#ffe1a3}
+.card-zoom-copy :is(p,.mastery-status),.card-zoom-copy #cardZoomType{color:#d3dac8}.card-zoom-copy .zoom-stat{background:#f3dfad;color:#3c3020;border-color:#b29251}.card-zoom-copy .zoom-lore{color:#b8c8b9;background:#204043}.card-zoom-close{background:#e6c682;color:#243b35;border:1px solid #263c36}
+#pityGrid .reward-option{background:#214247;border-color:#7f916c}#pityGrid .reward-option p{color:#f3e4bb}
+.rules-card .check{color:#f4e7c5;background:#31534c}.rules-card .rules-head h2{margin:auto}
+#gameApp .topbar{background:#102d32;border-bottom:1px solid #a68b4f88}#gameApp .brand h1{font-family:var(--heading-font)}
+#gameApp .catalog-number{display:none!important}
+#gameApp .board .mastery-frame,#gameApp .board .mastery-label{display:none!important}
+#gameApp .card{touch-action:none;-webkit-touch-callout:none}
+/* Touch capture is exclusive to duels; menus retain native scrolling. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp{grid-template-rows:38px minmax(0,1fr)}#gameApp .topbar{height:38px;min-height:38px}
+ #gameApp main{padding:3px 4px;grid-template-rows:52px 24px minmax(0,1fr) 34px 24px 104px;gap:3px}
+ #gameApp .score{height:24px;padding:1px 12px}#gameApp .side.ai .player-label{font-size:8px;height:13px}#gameApp .side.ai .hand{height:calc(100% - 14px)}
+ #gameApp .board-wrap{max-width:min(100%,470px);width:100%;height:100%;padding:3px;border-radius:9px;aspect-ratio:auto}
+ #gameApp .board{gap:2px;padding:2px;border-radius:6px}
+ #gameApp .cell{border-width:1px;border-radius:5px}
+ #gameApp .cell .card{height:auto;width:auto;max-width:98%;max-height:98%;aspect-ratio:5/7;block-size:98%;border-width:1px;border-radius:5px;box-shadow:0 0 0 1px var(--player)}
+ #gameApp .cell .card.enemy{box-shadow:0 0 0 1px var(--opponent)}
+ #gameApp .memory-zone{height:34px;padding:1px 4px}#gameApp .memory-pile{height:30px;width:82px}#gameApp .memory-pass{min-height:28px;font-size:9px}
+ #gameApp .message{max-height:24px;font-size:10px}#gameApp .message small{font-size:9px}
+}
+@media(max-width:600px){
+ .panel-screen{padding:8px}.panel-card{padding:34px 14px 18px;max-height:calc(100dvh - 16px)}
+ .panel-card .panel-actions .menu-btn{min-height:40px;padding:10px 13px}
+ #startupScreen .menu-title{font-size:clamp(24px,7.6vw,36px);line-height:1.15}
+ #menuScreen .menu-title{font-size:clamp(28px,8.7vw,36px)}
+ .story-grid,.rule-grid{grid-template-columns:1fr;gap:12px}
+ .card-zoom-dialog{padding:20px 14px}.card-zoom-copy h2{font-size:26px}
+}
+#boosterCards.sequence .card,#boosterCards.sequence .booster-card-back{transition-duration:.42s}
+.booster-pack.opening,.booster-pack.opening .pack-half.top,.booster-pack.opening .pack-half.bottom,.booster-pack.opening:after{animation-duration:.55s}
+.rare-spark-burst{position:absolute;inset:0;pointer-events:none;z-index:21}
+.rare-spark-burst i{position:absolute;left:calc(50% + var(--spark-side)*48%);top:var(--spark-top);color:#ffd45d;text-shadow:0 0 5px #fff4c4,0 0 14px #ffb323;font-style:normal;font-size:19px;animation:rareSpark .8s var(--spark-delay) ease-out both}
+@keyframes rareSpark{0%{opacity:0;transform:translate(0,0) scale(.15)}20%{opacity:1;transform:translate(calc(var(--spark-dx)*.25),calc(var(--spark-dy)*.25)) scale(1.15)}100%{opacity:0;transform:translate(var(--spark-dx),var(--spark-dy)) scale(.2) rotate(90deg)}}
+@media(prefers-reduced-motion:reduce){.rare-spark-burst{display:none}#boosterCards.sequence .card,#boosterCards.sequence .booster-card-back{transition:none}}
+
+.panel-card .collection-counter{color:#4b2d13}
+.card-zoom>.card-zoom-close{position:fixed;top:16px;right:16px;z-index:30}
+@media(max-width:900px){
+ #gameApp{width:100%;max-width:100vw;min-width:0}
+ #gameApp main{min-width:0;grid-template-columns:minmax(0,1fr)}
+ #gameApp .memory-hint{min-width:0;width:auto;overflow-wrap:anywhere}
+ #gameApp :is(.side,.board-wrap,.cell,.message){min-width:0}
+}
+@media(max-width:900px) and (orientation:landscape) and (max-height:500px){#gameApp main{grid-template-columns:minmax(0,1fr) minmax(180px,1.6fr) minmax(0,1fr)}}
