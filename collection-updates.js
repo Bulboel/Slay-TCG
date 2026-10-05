@@ -34,23 +34,23 @@ function pityProgress(state = collection, setId = BOOSTER_SET) {
   const p = state.boosterProgress[setId] ||= {opened:0, pending:[]};
   if (!Number.isSafeInteger(p.opened) || p.opened < 0) p.opened = 0;
   if (!Array.isArray(p.pending)) p.pending = [];
-  const earned = Math.floor(p.opened / 100);
-  if (!Number.isSafeInteger(p.centuryRewards) || p.centuryRewards < 0) p.centuryRewards = 0;
-  // A persisted watermark prevents duplicate rewards, including after importing older saves.
-  for (let n = p.centuryRewards + 1; n <= earned; n++) {
-    if (!p.pending.some(r => r.type === 'all-set' && r.milestone === n * 100))
-      p.pending.push({milestone:n * 100,type:'all-set'});
-  }
-  p.centuryRewards = Math.max(p.centuryRewards, earned);
+  // Upgrade only unclaimed choices. Already claimed milestones are never reissued.
+  const seen = new Set();
+  p.pending = p.pending.filter(r => r && Number.isSafeInteger(r.milestone) && r.milestone > 0).map(r => ({...r,type:r.type === 'alternative' ? 'all-set' : r.type})).filter(r => {
+    if (seen.has(r.milestone)) return false;
+    seen.add(r.milestone);
+    return rewardCandidates(r,setId,state).length > 0;
+  });
+  p.rewardVersion = 2;
   return p;
 }
 function recordBoosterOpening(state = collection, setId = BOOSTER_SET) {
   const p = pityProgress(state,setId); p.opened++;
-  if (p.opened % 25 === 0) p.pending.push({milestone:p.opened,type:p.opened % 50 === 0 ? 'alternative' : 'rare-or-memory'});
+  if (p.opened % 25 === 0) p.pending.push({milestone:p.opened,type:p.opened % 50 === 0 ? 'all-set' : 'rare-or-memory'});
   pityProgress(state,setId);
 }
-function rewardCandidates(reward, setId = BOOSTER_SET) {
-  return catalog.filter(c => c.setId === setId && (reward.type === 'all-set' ? true : reward.type === 'alternative' ? c.rarity === 'alternative' : c.rarity === 'rare' || (c.kind === 'memory' && c.rarity === 'alternative')));
+function rewardCandidates(reward, setId = BOOSTER_SET, state = collection) {
+  return catalog.filter(c => c.setId === setId && !((state.counts||{})[c.id] > 0) && (reward.type === 'all-set' ? ['rare','alternative','secret','divine','parallel'].includes(c.rarity) : reward.type === 'alternative' ? c.rarity === 'alternative' : c.rarity === 'rare' || (c.kind === 'memory' && c.rarity === 'alternative')));
 }
 function claimPityCard(id, milestone, type) {
   const p = pityProgress(), reward = p.pending[0];
@@ -74,14 +74,14 @@ function generateBooster(cards, state, rng = Math.random, setId = BOOSTER_SET) {
   const foil = rng(), parallels = of('parallel');
   const needsParallel = pityProgress(state,setId).opened >= 199 && !parallels.some(c => state.counts[c.id] > 0);
   const divines = of('divine');
-  if (!needsParallel && foil >= .16 && foil < .165 && divines.length) {
+  if (!needsParallel && foil >= .19 && foil < .195 && divines.length) {
     // Never apply missing-card preference to Divines: Kayla must stay exceptionally rare.
     let ticket = rng() * divines.reduce((sum,c)=>sum+(c.divineWeight||1),0);
     let divine = divines[divines.length-1];
     for (const card of divines) { ticket -= card.divineWeight||1; if(ticket<0){divine=card;break;} }
     pulls.push(divine);
   } else {
-    const foilCandidates = needsParallel || foil < .01 ? parallels : foil < .06 ? of('alternative') : foil < .16 ? rares : [...commons,...uncommons];
+    const foilCandidates = needsParallel || foil < .01 ? parallels : foil < .09 ? of('alternative') : foil < .19 ? rares : [...commons,...uncommons];
     pulls.push(pick(foilCandidates.filter(card => card.kind === 'playable')));
   }
   return pulls.map((card,i) => ({card,foil:i === 4,slot:rarityLabels[card.rarity] + (i === 4 ? ' foil' : '')}));
@@ -111,16 +111,16 @@ function renderBoosterProgress() {
   box.querySelector('strong').textContent = `Un nouveau départ • ${p.opened % 50} / 50 boosters`;
   box.querySelector('progress').max = 50;
   box.querySelector('progress').value = p.opened % 50;
-  box.querySelector('p').textContent = `${next} avant le prochain choix. Bonus collection complète : ${p.opened % 100}/100 boosters. Tous les 100, un choix supplémentaire parmi TOUT le set, Divines comprises. Tous les 25 : rare ou Souvenir alternatif ; tous les 50 : alternative au choix, à la place du choix précédent. Une parallèle garantie au plus tard au 200e booster de cette série.`;
+  box.querySelector('p').textContent = `${next} boosters avant le prochain palier. À 25 : une rare ou un Souvenir alternatif manquant. À 50 : une carte manquante rare ou supérieure, Divines comprises, puis le compteur repart à zéro. Si vous possédez déjà toutes les cartes proposées, ce choix est passé automatiquement. Une parallèle garantie au plus tard au 200e booster de cette série.`;
   box.querySelector('button').classList.toggle('hidden',!p.pending.length && !collection.pendingPack && !(collection.shopQueue > 0));
   box.querySelector('button').textContent = p.pending.length ? `Choisir une récompense (${p.pending.length})` : 'Reprendre les boosters';
 }
 function showPity() {
   const reward = pityProgress().pending[0]; if (!reward) { continueBoosters(); return; }
   const dialog = $('#pityDialog'), grid = $('#pityGrid'); grid.replaceChildren();
-  const displayedMilestone = reward.type === 'all-set' ? 100 : reward.milestone % 50 || 50;
+  const displayedMilestone = reward.type === 'all-set' ? 50 : reward.milestone % 50 || 50;
   $('#pityTitle').textContent = `Palier ${displayedMilestone} • votre carte au choix`;
-  $('#pityIntro').textContent = reward.type === 'all-set' ? 'Bonus des 100 boosters : choisissez une carte de tout le set Un nouveau départ, Divines comprises. Ce choix s’ajoute à celui des 50 boosters.' : reward.type === 'alternative' ? 'Choisissez une alternative de la série Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif de la série Un nouveau départ.';
+  $('#pityIntro').textContent = reward.type === 'all-set' ? 'Choisissez une carte manquante rare, alternative, secrète, Divine ou parallèle du set Un nouveau départ.' : 'Choisissez une rare classique ou un Souvenir alternatif que vous ne possédez pas encore.';
   for (const card of rewardCandidates(reward)) {
     const item = document.createElement('article'); item.className = 'reward-option';
     const label = document.createElement('p'); label.textContent = `${card.name} · ${rarityLabels[card.rarity]} · ${cardNumber(card)} — ${ownedCopies(card.id) ? 'Déjà possédée ×' + ownedCopies(card.id) : 'Non possédée'}`;
@@ -214,7 +214,7 @@ function initCollectionUpdates() {
   $('#statsExport').onclick=()=>downloadStats(JSON.stringify({...window.HACKENIA_CARD_STATS,...localStats},null,2),'hackenia-corrections.json','application/json');
   $('#statsImport').onclick=()=>$('#statsImportFile').click();
   $('#statsImportFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const clean=validateStatMap(JSON.parse(await file.text()));localStats={...localStats,...clean};saveLocalStats();renderStatsCard();$('#statsStatus').textContent='Corrections importées sur cet appareil.'}catch(err){$('#statsStatus').textContent=err.message}finally{e.target.value=''}};
-  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><small>Le compteur commence avec cette mise à jour ; les anciennes ouvertures n’étaient pas enregistrées. Emplacement 4 : 20 % rare. Foil (sans Souvenirs) : 1 % parallèle, 5 % alternative, 10 % rare, 0,5 % Divine. Kayla Divine : 0,01 % par booster (environ 1 sur 10 000), les autres Divines : 0,098 % chacune. Les cartes manquantes sont favorisées, sauf les Divines. Les probabilités ne garantissent pas une Divine après un nombre donné d’ouvertures. Les boosters utilisent uniquement les pièces gagnées en jeu.</small><button class="menu-btn hidden">Reprendre</button>';
+  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><small>Le compteur commence avec cette mise à jour ; les anciennes ouvertures n’étaient pas enregistrées. Emplacement 4 : 20 % rare. Foil (sans Souvenirs) : 1 % parallèle, 8 % alternative, 10 % rare, 0,5 % Divine. Kayla Divine : 0,01 % par booster (environ 1 sur 10 000), les autres Divines : 0,098 % chacune. Les cartes manquantes sont favorisées, sauf les Divines. Les probabilités ne garantissent pas une Divine après un nombre donné d’ouvertures. Les boosters utilisent uniquement les pièces gagnées en jeu.</small><button class="menu-btn hidden">Reprendre</button>';
   box.querySelector('button').onclick=continueBoosters;$('#shopScreen .shop-grid').before(box);
   const rewards=document.createElement('button');rewards.className='menu-btn secondary';rewards.textContent='Progression des boosters';rewards.onclick=()=>openShop();$('#collectionScreen .panel-actions').append(rewards);
   $('#pityLater').onclick=()=>{$('#pityDialog').classList.add('hidden');openShop('Votre choix est conservé. Vous pourrez le récupérer avant la prochaine ouverture.')};

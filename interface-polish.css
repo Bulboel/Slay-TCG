@@ -76,3 +76,62 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #gameApp :is(.side,.board-wrap,.cell,.message){min-width:0}
 }
 @media(max-width:900px) and (orientation:landscape) and (max-height:500px){#gameApp main{grid-template-columns:minmax(0,1fr) minmax(180px,1.6fr) minmax(0,1fr)}}
+/* Counters have a row of their own: the printed card stays unobstructed. */
+.collection-item{align-content:start}
+.collection-ownership{display:flex;justify-content:center;align-items:center;gap:5px;flex-wrap:wrap;min-height:25px}
+.collection-ownership .collection-copy-count,.collection-ownership .collection-foil-count{position:static;padding:3px 7px;min-width:0;box-shadow:none;font-size:10px;line-height:1.3}
+.collection-item .collection-kind{font-size:12px;line-height:1.3;letter-spacing:0;text-transform:none;text-align:center;overflow-wrap:anywhere}
+/* A single luminous bloom, with rays and a brighter, readable silhouette. */
+.booster-angel{filter:brightness(1.3) drop-shadow(0 0 5px #fff) drop-shadow(0 0 18px #fff8cc) drop-shadow(0 0 42px var(--angel-color))}
+.angel-burst{background:radial-gradient(circle,#fff 0 10%,#fff7cd 18%,var(--angel-color) 32%,transparent 70%);animation-name:angelBrightBloom}
+.angel-rays{position:absolute;left:-180px;top:-180px;width:360px;height:360px;background:repeating-conic-gradient(from 10deg,transparent 0 12deg,#fff4beaa 15deg,transparent 18deg 30deg);mask-image:radial-gradient(circle,#000 15%,transparent 70%);animation:angelRadiance 2.7s ease-out both}
+.angel-rings{border-width:3px;box-shadow:0 0 18px #fff7d5,0 0 55px var(--angel-color),inset 0 0 35px var(--angel-color)}
+.angel-spark{font-size:24px;color:#fff;text-shadow:0 0 5px #fff,0 0 15px #ffeaaa,0 0 25px var(--angel-color)}
+@keyframes angelBrightBloom{0%{opacity:0;transform:scale(.15)}20%,42%{opacity:1;transform:scale(1.35)}68%{opacity:.55}100%{opacity:0;transform:scale(1.8)}}
+@keyframes angelRadiance{0%{opacity:0;transform:scale(.4) rotate(-15deg)}22%,48%{opacity:.9}100%{opacity:0;transform:scale(1.45) rotate(35deg)}}
+/* The tutorial uses the duel's board, illustrated cards and ownership colours. */
+#tutorialDialog{padding:10px;background:linear-gradient(#071d20dc,#071d20ed),url('assets/menu-tavern.webp') center/cover;--player:#45b85d;--opponent:#d95050}
+.tutorial-table{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:9px;width:min(94vw,650px);height:min(96dvh,930px);min-height:0;padding:18px;border:2px solid #c6a15c;border-radius:18px 5px;background:linear-gradient(130deg,#193c3e,#102b30);color:#f5e7c5;box-shadow:0 20px 70px #000b}
+.tutorial-table header{padding-right:24px}.tutorial-table h2{margin:4px 0;font:800 clamp(21px,4vw,29px) var(--heading-font);color:#ffe1a3}
+.tutorial-table p{margin:0;font-size:14px;line-height:1.4}.tutorial-table #tutorialProgress{margin:0;font-size:11px;color:#ddc68e}
+#tutorialClose{position:absolute;right:10px;top:10px;width:34px;height:34px;background:#f3dfaf;color:#193c3e;border:0;border-radius:50%;font-size:23px;cursor:pointer}
+.tutorial-arena{min-height:0;display:grid;grid-template-rows:44px 24px minmax(0,1fr) 90px;gap:7px;justify-items:center}
+#tutorialOpponent,#tutorialHand{display:flex;gap:5px;justify-content:center;align-items:center;height:100%;width:100%;min-width:0}
+.tutorial-hand-card{display:block;padding:0;border:0;background:none;height:100%;aspect-ratio:5/7;max-width:18%;cursor:pointer;border-radius:7px;touch-action:manipulation}
+.tutorial-table .card{display:block;width:100%;height:100%;border-radius:6px;border-width:2px;margin:0;transform:none;pointer-events:none;box-shadow:0 0 0 1px var(--player)}
+.tutorial-table .card.enemy{box-shadow:0 0 0 1px var(--opponent)}
+.tutorial-hand-card:disabled{opacity:.6}.tutorial-hand-card[aria-pressed=true]{outline:3px solid #ffe4a0;outline-offset:3px;transform:translateY(-3px)}
+.tutorial-hand-card.tutorial-suggested{box-shadow:0 0 16px #ffe09490}
+.tutorial-table .board-wrap{width:100%;max-width:430px;height:100%;min-height:0;padding:5px;aspect-ratio:auto;transform:none;border-radius:10px;min-width:0}
+.tutorial-table .board-wrap:before,.tutorial-table .board-wrap:after{display:none}
+#tutorialBoard{width:100%;height:100%;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:4px;padding:0;border-radius:7px}
+#tutorialBoard .tutorial-cell{display:grid;place-items:center;min-height:0;min-width:0;padding:2px;border-radius:6px;margin:0;touch-action:manipulation}
+#tutorialBoard .tutorial-cell:disabled{opacity:1}
+#tutorialBoard .card{width:auto;height:100%;max-width:100%;aspect-ratio:5/7}
+#tutorialBoard .tutorial-target{border:2px solid #fff0ad;background:#f8df8c;box-shadow:inset 0 0 15px #fff4cb,0 0 9px #ffcf6880;cursor:pointer}
+.tutorial-target-label{font-size:12px;font-weight:800;color:#624017}
+#tutorialBoard .tutorial-captured .card{animation:tutorialCapture .5s ease-out}
+#tutorialScore{font-size:14px;color:#f5e5ad}
+#tutorialFeedback{padding:9px 12px;border-left:3px solid #e8c272;background:#31574f;font-size:13px;min-height:55px;border-radius:5px}
+.tutorial-table footer{display:flex;justify-content:space-between;gap:8px}.tutorial-table .menu-btn{font-size:12px;min-height:39px;padding:9px 12px}.tutorial-table .menu-btn:disabled{opacity:.5;cursor:default}
+@keyframes tutorialCapture{0%{filter:brightness(1.8);transform:scale(.9)}100%{filter:brightness(1);transform:scale(1)}}
+@media(max-height:700px){.tutorial-table{padding:10px;gap:6px}.tutorial-table p{font-size:12px}.tutorial-table h2{font-size:21px}.tutorial-arena{grid-template-rows:28px 18px minmax(0,1fr) 61px;gap:4px}#tutorialScore{font-size:12px}#tutorialFeedback{min-height:45px;font-size:11px;padding:6px 9px}.tutorial-table .menu-btn{font-size:11px;padding:7px 9px;min-height:34px}}
+@media(orientation:landscape) and (max-height:550px){.tutorial-table{width:96vw;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;column-gap:15px}.tutorial-table header{grid-column:2;grid-row:1}.tutorial-arena{grid-column:1;grid-row:1/4;grid-template-rows:22px 18px minmax(0,1fr) 45px}#tutorialFeedback{grid-column:2;grid-row:2;align-self:center}.tutorial-table footer{grid-column:2;grid-row:3}}
+@media(prefers-reduced-motion:reduce){.angel-rays{display:none}#tutorialBoard .tutorial-captured .card{animation:none}}
+/* Mastery is light around the artwork, never an opaque frame over it. */
+.mastery-halo{position:absolute;inset:0;pointer-events:none;z-index:10;border:0}
+.card:has(.mastery-halo.gold),.memory-artwork:has(.mastery-halo.gold){filter:drop-shadow(0 0 5px #ffed9a) drop-shadow(0 0 12px #ecae28)}
+.card:has(.mastery-halo.diamond),.memory-artwork:has(.mastery-halo.diamond){filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px #b0edff);animation:diamondAura 3s ease-in-out infinite}
+.mastery-halo.diamond{background:radial-gradient(circle at 2% 35%,#fff 0 1px,transparent 3px),radial-gradient(circle at 98% 72%,#fff 0 1px,transparent 3px),radial-gradient(circle at 18% 98%,#fff 0 1px,transparent 3px);animation:diamondTwinkle 2.3s ease-in-out infinite}
+#gameApp .board .mastery-halo,.card-back .mastery-halo{display:none!important}
+#gameApp .board .card:has(.mastery-halo),.card.card-back:has(.mastery-halo){filter:none;animation:none}
+@keyframes diamondAura{0%,100%{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #a7dfff)}50%{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 17px #d5c2ff)}}
+@keyframes diamondTwinkle{0%,100%{opacity:.25}50%{opacity:1}}
+.rare-spark-burst{filter:drop-shadow(0 0 8px #ffdc68)}
+.rare-spark-burst:before{content:'';position:absolute;inset:-8%;border-radius:30%;background:radial-gradient(ellipse,transparent 40%,#ffd86070 60%,transparent 72%);animation:rareSparkAura 1.05s ease-out both}
+.rare-spark-burst i{font-size:28px;color:#fff4b3;text-shadow:0 0 4px #fff,0 0 12px #ffd744,0 0 23px #f5a500;animation-duration:1.05s}
+@keyframes rareSparkAura{0%{opacity:0;transform:scale(.8)}25%{opacity:1}100%{opacity:0;transform:scale(1.15)}}
+@media(prefers-reduced-motion:reduce){.card:has(.mastery-halo.diamond),.memory-artwork:has(.mastery-halo.diamond),.mastery-halo.diamond{animation:none}}
+.collection-item{content-visibility:auto;contain-intrinsic-size:auto 255px}
+#tutorialBoard .tutorial-cell{background:linear-gradient(145deg,#efdbac,#d5bd89)}
+#tutorialBoard .tutorial-cell.tutorial-target{background:#f8df8c}
