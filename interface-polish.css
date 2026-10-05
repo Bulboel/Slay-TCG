@@ -121,11 +121,11 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 /* Mastery is light around the artwork, never an opaque frame over it. */
 .mastery-halo{position:absolute;inset:0;pointer-events:none;z-index:10;border:0}
 .card:has(.mastery-halo.gold),.memory-artwork:has(.mastery-halo.gold){filter:drop-shadow(0 0 5px #ffed9a) drop-shadow(0 0 12px #ecae28)}
-.card:has(.mastery-halo.diamond),.memory-artwork:has(.mastery-halo.diamond){filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px #b0edff);animation:diamondAura 3s ease-in-out infinite}
+.card:has(.mastery-halo.diamond),.memory-artwork:has(.mastery-halo.diamond){filter:drop-shadow(0 0 2px #e4f3ff);box-shadow:-7px -3px 14px #ff55adaf,7px -3px 14px #55d6ffbf,-4px 7px 14px #ffd65cae,5px 7px 14px #85f7a3ae;animation:diamondAura 3s ease-in-out infinite}
 .mastery-halo.diamond{background:radial-gradient(circle at 2% 35%,#fff 0 1px,transparent 3px),radial-gradient(circle at 98% 72%,#fff 0 1px,transparent 3px),radial-gradient(circle at 18% 98%,#fff 0 1px,transparent 3px);animation:diamondTwinkle 2.3s ease-in-out infinite}
 #gameApp .board .mastery-halo,.card-back .mastery-halo{display:none!important}
-#gameApp .board .card:has(.mastery-halo),.card.card-back:has(.mastery-halo){filter:none;animation:none}
-@keyframes diamondAura{0%,100%{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #a7dfff)}50%{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 17px #d5c2ff)}}
+#gameApp .board .card:has(.mastery-halo),.card.card-back:has(.mastery-halo){filter:none;animation:none;box-shadow:none}
+@keyframes diamondAura{0%,100%{box-shadow:-7px -3px 14px #ff55adaf,7px -3px 14px #55d6ffbf,-4px 7px 14px #ffd65cae,5px 7px 14px #85f7a3ae}50%{box-shadow:-7px -3px 18px #be7affbf,7px -3px 18px #6cffc5bf,-4px 7px 18px #ff789caf,5px 7px 18px #ffe579bf}}
 @keyframes diamondTwinkle{0%,100%{opacity:.25}50%{opacity:1}}
 .rare-spark-burst{filter:drop-shadow(0 0 8px #ffdc68)}
 .rare-spark-burst:before{content:'';position:absolute;inset:-8%;border-radius:30%;background:radial-gradient(ellipse,transparent 40%,#ffd86070 60%,transparent 72%);animation:rareSparkAura 1.05s ease-out both}
@@ -135,3 +135,25 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .collection-item{content-visibility:auto;contain-intrinsic-size:auto 255px}
 #tutorialBoard .tutorial-cell{background:linear-gradient(145deg,#efdbac,#d5bd89)}
 #tutorialBoard .tutorial-cell.tutorial-target{background:#f8df8c}
+/* Keep the board prominent: the small opponent hand shares the score row. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp main{grid-template-rows:32px minmax(0,1fr) 32px 20px clamp(104px,22dvh,190px);gap:3px}
+ #gameApp .side.ai{grid-row:1;grid-column:1;width:45%;justify-self:end}
+ #gameApp .side.ai .hand{height:17px;gap:3px}
+ #gameApp .side.ai .player-label{font-size:7px;gap:3px;letter-spacing:0}
+ #gameApp .side.ai .hand-inspect{font-size:8px;padding:1px 4px}
+ #gameApp .score{grid-row:1;grid-column:1;width:51%;justify-self:start;gap:6px;font-size:9px;padding:1px 4px}
+ #gameApp .board-wrap{grid-row:2}
+ #gameApp .memory-zone{grid-row:3;height:32px}
+ #gameApp .message{grid-row:4;max-height:20px}
+ #gameApp .side.player{grid-row:5;overflow:visible}
+ #gameApp #playerHand{--hand-card-width:calc((clamp(104px,22dvh,190px) - 25px)*.7142857);gap:0;padding:3px 0 0;isolation:isolate}
+ #gameApp #playerHand .card{height:auto;width:var(--hand-card-width);max-width:none;flex:0 0 auto;aspect-ratio:5/7}
+ #gameApp #playerHand .card+.card{margin-left:min(0px,calc((100vw - 18px - 5*var(--hand-card-width))/4))}
+ #gameApp #playerHand .card:nth-child(1){z-index:5}#gameApp #playerHand .card:nth-child(2){z-index:4}#gameApp #playerHand .card:nth-child(3){z-index:3}#gameApp #playerHand .card:nth-child(4){z-index:2}#gameApp #playerHand .card:nth-child(5){z-index:1}
+ #gameApp #playerHand .card.selected{z-index:6}
+}
+.card-zoom.held-preview{pointer-events:none}
+.card-zoom.held-preview:after{content:'Relâchez pour revenir au plateau';position:fixed;bottom:10px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:20px;background:#112e32;color:#fff0c8;white-space:nowrap;font-size:12px}
+.card-zoom.held-preview .card-zoom-close,.card-zoom.held-preview .hand-zoom-nav{display:none}
+@media(max-width:360px) and (orientation:portrait){#gameApp .score{font-size:8px;white-space:nowrap;gap:3px}}
