@@ -107,11 +107,11 @@ function continueBoosters() {
 }
 function renderBoosterProgress() {
   const box = $('#boosterProgress'); if (!box) return;
-  const p = pityProgress(), next = 25 - p.opened % 25;
+  const p = pityProgress();
   box.querySelector('strong').textContent = `Un nouveau départ • ${p.opened % 50} / 50 boosters`;
   box.querySelector('progress').max = 50;
   box.querySelector('progress').value = p.opened % 50;
-  box.querySelector('p').textContent = `${next} boosters avant le prochain palier. À 25 : une rare ou un Souvenir alternatif manquant. À 50 : une carte manquante rare ou supérieure, Divines comprises, puis le compteur repart à zéro. Si vous possédez déjà toutes les cartes proposées, ce choix est passé automatiquement. Une parallèle garantie au plus tard au 200e booster de cette série.`;
+  box.querySelector('p').textContent = 'Une carte rare ou un souvenir alternatif offert au bout de 25 boosters, une alternative/parallèle/divine au choix au bout de 50 boosters.';
   box.querySelector('button').classList.toggle('hidden',!p.pending.length && !collection.pendingPack && !(collection.shopQueue > 0));
   box.querySelector('button').textContent = p.pending.length ? `Choisir une récompense (${p.pending.length})` : 'Reprendre les boosters';
 }
@@ -214,7 +214,7 @@ function initCollectionUpdates() {
   $('#statsExport').onclick=()=>downloadStats(JSON.stringify({...window.HACKENIA_CARD_STATS,...localStats},null,2),'hackenia-corrections.json','application/json');
   $('#statsImport').onclick=()=>$('#statsImportFile').click();
   $('#statsImportFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const clean=validateStatMap(JSON.parse(await file.text()));localStats={...localStats,...clean};saveLocalStats();renderStatsCard();$('#statsStatus').textContent='Corrections importées sur cet appareil.'}catch(err){$('#statsStatus').textContent=err.message}finally{e.target.value=''}};
-  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><small>Le compteur commence avec cette mise à jour ; les anciennes ouvertures n’étaient pas enregistrées. Emplacement 4 : 20 % rare. Foil (sans Souvenirs) : 1 % parallèle, 8 % alternative, 10 % rare, 0,5 % Divine. Kayla Divine : 0,01 % par booster (environ 1 sur 10 000), les autres Divines : 0,098 % chacune. Les cartes manquantes sont favorisées, sauf les Divines. Les probabilités ne garantissent pas une Divine après un nombre donné d’ouvertures. Les boosters utilisent uniquement les pièces gagnées en jeu.</small><button class="menu-btn hidden">Reprendre</button>';
+  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><div class="booster-rates"><strong>4e carte</strong><ul><li>Commune : 45 %</li><li>Peu commune : 35 %</li><li>Rare : 20 %</li></ul><strong>Dernière carte (foil)</strong><ul><li>Commune ou peu commune : 80,5 %</li><li>Rare : 10 %</li><li>Alternative : 8 %</li><li>Divine : 0,5 %</li><li>Parallèle : 1 %</li></ul></div><button class="menu-btn hidden">Reprendre</button>';
   box.querySelector('button').onclick=continueBoosters;$('#shopScreen .shop-grid').before(box);
   const rewards=document.createElement('button');rewards.className='menu-btn secondary';rewards.textContent='Progression des boosters';rewards.onclick=()=>openShop();$('#collectionScreen .panel-actions').append(rewards);
   $('#pityLater').onclick=()=>{$('#pityDialog').classList.add('hidden');openShop('Votre choix est conservé. Vous pourrez le récupérer avant la prochaine ouverture.')};
