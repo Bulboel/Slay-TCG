@@ -1,5 +1,5 @@
 // Presentation only: the saved pack and collection are still managed by the game.
-let boosterPresentation = {index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:0};
+let boosterPresentation = {index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:0,fast:false};
 function queueBoosterPresentation(fn,delay){
  const generation=boosterPresentation.generation;
  const timer=setTimeout(()=>{if(generation===boosterPresentation.generation)fn()},delay);
@@ -7,7 +7,7 @@ function queueBoosterPresentation(fn,delay){
 }
 function resetBoosterPresentation(){
  for(const timer of boosterPresentation.timers)clearTimeout(timer);
- boosterPresentation={index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:boosterPresentation.generation+1};
+ boosterPresentation={index:0,seen:-1,busy:false,timers:[],stepToken:0,generation:boosterPresentation.generation+1,fast:false};
  document.querySelector('#boosterSequenceControls')?.classList.add('hidden');
  document.querySelector('#boosterCards')?.classList.remove('sequence');
 }
@@ -17,8 +17,8 @@ function beginBoosterPresentation(){
  $('#boosterNextBtn').onclick=()=>{if(!boosterPresentation.busy)showBoosterStep(Math.min(4,boosterPresentation.index+1))};
  $('#boosterSkipAll').onclick=()=>{
   if(boosterPresentation.busy)return;
-  // Keep the final foil reveal (and its angel) even when skipping the first cards.
-  boosterPresentation.seen=Math.max(3,boosterPresentation.seen);showBoosterStep(4);
+  // Accelerate the remaining sequence without skipping any rare reveal.
+  boosterPresentation.fast=true;showBoosterStep(Math.min(4,boosterPresentation.index+1));
  };
  showBoosterStep(0);
 }
@@ -61,7 +61,7 @@ function showBoosterStep(index){
     if(document.hidden||!$('#cardZoom').classList.contains('hidden')){queueBoosterPresentation(advance,250);return}
     showBoosterStep(index+1);
    };
-   queueBoosterPresentation(advance,850);
+   queueBoosterPresentation(advance,boosterPresentation.fast?(pendingBooster[index].card.rarity==='rare'?850:120):850);
   }
  };
  const flip=()=>{

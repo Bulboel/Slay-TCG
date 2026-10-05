@@ -14,9 +14,15 @@ const {chromium}=require('playwright');
  await page.locator('[data-element="fire"]').tap();assert.equal(await page.locator('[data-element="fire"]').getAttribute('aria-pressed'),'true');
  await page.evaluate(()=>{document.querySelectorAll('.panel-screen').forEach(e=>e.classList.add('hidden'));$('#menuScreen').classList.add('hidden');$('#gameApp').classList.remove('hidden');newGame('quick');turn='p';locked=false;memoryDraws={p:2,a:1};render()});
  assert.equal(await page.locator('#pMemoryOrbs .memory-orb:not(.empty)').count(),2);assert.equal(await page.locator('#aMemoryOrbs .memory-orb.empty').count(),1);
+ assert.equal(await page.locator('#pMemoryOrbs').evaluate(e=>e.style.getPropertyValue('--crystal-color')),await page.evaluate(()=>elements.fire.color));
+ assert.equal(await page.locator('#pMemoryOrbs svg').first().evaluate(e=>getComputedStyle(e).animationName),'crystalRock');
  await page.screenshot({path:'/tmp/crystals-mobile.png'});
  await page.evaluate(()=>{memoryDraws.p=1;renderMemory()});assert.equal(await page.locator('#pMemoryOrbs .empty').count(),1);
  await page.setViewportSize({width:1280,height:900});await page.screenshot({path:'/tmp/crystals-desktop.png'});
+ assert(await page.evaluate(()=>Number(getComputedStyle(document.querySelector('.side.player')).zIndex)>Number(getComputedStyle(document.querySelector('.arena')).zIndex)));
+ await page.evaluate(()=>{document.querySelector('#cardZoom').classList.remove('hidden')});
+ const centered=await page.locator('#cardZoomClose').evaluate(e=>{const a=e.getBoundingClientRect(),b=e.querySelector('svg').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<1&&Math.abs(a.y+a.height/2-b.y-b.height/2)<1});assert(centered);
+ await page.locator('#cardZoomClose').click();assert(await page.locator('#cardZoom').evaluate(e=>e.classList.contains('hidden')));
  await page.evaluate(()=>{memoryBlocked.p=true;renderMemory()});assert.equal(await page.locator('#pMemoryOrbs .empty').count(),2);assert((await page.locator('#pMemoryOrbs').getAttribute('aria-label')).startsWith('0 pioche'));
  assert.deepEqual(errors,[]);console.log('PASS: six matching element glyphs, selection, crystal availability and blocked draws.');
  }finally{await browser.close();server.close()}
