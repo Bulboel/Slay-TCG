@@ -19,7 +19,7 @@ function startMinePart() {
   const resume = story.stage === 'part4-intro' ? story.mineStep : 0;
   story.part4 = 'started'; story.stage = 'part4-intro'; story.mineChallengeWon = false; saveStory();
   runStorySequence([
-    {speaker:'Voix off',location:'Berdésa',cast:['grimgors'],text:'À Berdésa, un villageois les interpelle : des mineurs sont en danger ! Grimgors et Jhimm partent aussitôt en tête du groupe.'},
+    {speaker:'Voix off',location:'Berdésa',cast:['grimgors','jhimm'],mood:'surprised',text:'À Berdésa, un villageois les interpelle : des mineurs sont en danger ! Grimgors et Jhimm partent aussitôt en tête du groupe.'},
     {speaker:'Voix off',location:'Les mines de Berdésa',cast:[],text:'Dans l’entrée de la mine, des wagons renversés et des pioches brisées encombrent le sol. Deux torches bleues éclairent une unique porte de bois.'},
     {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala'],text:'Cette lumière… Attendez, je prends une torche.'},
     {speaker:'La voix de la torche',location:'Les mines de Berdésa',cast:['kala'],text:'Accepte mon défi et tu verras plus clair que jamais.'},
@@ -56,17 +56,17 @@ function showMineVictory() {
   const resume = story.stage === 'part4-victory' ? story.mineStep : 0;
   story.stage = 'part4-victory'; saveStory();
   runStorySequence([
-    {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala'],text:'Je vois les galeries… comme si j’étais déjà venue ici.'},
+    {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala'],mood:'surprised',text:'Je vois les galeries… comme si j’étais déjà venue ici.'},
     {speaker:'Voix off',location:'Les mines de Berdésa',cast:['grimgors'],text:'Deux secondes plus tard, Grimgors enfonce la porte de bois. Le groupe s’engouffre dans le passage.'},
     {speaker:'Voix off',location:'Les mines de Berdésa',cast:[],text:'Une horde d’araignées noires leur barre la route. Ensemble, les aventuriers les repoussent sans difficulté.'},
-    {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala'],text:'Là ! Une araignée blanche… Elle s’enfuit dans cet autre tunnel.'},
+    {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala'],mood:'surprised',text:'Là ! Une araignée blanche… Elle s’enfuit dans cet autre tunnel.'},
     {speaker:'Voix off',location:'Les mines de Berdésa',cast:['kala'],text:'La petite silhouette disparaît dans l’obscurité. Fin de la partie 4 — un booster et 50 pièces d’or à la première réussite.',finalLabel:'Terminer la partie 4'}
   ], finishMinePart, resume);
 }
 function finishMinePart() {
   if (!story.mineChallengeWon) return;
   queueStoryBooster('part4');
-  story.part4 = 'complete'; story.chapter1 = story.part6 === 'complete' ? 'complete' : 'started'; story.part5 = story.part6 === 'complete' ? 'complete' : 'new'; story.stage = 'part4-complete'; story.mineStep = 0; story.unlocked = Math.max(2, story.unlocked);
+  story.part4 = 'complete'; story.chapter1 = story.part6 === 'complete' ? 'complete' : 'started'; story.part5 = story.part5 === 'complete' ? 'complete' : 'new'; story.stage = 'part4-complete'; story.mineStep = 0; story.unlocked = Math.max(2, story.unlocked);
   if (!economy.storyRewards.part4) { economy.storyRewards.part4 = true; awardGold(50); }
   saveCollection(); saveStory(); showStoryMenu();
 }
@@ -92,7 +92,7 @@ function startFinalMinePart(){
   {speaker:'Kala',location:'Les mines de Berdésa',cast:['kala','grimgors','jhimm'],text:'Attendez… les araignées blanches sont inoffensives pour les humains ! Inutile de les combattre. Occupons-nous des mineurs.'},
   {speaker:'Jhimm',location:'Les mines de Berdésa',cast:['jhimm','kala'],text:'Je les emmène en lieu sûr. Restez ensemble et suivez-moi ! Je reviens dès qu’ils sont à l’abri.'},
   {speaker:'Voix off',location:'Les mines de Berdésa',cast:['jhimm'],text:'Jhimm aide les mineurs à avancer et les conduit rapidement hors de la mine. Une fois tout le monde en sécurité, il retourne retrouver ses amis.'},
-  {speaker:'Jhimm',location:'Les mines de Berdésa',cast:['jhimm','bolduc','grimgors'],text:'Ils sont à l’abri. Vous pouvez compter sur moi pour la suite !'},
+  {speaker:'Jhimm',location:'Les mines de Berdésa',cast:['jhimm','bolduc','grimgors'],mood:'happy',text:'Ils sont à l’abri. Vous pouvez compter sur moi pour la suite !'},
   {speaker:'Voix off',location:'Les mines de Berdésa',cast:['spider'],text:'Au dernier renfoncement, une énorme araignée noire se dresse devant le groupe. Celle-ci n’a rien des paisibles araignées blanches : elle leur barre le passage.'},
   {speaker:'Bolduc',location:'Les mines de Berdésa',cast:['bolduc','grimgors','eberien'],text:'Alors on va se frayer un chemin !',finalLabel:'Affronter l’araignée'}
  ],startFinalMineGame,resume);
@@ -119,8 +119,8 @@ function showFinalMineVictory(){
  const resume=story.stage==='part5-victory'?story.finalMineStep:0;story.stage='part5-victory';saveStory();
  runStorySequence([
   {speaker:'Voix off',location:'Les mines de Berdésa',cast:['bolduc','grimgors'],text:'Bolduc abat son gourdin sur l’immense tête de l’araignée. Le choc résonne dans toute la galerie : la créature s’effondre enfin.'},
-  {speaker:'Voix off',location:'Berdésa',cast:['kala','jhimm','bolduc'],text:'Les aventuriers rejoignent au village les mineurs que Jhimm a mis à l’abri. Ils sont enfin en sécurité.'},
-  {speaker:'Voix off',location:'Berdésa',cast:['grimgors','bolduc','eberien'],text:'À l’auberge, un repas chaud et une nuit de repos leur rendent des forces. Puis ils reprennent la route vers la grotte des jumeaux, le passage qui mène au lac.',finalLabel:'Terminer la partie 5'}
+  {speaker:'Voix off',location:'Berdésa',cast:['kala','jhimm','bolduc'],mood:'happy',text:'Les aventuriers rejoignent au village les mineurs que Jhimm a mis à l’abri. Ils sont enfin en sécurité.'},
+  {speaker:'Voix off',location:'Berdésa',cast:['grimgors','bolduc','eberien'],mood:'happy',text:'À l’auberge, un repas chaud et une nuit de repos leur rendent des forces. Puis ils reprennent la route vers la grotte des jumeaux, le passage qui mène au lac.',finalLabel:'Terminer la partie 5'}
  ],finishFinalMinePart,resume);
 }
 function finishFinalMinePart(){
@@ -147,11 +147,11 @@ function startRescuePart(){
  const resume=story.stage==='part6-intro'?story.rescueStep:0;
  story.part6='started';story.chapter1='started';story.stage='part6-intro';story.rescueWon=false;saveStory();
  runStorySequence([
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','grimgors','eberien'],text:'Les aventuriers poursuivent leur route vers la grotte des jumeaux. Soudain, un énorme CRAC retentit au-dessus d’eux !'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','grimgors','eberien'],mood:'surprised',text:'Les aventuriers poursuivent leur route vers la grotte des jumeaux. Soudain, un énorme CRAC retentit au-dessus d’eux !'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:[],text:'Un portail s’est ouvert dans le ciel. Une chose en tombe et disparaît derrière les arbres dans un fracas de branches.'},
-  {speaker:'Jhimm',location:'Le Bois Tendre',cast:['jhimm','kala'],text:'Quelqu’un a peut-être besoin de nous ! Vite, allons voir !'},
+  {speaker:'Jhimm',location:'Le Bois Tendre',cast:['jhimm','kala'],mood:'surprised',text:'Quelqu’un a peut-être besoin de nous ! Vite, allons voir !'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:['bolduc','grimgors','eberien'],text:'Ni une ni deux, les aventuriers courent vers le lieu de la chute. En approchant, ils entendent une voix : « Au secours ! À l’aide ! »'},
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:[],text:'Les appels viennent de derrière un arbre. Une pauvre victime y est encerclée par une horde de loups affamés.'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['wolves'],text:'Les appels viennent de derrière un arbre. Une pauvre victime y est encerclée par une horde de loups affamés.'},
   {speaker:'Grimgors',location:'Le Bois Tendre',cast:['grimgors','jhimm','bolduc'],text:'Tenez bon ! Nous allons éloigner ces loups !',finalLabel:'Affronter les loups'}
  ],startRescueGame,resume);
 }
@@ -176,18 +176,18 @@ function showRescueVictory(){
  if(!story.rescueWon)return;
  const resume=story.stage==='part6-victory'?story.rescueStep:0;story.stage='part6-victory';saveStory();
  runStorySequence([
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','grimgors','eberien'],text:'Les loups s’enfuient enfin. Les aventuriers se précipitent derrière l’arbre pour vérifier que la victime n’a rien.'},
-  {speaker:'Jhimm',location:'Le Bois Tendre',cast:['jhimm','balai'],text:'Vous êtes blessé ?… Par toutes les étoiles, c’est un balai à chiottes !'},
-  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','grimgors'],text:'Un balai à chiottes qui parle, oui ! Messire Balai, pour vous servir. Merci, j’ai bien cru finir entre les crocs de ces loups !'},
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','balai','bolduc'],text:'Le groupe reste un instant bouche bée devant cet étrange rescapé. Puis les couleurs s’effacent : un souvenir d’une autre aventure apparaît…'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','grimgors','eberien'],mood:'happy',text:'Les loups s’enfuient enfin. Les aventuriers se précipitent derrière l’arbre pour vérifier que la victime n’a rien.'},
+  {speaker:'Jhimm',location:'Le Bois Tendre',cast:['jhimm','balai'],mood:'surprised',text:'Vous êtes blessé ?… Par toutes les étoiles, c’est un balai à chiottes !'},
+  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','grimgors'],emotions:{balai:'happy',grimgors:'surprised'},text:'Un balai à chiottes qui parle, oui ! Messire Balai, pour vous servir. Merci, j’ai bien cru finir entre les crocs de ces loups !'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['kala','balai','bolduc'],mood:'surprised',text:'Le groupe reste un instant bouche bée devant cet étrange rescapé. Puis les couleurs s’effacent : un souvenir d’une autre aventure apparaît…'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:['violette','mirahel','lama'],flashback:true,text:'Dans ce souvenir en noir et blanc, Violette, Mirahel et Lama viennent eux aussi de sauver Messire Balai des loups.'},
-  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','violette'],flashback:true,text:'Messire Balai, fidèle serviteur ! Je vous dois une fière chandelle !'},
-  {speaker:'Violette',location:'Le Bois Tendre',cast:['violette','balai'],flashback:true,text:'Attends… on vient de sauver un balai à chiottes qui parle ?!'},
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:['violette','mirahel','lama'],flashback:true,text:'Violette, Mirahel et Lama se regardent, puis explosent de rire. Messire Balai ne sait plus où donner des brins !'},
+  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','violette'],flashback:true,mood:'happy',text:'Messire Balai, fidèle serviteur ! Je vous dois une fière chandelle !'},
+  {speaker:'Violette',location:'Le Bois Tendre',cast:['violette','balai'],flashback:true,mood:'surprised',text:'Attends… on vient de sauver un balai à chiottes qui parle ?!'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['violette','mirahel','lama'],flashback:true,mood:'happy',text:'Violette, Mirahel et Lama se regardent, puis explosent de rire. Messire Balai ne sait plus où donner des brins !'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:['grimgors','balai','kala'],text:'Le souvenir s’estompe et les couleurs reviennent. Messire Balai est toujours là, sain et sauf, auprès des aventuriers.'},
-  {speaker:'Kala',location:'Le Bois Tendre',cast:['kala','balai','jhimm'],text:'Venez avec nous, Messire Balai. Vous serez plus en sécurité en bonne compagnie.'},
-  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','bolduc','grimgors'],text:'Avec grand plaisir ! Et, si possible, loin des loups !'},
-  {speaker:'Voix off',location:'Le Bois Tendre',cast:['grimgors','balai','eberien'],text:'Messire Balai se joint au groupe. Les aventuriers reprennent enfin la route vers la grotte des jumeaux.',finalLabel:'Terminer la partie 6'}
+  {speaker:'Ébérien',location:'Le Bois Tendre',cast:['eberien','balai','jhimm'],mood:'happy',text:'Venez avec nous, Messire Balai. Vous serez plus en sécurité en bonne compagnie.'},
+  {speaker:'Messire Balai',location:'Le Bois Tendre',cast:['balai','bolduc','grimgors'],mood:'happy',text:'Avec grand plaisir ! Et, si possible, loin des loups !'},
+  {speaker:'Voix off',location:'Le Bois Tendre',cast:['grimgors','balai','eberien'],mood:'happy',text:'Messire Balai se joint au groupe. Les aventuriers reprennent enfin la route vers la grotte des jumeaux.',finalLabel:'Terminer la partie 6'}
  ],finishRescuePart,resume);
 }
 function finishRescuePart(){

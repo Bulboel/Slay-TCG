@@ -12,6 +12,7 @@ ctx.collection={};
 vm.runInContext(fs.readFileSync('collection-updates.js','utf8'),ctx);
 vm.runInContext(script.slice(script.indexOf('const storySprites='),script.indexOf('function startChapter1()')),ctx);
 vm.runInContext(script.slice(script.indexOf('function startCabinPart()'),script.indexOf('function previewChapter2()')),ctx);
+assert.equal(ctx.storySpriteAppearance({portrait:'kayla-amused'},'kayla').file,'dialogue-happy-v3');assert.equal(ctx.storySpriteAppearance({emotions:{mirahel:'embarrassed'}},'mirahel').file,'mirahel-embarrassed-v3');assert.equal(ctx.storySpriteAppearance({},'mirahel').file,'mirahel-neutral-v3');assert.equal(ctx.storySpriteAppearance({mood:'surprised'},'eberien').file,'dialogue-surprised-v3');
 ctx.startCabinPart();
 assert.equal(ctx.storySequence.length,22);
 assert.equal(ctx.storyStep,0);
