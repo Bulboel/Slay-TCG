@@ -106,7 +106,7 @@
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
 <link rel="stylesheet" href="presentation.css">
-<link rel="stylesheet" href="interface-polish.css?v=20261006-emerald1">
+<link rel="stylesheet" href="interface-polish.css?v=20261006-stats1">
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
@@ -270,7 +270,7 @@
 <script src="assets/data/card-stats.js"></script>
 <script src="assets/data/september28-cards.js"></script>
 <script src="assets/data/card-numbers.js"></script>
-<script src="collection-polish.js?v=20261006-emerald1"></script>
+<script src="collection-polish.js?v=20261006-stats1"></script>
 <script src="booster-presentation.js"></script>
 <script src="duel-touch.js"></script>
 <script src="tutorial-duel.js"></script>
@@ -460,7 +460,7 @@ const AudioEngine=(()=>{
 })();
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function cloneCard(c){return {...c,v:[...c.v]}}
-function changedStatsMarkup(c){const original=pool.find(x=>x.id===c.id)?.v;if(!c.v||!original||!c.v.some((v,i)=>combatValue(v)!==combatValue(original[i])))return '';return `<span class="changed-stats" aria-label="Statistiques actuelles">${c.v.map((v,i)=>`<span class="${['t','r','b','l'][i]} ${combatValue(v)>combatValue(original[i])?'stat-up':combatValue(v)<combatValue(original[i])?'stat-down':''}" title="${['Haut','Droite','Bas','Gauche'][i]} : ${val(v)} (origine : ${val(original[i])})">${val(v)}</span>`).join('')}</span>`}
+function changedStatsMarkup(c){const original=pool.find(x=>x.id===c.id)?.v;if(!c.v||!original||!c.v.some((v,i)=>combatValue(v)!==combatValue(original[i])))return '';return `<span class="changed-stats" aria-label="Statistiques actuelles"><svg class="stat-compass" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 98 50 50 98 2 50Z" fill="#102b28" stroke="#ddbf78" stroke-width="3"/><path d="m26 26 48 48m0-48L26 74" stroke="#bfa467" stroke-width="1.2" opacity=".7"/><path d="m50 39 11 11-11 11-11-11Z" fill="#57816a" stroke="#edce89" stroke-width="2"/><path d="m50 43 6 7-6 7-6-7Z" fill="#acd8b6" opacity=".75"/></svg>${c.v.map((v,i)=>`<span class="${['t','r','b','l'][i]} ${combatValue(v)>10?'stat-extended':''} ${combatValue(v)>combatValue(original[i])?'stat-up':combatValue(v)<combatValue(original[i])?'stat-down':''}" title="${['Haut','Droite','Bas','Gauche'][i]} : ${val(v)} (origine : ${val(original[i])})">${val(v)}</span>`).join('')}</span>`}
 function cardFaceMarkup(c){if(c.image)return `<span class="card-image" role="img" aria-label="${c.name}" style="${artStyle(c.image)}"></span>${changedStatsMarkup(c)}`;const element=elements[c.element]||elements.wind;return `<div class="art"></div><div class="rune"><span>${c.r}</span></div><span class="element-mark" style="--element-color:${element.color}" title="${element.name}">${elementIconMarkup(c.element)}</span><div class="vals"><span class="t">${val(c.v[0])}</span><span class="r">${val(c.v[1])}</span><span class="b">${val(c.v[2])}</span><span class="l">${val(c.v[3])}</span></div><div class="name">${c.name}</div>`}
 function memoryEffectText(card){return card?.kind==='memory'?memoryById(card.effect)?.text||'Aucun effet.':''}
 let publishedLore=new Map(),currentLoreCardId=null;
