@@ -247,11 +247,11 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 /* Effective values cover the printed compass only when a stat has changed. */
 .changed-stats{position:absolute;right:1%;top:1%;width:35%;aspect-ratio:1;z-index:8;pointer-events:none;container-type:inline-size;color:#fff3da;filter:drop-shadow(0 2px 2px #0009);font:700 12px/1 Georgia,serif}
 .changed-stats .stat-compass{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.changed-stats>span{position:absolute;display:grid;place-items:center;width:36%;height:28%;font-size:28cqw;text-shadow:0 1px 2px #000;letter-spacing:-.04em}
-.changed-stats .t{top:5%;left:32%}.changed-stats .r{right:2%;top:36%}.changed-stats .b{bottom:5%;left:32%}.changed-stats .l{left:2%;top:36%}
-.changed-stats>span.stat-extended{font-size:21cqw;letter-spacing:-.08em}
-.changed-stats .stat-up{color:#b9f5c6}.changed-stats .stat-down{color:#ffb8a7}
-.changed-stats :is(.stat-up,.stat-down):after{content:'';position:absolute;bottom:0;width:24%;height:4%;min-height:1px;border-radius:1px;background:currentColor;opacity:.8}
+.changed-stats>span{position:absolute;display:grid;place-items:center;width:36%;height:28%;font-size:25cqw;text-shadow:0 1px 2px #000;letter-spacing:0;font-variant-numeric:lining-nums tabular-nums}
+.changed-stats .t{top:11%;left:32%}.changed-stats .r{right:7%;top:36%}.changed-stats .b{bottom:11%;left:32%}.changed-stats .l{left:7%;top:36%}
+.changed-stats>span.stat-extended{font-size:20cqw;letter-spacing:0}
+.changed-stats .stat-up{color:#5bff80;text-shadow:0 1px 2px #000,0 0 3px #31e86455}.changed-stats .stat-down{color:#ff5963;text-shadow:0 1px 2px #000,0 0 3px #ff394855}
+
 #gameApp .board .card.stats-gained{animation:statGain 1s ease-out}#gameApp .board .card.stats-lost{animation:statLoss 1s ease-out}
 @keyframes statGain{35%{box-shadow:0 0 24px 8px #65ffac;filter:brightness(1.3)}}@keyframes statLoss{35%{box-shadow:0 0 24px 8px #ff706d;filter:brightness(1.2)}}
 /* Open the new wrapper along its upper crimp, left to right, then peel it away. */
