@@ -411,3 +411,11 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #gameApp #playerHand .card:has(.mastery-halo.diamond){animation-name:mobileDiamondAura}
 }
 @keyframes mobileDiamondAura{0%,100%{box-shadow:-3px 0 6px #ff55ad80,3px 0 6px #55d6ff90,0 4px 7px #85f7a380}50%{box-shadow:-3px 0 8px #be7aff90,3px 0 8px #6cffc590,0 4px 8px #ffe57980}}
+
+/* Symmetric score columns keep the turn label at the true centre. */
+#gameApp .score{display:grid;grid-template-columns:24px minmax(0,1fr) 24px;align-items:center;justify-content:center;text-align:center}
+#gameApp .score .turn{min-width:0;text-align:center}
+#cardZoomLore{white-space:pre-line;overflow-wrap:anywhere}
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp .score{grid-template-columns:16px minmax(0,1fr) 16px;gap:2px;padding:1px 6px}
+}
