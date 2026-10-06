@@ -213,3 +213,23 @@ assert.equal(run(`(()=>{const grid=Array(9).fill(null);grid[4]={owner:'p',card:{
 assert.equal(run("rulePresets['elements-open'].open"),true);assert.equal(run("rulePresets['elements-dark'].open"),false);
 assert.equal($('#modeScreen').querySelectorAll('[data-rule]').length,8);
 console.log('PASS: six elemental contacts, both visibilities, side-only previews, no accumulation, defensive bonus and A+ > A.');
+
+run(`cancelBattleResult();currentMode='quick';gameType='ai';economy.gold=0;matchRewarded=false;board=Array.from({length:9},(_,i)=>({owner:i<6?'p':'a',card:cloneCard(pool[0])}));endGame()`);
+assert.equal($('#battleResult').classList.contains('win'),true);
+assert.equal(run('economy.gold'),0,'Reward waits for the banner');
+run('endGame();finishBattleResult();finishBattleResult()');
+assert.equal(run('economy.gold'),30,'Banner completion awards only once');
+assert.equal($('#battleResult').classList.contains('hidden'),true);
+run(`matchRewarded=false;board.forEach((s,i)=>s.owner=i<3?'p':'a');endGame()`);
+assert.equal($('#battleResult').classList.contains('lose'),true);
+assert.match($('#battleResultArt').src,/defeat.webp$/);
+run('finishBattleResult()');assert.equal(run('economy.gold'),31);
+run(`gameType='local';board.forEach((s,i)=>s.owner=i<3?'p':'a');endGame()`);
+assert.equal($('#battleResult').classList.contains('win'),true);
+assert.match($('#battleResultLabel').textContent,/joueur 2/);
+run('cancelBattleResult()');assert.equal(run('battleResultDone'),null);
+run(`gameType='ai';currentMode='story';story.stage='part1-match';board.forEach((s,i)=>s.owner=i<6?'p':'a');endGame()`);
+assert.equal(run('story.stage'),'part1-match');run('finishBattleResult()');assert.equal(run('story.stage'),'part1-epilogue');
+run(`currentMode='quick';board=Array.from({length:8},(_,i)=>({owner:i<4?'p':'a',card:cloneCard(pool[0])}));endGame()`);
+assert.equal($('#battleResult').classList.contains('hidden'),true,'Draw does not show a loss');
+console.log('PASS: victory/defeat banners, PvP winner, story waits, draw handling, cancellation and single reward.');

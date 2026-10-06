@@ -301,3 +301,21 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #modeScreen .element-cycle{font-size:11px;line-height:1.5;color:var(--cream);margin:10px 0}
 #modeScreen .panel-actions .menu-btn{padding:10px 20px}
 @media(max-height:620px){#modeScreen .panel-card{padding:12px}#modeScreen .rule-choice{padding:7px;min-height:52px}#modeIntro{margin:4px}#modeScreen .rule-grid{gap:7px;margin:8px auto}}
+
+/* Battle banners: transparent character artwork over an animated magical burst. */
+.battle-result{position:fixed;inset:0;z-index:160;display:grid;place-items:center;padding:20px;background:#06151bdd;backdrop-filter:blur(6px);overflow:hidden;isolation:isolate}
+.battle-result-content{position:relative;z-index:2;width:min(96vw,1100px);text-align:center}
+#battleResultArt{display:block;width:100%;height:auto;max-height:68dvh;object-fit:contain;filter:drop-shadow(0 14px 28px #0009)}
+.battle-result.win #battleResultArt{animation:victoryBounce 1.35s cubic-bezier(.18,.8,.3,1) both}
+.battle-result.lose #battleResultArt{animation:defeatArrival 1.65s ease-out both}
+#battleResultLabel{font-size:clamp(14px,3vw,22px);font-weight:800;color:#fff5da;text-shadow:0 2px 8px #000;margin:18px 0}
+#battleResultContinue{padding:12px 25px;animation:resultButton .45s .9s ease both}
+.battle-result-burst{position:absolute;inset:-30%;pointer-events:none;opacity:0;background:repeating-conic-gradient(from 0deg,#25f5b526 0deg 10deg,transparent 10deg 24deg),radial-gradient(ellipse,#1bcbed80,transparent 55%);animation:victoryBurst 3.5s ease-out both}
+.battle-result.lose .battle-result-burst{background:radial-gradient(ellipse,#8a69c860,transparent 58%);animation:defeatGlow 3.8s ease both}
+@keyframes victoryBounce{0%{opacity:0;transform:scale(.18) translateY(70px);filter:brightness(2.1)}38%{opacity:1;transform:scale(1.13) translateY(-24px);filter:brightness(1.25)}57%{transform:scale(.95) translateY(12px)}73%{transform:scale(1.035) translateY(-9px)}87%{transform:scale(.99) translateY(3px)}100%{opacity:1;transform:scale(1);filter:drop-shadow(0 14px 28px #0009)}}
+@keyframes victoryBurst{0%{opacity:0;transform:scale(.3) rotate(-12deg)}22%{opacity:1}70%{opacity:.55}100%{opacity:.2;transform:scale(1.15) rotate(12deg)}}
+@keyframes defeatArrival{0%{opacity:0;transform:translateY(-35px) scale(.88);filter:brightness(.65)}70%{opacity:1;transform:translateY(7px) scale(1.01)}100%{opacity:1;transform:none;filter:drop-shadow(0 14px 28px #0009)}}
+@keyframes defeatGlow{0%{opacity:0}40%{opacity:.85}100%{opacity:.3}}
+@keyframes resultButton{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.battle-result-burst,#battleResultArt,#battleResultContinue{animation:none!important}.battle-result-burst{opacity:.3}}
+@media(max-height:450px){#battleResultArt{max-height:62dvh}#battleResultLabel{margin:7px 0}#battleResultContinue{padding:8px 18px}}
