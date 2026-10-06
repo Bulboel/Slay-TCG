@@ -106,7 +106,7 @@
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
 <link rel="stylesheet" href="presentation.css">
-<link rel="stylesheet" href="interface-polish.css?v=20261006-stats1">
+<link rel="stylesheet" href="interface-polish.css?v=20261006-resultaudio1">
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
@@ -270,7 +270,7 @@
 <script src="assets/data/card-stats.js"></script>
 <script src="assets/data/september28-cards.js"></script>
 <script src="assets/data/card-numbers.js"></script>
-<script src="collection-polish.js?v=20261006-stats1"></script>
+<script src="collection-polish.js?v=20261006-resultaudio1"></script>
 <script src="booster-presentation.js"></script>
 <script src="duel-touch.js"></script>
 <script src="tutorial-duel.js"></script>
@@ -453,7 +453,16 @@ const AudioEngine=(()=>{
   for(let i=0;i<length;i++){const t=i/ctx.sampleRate;data[i]=(Math.random()*2-1)*(Math.exp(-t*75)*.65+Math.exp(-Math.pow((t-.025)/.012,2))*.18)}
   const source=ctx.createBufferSource(),low=ctx.createBiquadFilter(),high=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;low.type='lowpass';low.frequency.value=2400;high.type='highpass';high.frequency.value=280;gain.gain.value=.25;source.connect(low);low.connect(high);high.connect(gain);gain.connect(sfxBus);source.start();
  }
- function sfx(name){if(!ctx||ctx.state!=='running'||settings.audioMuted)return;const now=ctx.currentTime;if(name==='click'){note(520,now,.07,.045,'sine',sfxBus,430)}else if(name==='place'){paperPlace()}else if(name==='capture'){[329.63,440,554.37,659.25].forEach((f,i)=>note(f,now+i*.075,.42,.075,'triangle',sfxBus))}else if(name==='memory'){[523.25,659.25,783.99].forEach((f,i)=>note(f,now+i*.11,.75,.07,'sine',sfxBus))}else if(name==='booster'){noise(.58,.3,650);setTimeout(()=>noise(.22,.13,1800),180)}else if(name==='reveal'){[587.33,739.99,880].forEach((f,i)=>note(f,now+i*.09,.8,.07,'sine',sfxBus))}else if(name==='divine'){[523.25,659.25,783.99,1046.5,1318.51,1567.98,2093].forEach((f,i)=>{note(f,now+i*.095,1.65,.045,'sine',sfxBus);note(f*2,now+i*.095+.035,.85,.014,'sine',sfxBus)});[261.63,392,523.25].forEach(f=>note(f,now+.35,2.1,.025,'triangle',sfxBus))}else if(name==='rare'){[659.25,830.61,987.77,1318.51].forEach((f,i)=>note(f,now+i*.1,1,.065,'sine',sfxBus))}}
+ function sfx(name){if(!ctx||ctx.state!=='running'||settings.audioMuted)return;const now=ctx.currentTime;if(name==='click'){note(520,now,.07,.045,'sine',sfxBus,430)}else if(name==='place'){paperPlace()}else if(name==='capture'){[329.63,440,554.37,659.25].forEach((f,i)=>note(f,now+i*.075,.42,.075,'triangle',sfxBus))}else if(name==='memory'){[523.25,659.25,783.99].forEach((f,i)=>note(f,now+i*.11,.75,.07,'sine',sfxBus))}else if(name==='booster'){noise(.58,.3,650);setTimeout(()=>noise(.22,.13,1800),180)}else if(name==='reveal'){[587.33,739.99,880].forEach((f,i)=>note(f,now+i*.09,.8,.07,'sine',sfxBus))}else if(name==='divine'){[523.25,659.25,783.99,1046.5,1318.51,1567.98,2093].forEach((f,i)=>{note(f,now+i*.095,1.65,.045,'sine',sfxBus);note(f*2,now+i*.095+.035,.85,.014,'sine',sfxBus)});[261.63,392,523.25].forEach(f=>note(f,now+.35,2.1,.025,'triangle',sfxBus))}else if(name==='victory'){
+ // Rising major fanfare; the final chord lands on the first banner bounce.
+ [392,523.25,659.25,783.99].forEach((f,i)=>{note(f,now+i*.13,.55,.065,'triangle',sfxBus);note(f*2,now+i*.13,.65,.018,'sine',sfxBus)});
+ [261.63,392,523.25,659.25].forEach(f=>note(f,now+.51,1.65,.042,'triangle',sfxBus));
+ [1046.5,1318.51,1567.98,2093].forEach((f,i)=>note(f,now+.52+i*.09,1.25,.026,'sine',sfxBus));
+ }else if(name==='defeat'){
+ // A soft descending minor phrase, followed by a gently fading chord.
+ [523.25,466.16,415.3,392,261.63].forEach((f,i)=>note(f,now+i*.25,1.05,.055,'triangle',sfxBus));
+ [130.81,155.56,196].forEach(f=>note(f,now+.75,1.9,.03,'sine',sfxBus));
+ }else if(name==='rare'){[659.25,830.61,987.77,1318.51].forEach((f,i)=>note(f,now+i*.1,1,.065,'sine',sfxBus))}}
  function suspend(){if(ctx?.state==='running')ctx.suspend().catch(()=>{})}
  function resume(){if(unlocked&&ctx&&ctx.state!=='running')unlock()}
  return{unlock,update,setTrack:startTrack,sfx,suspend,resume,get state(){return{desiredTrack,activeTrack,unlocked,contextState:ctx?.state||'uninitialized'}}}
@@ -532,7 +541,7 @@ function endGame(){
  const stage=$('#battleResult'),image=$('#battleResultArt');
  image.src=won?'assets/results/victory.webp':'assets/results/defeat.webp';image.alt=won?'You win ! — Jordan savoure ses carottes.':'You lose... — Messire Balai est tout triste.';
  $('#battleResultLabel').textContent=gameType==='local'?`Victoire du joueur ${scores.p>scores.a?1:2} • ${Math.max(scores.p,scores.a)} à ${Math.min(scores.p,scores.a)}`:`${won?'Victoire !':'Défaite'} • ${scores.p} à ${scores.a}`;
- battleResultFocus=document.activeElement;battleResultDone=finishGameResults;stage.className='battle-result '+(won?'win':'lose');
+ battleResultFocus=document.activeElement;battleResultDone=finishGameResults;stage.className='battle-result '+(won?'win':'lose');AudioEngine.sfx(won?'victory':'defeat');
  $('#battleResultContinue').onclick=finishBattleResult;$('#battleResultContinue').focus();
  // Hold the complete artwork before the chapter or reward can advance.
  battleResultTimer=setTimeout(finishBattleResult,4200);
