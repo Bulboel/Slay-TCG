@@ -192,20 +192,20 @@ function showRescueVictory(){
 }
 function finishRescuePart(){
  if(!story.rescueWon)return;
- queueStoryBooster('part6');story.part6='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part6');story.part6='complete';story.part6bis=story.part6bis==='complete'?'complete':'new';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part6){economy.storyRewards.part6=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
 
 function renderCaveMenu(){
- const unlocked=story.part6==='complete',complete=story.part7==='complete';
+ const unlocked=caveAccessible(),complete=story.part7==='complete';
  $('#storyPart7').classList.toggle('locked',!unlocked);$('#storyPart7').classList.toggle('complete',complete);
  $('#chapter1Part7Btn').disabled=!unlocked;$('#chapter1Part7Btn').textContent=!unlocked?'Verrouillé':String(story.stage).startsWith('part7')&&story.stage!=='part7-complete'?'Continuer':complete?'Rejouer':'Commencer';
- $('#chapter1Part7Status').textContent=!unlocked?'Terminez la partie 6.':complete?'La traversée est achevée — un portail lumineux vous attend.':'Une énigme, des pièges et trois soldats fantomatiques.';
+ $('#chapter1Part7Status').textContent=!unlocked?'Terminez la partie 6 bis.':complete?'La traversée est achevée — un portail lumineux vous attend.':'Une énigme, des pièges et trois soldats fantomatiques.';
  $('#chapter2Card').classList.toggle('locked',!complete);$('#chapter2Status').textContent=complete?'La suite sera ajoutée prochainement.':'Terminez la partie 7 pour continuer.';$('#chapter2Btn').textContent=complete?'Bientôt disponible':'Verrouillé';
 }
 function startCavePart(){
- if(story.part6!=='complete')return;
+ if(!caveAccessible())return;
  const saved=readSaved('hackenia-story-match',null);
  if(story.stage==='part7-match'&&saved?.mode==='story-ghosts'){restoreStoryMatch(saved);return}
  if(story.stage==='part7-victory'){showCaveVictory();return}
@@ -230,7 +230,7 @@ function startCavePart(){
  ].map(beat=>({location:'La grotte des jumeaux',mood:'neutral',...beat})),startCaveGame,resume);
 }
 function startCaveGame(){
- if(story.part6!=='complete')return;
+ if(!caveAccessible())return;
  if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
  applyRulePreset('basic-open');currentMode='story-ghosts';gameType='ai';
  const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
@@ -259,4 +259,77 @@ function finishCavePart(){
  if(!story.caveWon)return;
  queueStoryBooster('part7');story.part7='complete';story.chapter1='complete';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part7){economy.storyRewards.part7=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
+}
+
+
+// Preserve access for saves already inside or beyond part 7.
+function caveAccessible(){return story.part6==='complete'&&(story.part6bis==='complete'||story.part7==='complete'||String(story.stage).startsWith('part7'))}
+function renderNewFacesMenu(){
+ const unlocked=story.part6==='complete',complete=story.part6bis==='complete';
+ $('#storyPart6bis').classList.toggle('locked',!unlocked);$('#storyPart6bis').classList.toggle('complete',complete);
+ $('#chapter1Part6bisBtn').disabled=!unlocked;$('#chapter1Part6bisBtn').textContent=!unlocked?'Verrouillé':String(story.stage).startsWith('part6bis')&&story.stage!=='part6bis-complete'?'Continuer':complete?'Rejouer':'Commencer';
+ $('#chapter1Part6bisStatus').textContent=!unlocked?'Terminez la partie 6.':complete?'Ven a été vaincu — le chemin de la grotte vous attend.':'Trois voyageurs, quelques questions et un duel imposé.';
+}
+function startNewFacesPart(){
+ if(story.part6!=='complete')return;
+ const saved=readSaved('hackenia-story-match',null);
+ if(story.stage==='part6bis-match'&&saved?.mode==='story-ven'){restoreStoryMatch(saved);return}
+ if(story.stage==='part6bis-victory'){showNewFacesVictory();return}
+ if(story.stage==='part6bis-match'||story.part6bis==='retry'){startNewFacesGame();return}
+ const resume=story.stage==='part6bis-intro'?story.newFacesStep:0;
+ story.part6bis='started';story.stage='part6bis-intro';story.newFacesWon=false;saveStory();
+ runStorySequence([
+ {speaker:'Voix off',cast:['balai','kala','jhimm'],text:'Messire Balai sauvé, les aventuriers s’apprêtent à reprendre la route. Des bruits de pas les retiennent : trois voyageurs approchent entre les arbres.'},
+ {speaker:'Voix off',cast:['pennedra','ven','frolgor'],emotions:{pennedra:'friendly',ven:'haughty',frolgor:'neutral'},text:'Pennedra leur adresse un signe amical. Ven les dévisage, le menton haut. À leurs côtés, Frolgor observe la scène sans dire un mot.'},
+ {speaker:'Pennedra',cast:['pennedra','ven','frolgor'],emotions:{pennedra:'friendly',ven:'haughty'},text:'Salut à vous ! Moi, c’est Pennedra. Voici Ven et Frolgor.'},
+ {speaker:'Ven',cast:['ven','pennedra'],emotions:{ven:'haughty',pennedra:'friendly'},text:'Oui, les présentations suffiront. Qu’est-ce que vous faites ici, au juste ?'},
+ {speaker:'Ébérien',cast:['eberien','kala','balai'],text:'Nous sommes de passage. Nous avons encore un peu de route à faire.'},
+ {speaker:'Voix off',cast:['grimgors','ven','frolgor'],emotions:{grimgors:'proud',ven:'haughty',frolgor:'neutral'},text:'Grimgors bombe le torse et se redresse : leur groupe sait se défendre. Ven ne paraît guère impressionné. Frolgor garde le silence.'},
+ {speaker:'Ven',cast:['ven','grimgors'],emotions:{ven:'haughty',grimgors:'proud'},text:'De passage ? D’où venez-vous ? Et pourquoi traîner dans ces bois ?'},
+ {speaker:'Kala',cast:['kala','jhimm','bolduc'],text:'De Berdésa. Nous avons aidé des mineurs qui étaient en danger.'},
+ {speaker:'Jhimm',cast:['jhimm','ven','pennedra'],emotions:{ven:'haughty',pennedra:'friendly'},text:'Vous étiez dans les environs, vous aussi ? Vous n’avez pas entendu parler de ce qui se passait dans la mine ?'},
+ {speaker:'Ven',cast:['ven','frolgor','pennedra'],emotions:{ven:'haughty',frolgor:'neutral',pennedra:'friendly'},text:'Si, bien sûr. Mais nous avions plus important à faire.'},
+ {speaker:'Voix off',cast:['kala','eberien','bolduc'],mood:'blasé',text:'Les aventuriers échangent des regards blasés. Ah oui… d’accord. Ils avaient donc laissé les mineurs se débrouiller seuls.'},
+ {speaker:'Grimgors',cast:['grimgors','jhimm','balai'],mood:'blasé',text:'Plus important. Je vois.'},
+ {speaker:'Voix off',cast:['frolgor','ven','pennedra'],emotions:{frolgor:'neutral',ven:'haughty',pennedra:'friendly'},text:'Frolgor ne commente pas. Son regard passe tranquillement de Ven aux aventuriers.'},
+ {speaker:'Ven',cast:['ven','grimgors'],emotions:{ven:'haughty',grimgors:'proud'},text:'Puisque vous semblez si sûrs de vous, nous allons régler cela avec une partie de Triade. Je vous défie. Pas question de vous défiler.'},
+ {speaker:'Grimgors',cast:['grimgors','ven','bolduc'],emotions:{grimgors:'proud',ven:'haughty',bolduc:'neutral'},text:'Laissez-moi faire. Je vais lui montrer ce que vaut notre groupe.',finalLabel:'Affronter Ven avec Grimgors'}
+ ].map(beat=>({location:'Le Bois Tendre',mood:'neutral',...beat})),startNewFacesGame,resume);
+}
+
+function newFacesOpponentHand(){
+ const pennedra={id:'story-pennedra',name:'Pennedra',v:[3,3,7,7],element:'wind',rarity:'common',kind:'playable',image:{src:'assets/story/pennedra-card.webp',full:true},a:'#7aa98b',r:'✦'};
+ return [catalogById('p42'),catalogById('p10'),pennedra,catalogById('p10'),pennedra].map(cloneCard);
+}
+function startNewFacesGame(){
+ if(story.part6!=='complete')return;
+ if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
+ applyRulePreset('basic-open');currentMode='story-ven';gameType='ai';
+ const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
+ board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:newFacesOpponentHand()};
+ selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
+ story.part6bis='started';story.stage='part6bis-match';story.newFacesWon=false;story.newFacesStep=0;saveStory();
+ $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
+ $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Grimgors';$('#rightLabel').textContent='Ven';$('#rulesBtn').style.display='none';
+ msg('De nouveaux visages','Grimgors relève le défi de Ven.');render();saveStoryMatch();
+}
+
+
+function endNewFacesGame(counts){
+ try{localStorage.removeItem('hackenia-story-match')}catch{}
+ if(counts.p>counts.a){story.stage='part6bis-victory';story.newFacesWon=true;story.newFacesStep=0;saveStory();setTimeout(showNewFacesVictory,1200)}
+ else{story.part6bis='retry';story.stage='part6bis-retry';story.newFacesWon=false;saveStory();setTimeout(()=>runStorySequence([{speaker:'Grimgors',location:'Le Bois Tendre',cast:['grimgors','ven'],emotions:{grimgors:'neutral',ven:'haughty'},text:'Une revanche. Je n’en ai pas terminé avec toi.',finalLabel:'Réessayer'}],startNewFacesGame),1200)}
+}
+function showNewFacesVictory(){
+ if(!story.newFacesWon)return;
+ const resume=story.stage==='part6bis-victory'?story.newFacesStep:0;story.stage='part6bis-victory';saveStory();
+ runStorySequence([
+ {speaker:'Grimgors',location:'Le Bois Tendre',cast:['grimgors','ven','frolgor'],emotions:{grimgors:'proud',ven:'haughty',frolgor:'neutral'},text:'Voilà. Nous avons encore de la route. Bonne continuation.'},
+ {speaker:'Voix off',location:'Le Bois Tendre',cast:['balai','kala','eberien'],mood:'neutral',text:'Le duel terminé, les aventuriers reprennent leur chemin vers la grotte des jumeaux.',finalLabel:'Terminer la partie 6 bis'}
+ ],finishNewFacesPart,resume);
+}
+function finishNewFacesPart(){
+ if(!story.newFacesWon)return;
+ queueStoryBooster('part6bis');story.part6bis='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6bis-complete';story.newFacesStep=0;
+ if(!economy.storyRewards.part6bis){economy.storyRewards.part6bis=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
