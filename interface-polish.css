@@ -534,3 +534,7 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #storyScreen .story-part-list{grid-template-columns:repeat(2,minmax(0,1fr))}
  #storyScreen .story-part:last-child{grid-column:1/-1}
 }
+
+/* Six story parts: retain a visible return action on the shortest screens. */
+@media(min-width:701px){#storyScreen .story-part:last-child{grid-column:auto}}
+@media(max-width:600px) and (max-height:540px){#storyScreen #chapter2Card{display:none}#storyScreen .story-part-list{max-height:calc(100dvh - 150px);overflow-y:auto;overscroll-behavior:contain}}
