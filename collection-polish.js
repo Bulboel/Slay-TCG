@@ -52,7 +52,7 @@ function initCollectionPolish() {
 }
 
 function inspectHand(owner,requested=0){
- const holder=$(owner==='p'?'#playerHand':'#aiHand');
+ const holder=handHolder(owner);
  if(passing||$('#turnCover').classList.contains('hidden')===false)return;
  const visible=hands[owner].filter((c,i)=>holder.children[i]&&!holder.children[i].classList.contains('card-back'));
  if(!visible.length)return;
@@ -66,7 +66,7 @@ function initNavigationPolish(){
   const bar=document.createElement('div');bar.className='catalog-backbar';const button=document.createElement('button');button.className='menu-btn secondary';button.textContent='← Retour au menu';button.onclick=showMenu;bar.append(button);$(panel+' .panel-card').prepend(bar);
  }
  $('#cardZoomStats').after(Object.assign(document.createElement('div'),{id:'handZoomNav',className:'hand-zoom-nav hidden',innerHTML:'<button id="handZoomPrevious" aria-label="Carte précédente">←</button><span id="handZoomPosition"></span><button id="handZoomNext" aria-label="Carte suivante">→</button>'}));
- for(const owner of ['p','a']){const button=document.createElement('button');button.className='hand-inspect';button.textContent='Loupe';button.setAttribute('aria-label',owner==='p'?'Agrandir les cartes de votre main':'Agrandir les cartes visibles de cette main');button.onclick=()=>inspectHand(owner);document.querySelector(owner==='p'?'.side.player .player-label':'.side.ai .player-label').append(button)}
+ for(const owner of ['p','a']){const button=document.createElement('button');button.className='hand-inspect';button.textContent='Loupe';button.setAttribute('aria-label',owner==='p'?'Agrandir les cartes de votre main':'Agrandir les cartes visibles de cette main');button.onclick=()=>inspectHand(owner==='p'?bottomHandOwner():bottomHandOwner()==='p'?'a':'p');document.querySelector(owner==='p'?'.side.player .player-label':'.side.ai .player-label').append(button)}
 }
 
 let boosterAngelCleanup=null;
