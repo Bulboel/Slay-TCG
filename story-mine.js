@@ -125,7 +125,7 @@ function showFinalMineVictory(){
 }
 function finishFinalMinePart(){
  if(!story.finalMineWon)return;
- queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part6==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part5){economy.storyRewards.part5=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -192,6 +192,71 @@ function showRescueVictory(){
 }
 function finishRescuePart(){
  if(!story.rescueWon)return;
- queueStoryBooster('part6');story.part6='complete';story.chapter1='complete';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part6');story.part6='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part6){economy.storyRewards.part6=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
+}
+
+
+function renderCaveMenu(){
+ const unlocked=story.part6==='complete',complete=story.part7==='complete';
+ $('#storyPart7').classList.toggle('locked',!unlocked);$('#storyPart7').classList.toggle('complete',complete);
+ $('#chapter1Part7Btn').disabled=!unlocked;$('#chapter1Part7Btn').textContent=!unlocked?'Verrouillé':String(story.stage).startsWith('part7')&&story.stage!=='part7-complete'?'Continuer':complete?'Rejouer':'Commencer';
+ $('#chapter1Part7Status').textContent=!unlocked?'Terminez la partie 6.':complete?'La traversée est achevée — un portail lumineux vous attend.':'Une énigme, des pièges et trois soldats fantomatiques.';
+ $('#chapter2Card').classList.toggle('locked',!complete);$('#chapter2Status').textContent=complete?'La suite sera ajoutée prochainement.':'Terminez la partie 7 pour continuer.';$('#chapter2Btn').textContent=complete?'Bientôt disponible':'Verrouillé';
+}
+function startCavePart(){
+ if(story.part6!=='complete')return;
+ const saved=readSaved('hackenia-story-match',null);
+ if(story.stage==='part7-match'&&saved?.mode==='story-ghosts'){restoreStoryMatch(saved);return}
+ if(story.stage==='part7-victory'){showCaveVictory();return}
+ if(story.stage==='part7-match'||story.part7==='retry'){startCaveGame();return}
+ const resume=story.stage==='part7-intro'?story.caveStep:0;
+ story.part7='started';story.chapter1='started';story.stage='part7-intro';story.caveWon=false;saveStory();
+ runStorySequence([
+ {speaker:'Voix off',entrance:true,cast:['kala','eberien','balai'],text:'Les aventuriers arrivent enfin devant la porte de la grotte des jumeaux. Deux visages sculptés encadrent une inscription.'},
+ {speaker:'Kala',entrance:true,cast:['kala','eberien'],text:'« Abandonne et renaît. » Voilà ce que dit la porte…'},
+ {speaker:'Ébérien',entrance:true,cast:['eberien','kala','grimgors'],text:'Abandonner quoi ? Nos possessions ? Nos certitudes ? Il doit y avoir un sens à cette énigme.'},
+ {speaker:'Voix off',entrance:true,cast:['jhimm','bolduc','grimgors'],text:'Ils réfléchissent un long moment. Les tentatives se succèdent, mais la porte reste immobile.'},
+ {speaker:'Messire Balai',entrance:true,cast:['balai','kala','eberien'],text:'Peut-être devez-vous être sans tous vos atours pour passer cette porte ?'},
+ {speaker:'Bolduc',entrance:true,cast:['bolduc','jhimm','grimgors'],emotions:{bolduc:'happy',jhimm:'embarrassed',grimgors:'neutral'},text:'Ah ! Enfin une énigme qui me plaît !'},
+ {speaker:'Jhimm',entrance:true,cast:['jhimm','kala','eberien'],emotions:{jhimm:'embarrassed',kala:'neutral',eberien:'neutral'},text:'Vraiment… tout ? Bon. Si c’est le seul moyen de passer…'},
+ {speaker:'Voix off',entrance:true,cast:[],text:'Les aventuriers déposent leurs armes, puis leurs vêtements, et se retrouvent nus devant la porte. Bolduc est ravi ; Jhimm beaucoup moins. Les autres restent presque de marbre. Aussitôt, une lumière les enveloppe et les téléporte à l’intérieur du donjon.'},
+ {speaker:'Voix off',cast:['grimgors','jhimm','bolduc'],text:'Le groupe se retrouve entièrement équipé : vêtements, armures et armes ont repris leur place, comme si rien n’avait été enlevé.'},
+ {speaker:'Kala',cast:['kala','balai','eberien'],text:'Abandonner pour renaître… Tu avais vu juste, Messire Balai.'},
+ {speaker:'Voix off',cast:['grimgors','bolduc','jhimm'],text:'La traversée commence. Une dalle déclenche des pointes ; un passage rassurant dissimule une fosse. Les aventuriers déjouent ces pièges malins, parfois franchement sournois, en avançant avec prudence.'},
+ {speaker:'Grimgors',cast:['grimgors','kala','eberien'],text:'Ne vous fiez pas au chemin le plus facile. Regardez les marques au sol avant de faire un pas.'},
+ {speaker:'Voix off',cast:[],text:'Au bout du passage, trois soldats fantomatiques leur barrent la route. Probablement d’anciens aventuriers qui ont péri durant cette même traversée…'},
+ {speaker:'Jhimm',cast:['jhimm','grimgors','balai'],text:'Ils ne nous laisseront pas passer. Restez ensemble.',finalLabel:'Affronter les soldats fantomatiques'}
+ ].map(beat=>({location:'La grotte des jumeaux',mood:'neutral',...beat})),startCaveGame,resume);
+}
+function startCaveGame(){
+ if(story.part6!=='complete')return;
+ if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
+ applyRulePreset('basic-open');currentMode='story-ghosts';gameType='ai';
+ const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
+ board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:Array.from({length:5},()=>cloneCard(catalogById('p37')))};
+ selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
+ story.part7='started';story.stage='part7-match';story.caveWon=false;story.caveStep=0;saveStory();
+ $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
+ $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Soldats fantomatiques';$('#rulesBtn').style.display='none';
+ msg('La traversée de la grotte','Vainquez les soldats fantomatiques pour poursuivre la traversée.');render();saveStoryMatch();
+}
+
+function endCaveGame(counts){
+ try{localStorage.removeItem('hackenia-story-match')}catch{}
+ if(counts.p>counts.a){story.stage='part7-victory';story.caveWon=true;story.caveStep=0;saveStory();setTimeout(showCaveVictory,1200)}
+ else{story.part7='retry';story.stage='part7-retry';story.caveWon=false;saveStory();setTimeout(()=>runStorySequence([{speaker:'Jhimm',location:'La grotte des jumeaux',cast:['jhimm','grimgors'],mood:'neutral',text:'Le passage reste gardé. Reprenons notre souffle avant de tenter à nouveau.',finalLabel:'Réessayer'}],startCaveGame),1200)}
+}
+function showCaveVictory(){
+ if(!story.caveWon)return;
+ const resume=story.stage==='part7-victory'?story.caveStep:0;story.stage='part7-victory';saveStory();
+ runStorySequence([
+ {speaker:'Voix off',location:'La grotte des jumeaux',cast:['kala','grimgors','jhimm'],mood:'neutral',text:'Les trois soldats fantomatiques s’effacent. Le silence revient dans la grotte.'},
+ {speaker:'Voix off',location:'La grotte des jumeaux',cast:[],portal:true,text:'Un portail lumineux s’ouvre devant les aventuriers. Sa lumière éclaire la pierre : la traversée de la grotte est achevée.',finalLabel:'Terminer la partie 7'}
+ ],finishCavePart,resume);
+}
+function finishCavePart(){
+ if(!story.caveWon)return;
+ queueStoryBooster('part7');story.part7='complete';story.chapter1='complete';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
+ if(!economy.storyRewards.part7){economy.storyRewards.part7=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
