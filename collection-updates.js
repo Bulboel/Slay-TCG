@@ -70,18 +70,18 @@ function generateBooster(cards, state, rng = Math.random, setId = BOOSTER_SET) {
   };
   const commons = of('common'), commonPlayable = commons.filter(c => c.kind === 'playable'), uncommons = of('uncommon'), rares = of('rare');
   const pulls = [pick(commons),pick(commonPlayable),pick(rng() < .30 ? uncommons : commonPlayable)];
-  const fourth = rng(); pulls.push(pick(fourth < .20 ? rares : fourth < .55 ? uncommons : commonPlayable));
+  const fourth = rng(); pulls.push(pick(fourth < .30 ? rares : uncommons));
   const foil = rng(), parallels = of('parallel');
   const needsParallel = pityProgress(state,setId).opened >= 199 && !parallels.some(c => state.counts[c.id] > 0);
   const divines = of('divine');
-  if (!needsParallel && foil >= .19 && foil < .195 && divines.length) {
+  if (!needsParallel && foil >= .36 && foil < .40 && divines.length) {
     // Never apply missing-card preference to Divines: Kayla must stay exceptionally rare.
     let ticket = rng() * divines.reduce((sum,c)=>sum+(c.divineWeight||1),0);
     let divine = divines[divines.length-1];
     for (const card of divines) { ticket -= card.divineWeight||1; if(ticket<0){divine=card;break;} }
     pulls.push(divine);
   } else {
-    const foilCandidates = needsParallel || foil < .01 ? parallels : foil < .09 ? of('alternative') : foil < .19 ? rares : [...commons,...uncommons];
+    const foilCandidates = needsParallel || foil < .01 ? parallels : foil < .16 ? of('alternative') : foil < .36 ? rares : [...commons,...uncommons];
     pulls.push(pick(foilCandidates.filter(card => card.kind === 'playable')));
   }
   return pulls.map((card,i) => ({card,foil:i === 4,slot:rarityLabels[card.rarity] + (i === 4 ? ' foil' : '')}));
@@ -214,7 +214,7 @@ function initCollectionUpdates() {
   $('#statsExport').onclick=()=>downloadStats(JSON.stringify({...window.HACKENIA_CARD_STATS,...localStats},null,2),'hackenia-corrections.json','application/json');
   $('#statsImport').onclick=()=>$('#statsImportFile').click();
   $('#statsImportFile').onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{const clean=validateStatMap(JSON.parse(await file.text()));localStats={...localStats,...clean};saveLocalStats();renderStatsCard();$('#statsStatus').textContent='Corrections importées sur cet appareil.'}catch(err){$('#statsStatus').textContent=err.message}finally{e.target.value=''}};
-  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><div class="booster-rates"><strong>4e carte</strong><ul><li>Commune : 45 %</li><li>Peu commune : 35 %</li><li>Rare : 20 %</li></ul><strong>Dernière carte (foil)</strong><ul><li>Commune ou peu commune : 80,5 %</li><li>Rare : 10 %</li><li>Alternative : 8 %</li><li>Divine : 0,5 %</li><li>Parallèle : 1 %</li></ul></div><button class="menu-btn hidden">Reprendre</button>';
+  const box=document.createElement('section');box.id='boosterProgress';box.className='booster-progress';box.innerHTML='<strong></strong><progress max="25" value="0" aria-label="Progression vers le prochain choix"></progress><p></p><div class="booster-rates"><strong>4e carte</strong><ul><li>Peu commune : 70 %</li><li>Rare : 30 %</li></ul><strong>Dernière carte (foil)</strong><ul><li>Commune ou peu commune : 60 %</li><li>Rare : 20 %</li><li>Alternative : 15 %</li><li>Divine : 4 %</li><li>Parallèle : 1 %</li></ul></div><button class="menu-btn hidden">Reprendre</button>';
   box.querySelector('button').onclick=continueBoosters;$('#shopScreen .shop-grid').before(box);
   const rewards=document.createElement('button');rewards.className='menu-btn secondary';rewards.textContent='Progression des boosters';rewards.onclick=()=>openShop();$('#collectionScreen .panel-actions').append(rewards);
   $('#pityLater').onclick=()=>{$('#pityDialog').classList.add('hidden');openShop('Votre choix est conservé. Vous pourrez le récupérer avant la prochaine ouverture.')};

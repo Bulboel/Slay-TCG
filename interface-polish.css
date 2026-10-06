@@ -288,3 +288,16 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .booster-rates>ul{margin:0;padding-left:18px;grid-row:2}.booster-rates>ul:last-child{grid-column:2}
 
 #boosterProgress>p{font-size:14px;line-height:1.6;color:var(--cream);margin:12px 0}
+
+/* Keep all eight rule choices visible as paired light/dark tiles. */
+#modeScreen .panel-card{width:min(94vw,650px);padding:24px 18px 18px}
+#modeScreen .panel-card:before{display:none}
+#modeScreen h2{font-size:clamp(22px,5vw,30px)}
+#modeIntro{font-size:12px;margin:6px 0 12px}
+#modeScreen .rule-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px auto}
+#modeScreen .rule-choice{padding:12px 10px;min-height:68px;border-radius:12px;text-align:center}
+#modeScreen .rule-choice strong{font-size:14px;line-height:1.2;margin:0 0 5px}
+#modeScreen .rule-choice small{font-size:10px;line-height:1.3;display:block}
+#modeScreen .element-cycle{font-size:11px;line-height:1.5;color:var(--cream);margin:10px 0}
+#modeScreen .panel-actions .menu-btn{padding:10px 20px}
+@media(max-height:620px){#modeScreen .panel-card{padding:12px}#modeScreen .rule-choice{padding:7px;min-height:52px}#modeIntro{margin:4px}#modeScreen .rule-grid{gap:7px;margin:8px auto}}

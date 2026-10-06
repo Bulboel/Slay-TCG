@@ -196,3 +196,20 @@ run(`dragState=null;locked=false;turn='p';window.testTouchCard=makeCard(playerCa
 const touchDown=new w.Event('pointerdown');Object.assign(touchDown,{pointerType:'touch',isPrimary:true,pointerId:1,clientX:10,clientY:10});w.testTouchCard.dispatchEvent(touchDown);assert.equal(run('dragState'),null,'A stationary touch waits for long press or movement');w.testTouchCard.dispatchEvent(new w.Event('pointercancel'));
 run('renderMemorySkinOptions()');assert($('#memorySkinOptions [data-effect=spider] .memory-skin-choice'));assert.equal($('#memorySkinOptions').children.length,run('memoryCards.length'));
 console.log('PASS: export and local load slot retain exact current gold, including zero; stationary touch waits, and all Souvenir base appearances are available.');
+
+// Elemental contact is computed per side, symmetrically, before capture.
+for(const [attacker,defender] of Object.entries({water:'fire',fire:'ice',ice:'wind',wind:'earth',earth:'lightning',lightning:'water'})){
+ const setup=`const grid=Array(9).fill(null);grid[4]={owner:'p',card:{element:'${attacker}',v:[5,5,5,5]}};grid[5]={owner:'a',card:{element:'${defender}',v:[5,5,5,5]}};`;
+ assert.equal(run(`(()=>{${setup}return capture(4,'p',grid,'elements-open').has(5)})()`),true);
+ assert.equal(run(`(()=>{${setup}return capture(4,'p',grid,'elements-dark').has(5)})()`),true);
+ assert.equal(run(`(()=>{${setup}return capture(4,'p',grid,'basic-open').has(5)})()`),false);
+ assert.deepEqual(plain(`(()=>{${setup}return [contactCard(grid[4].card,4,grid,'elements-open').v,grid[4].card.v]})()`),[[5,6,5,5],[5,5,5,5]]);
+ assert.equal(run(`(()=>{${setup}grid[4].card.v[1]=4;return capture(4,'p',grid,'elements-open').has(5)})()`),false,'Bonus equality does not capture');
+ assert.equal(run(`(()=>{${setup}grid[4].card.element='${defender}';grid[5].card.element='${attacker}';grid[4].card.v[1]=6;return capture(4,'p',grid,'elements-open').has(5)})()`),false,'Defender contact bonus is included');
+}
+assert.equal(run(`(()=>{const grid=Array(9).fill(null);grid[4]={owner:'p',card:{element:'water',v:[10,10,10,10]}};grid[5]={owner:'a',card:{element:'fire',v:[10,10,10,10]}};return capture(4,'p',grid,'elements-open').get(5).attack})()`),11);
+assert.equal(run("val(11)"),'A+');assert.equal(run("combatValue('A+')"),11);
+assert.equal(run(`(()=>{const grid=Array(9).fill(null);grid[4]={owner:'p',card:{element:'neutral',v:[10,11,10,10]}};grid[5]={owner:'a',card:{element:'neutral',v:[10,10,10,10]}};return capture(4,'p',grid,'basic-open').has(5)})()`),true);
+assert.equal(run("rulePresets['elements-open'].open"),true);assert.equal(run("rulePresets['elements-dark'].open"),false);
+assert.equal($('#modeScreen').querySelectorAll('[data-rule]').length,8);
+console.log('PASS: six elemental contacts, both visibilities, side-only previews, no accumulation, defensive bonus and A+ > A.');
