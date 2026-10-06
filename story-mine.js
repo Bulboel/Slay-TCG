@@ -125,7 +125,7 @@ function showFinalMineVictory(){
 }
 function finishFinalMinePart(){
  if(!story.finalMineWon)return;
- queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part5){economy.storyRewards.part5=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -192,7 +192,7 @@ function showRescueVictory(){
 }
 function finishRescuePart(){
  if(!story.rescueWon)return;
- queueStoryBooster('part6');story.part6='complete';story.part6bis=story.part6bis==='complete'?'complete':'new';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part6');story.part6='complete';story.part6bis=story.part6bis==='complete'?'complete':'new';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part6){economy.storyRewards.part6=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -257,7 +257,7 @@ function showCaveVictory(){
 }
 function finishCavePart(){
  if(!story.caveWon)return;
- queueStoryBooster('part7');story.part7='complete';story.chapter1='complete';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part7');story.part7='complete';story.part8=story.part8==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part7){economy.storyRewards.part7=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -330,6 +330,94 @@ function showNewFacesVictory(){
 }
 function finishNewFacesPart(){
  if(!story.newFacesWon)return;
- queueStoryBooster('part6bis');story.part6bis='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part7==='complete'?'complete':'started';story.stage='part6bis-complete';story.newFacesStep=0;
+ queueStoryBooster('part6bis');story.part6bis='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part6bis-complete';story.newFacesStep=0;
  if(!economy.storyRewards.part6bis){economy.storyRewards.part6bis=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
+}
+
+
+function renderLakeMenu(){
+ const unlocked=story.part7==='complete',complete=story.part8==='complete';
+ $('#storyPart8').classList.toggle('locked',!unlocked);$('#storyPart8').classList.toggle('complete',complete);
+ $('#chapter1Part8Btn').disabled=!unlocked;$('#chapter1Part8Btn').textContent=!unlocked?'Verrouillé':String(story.stage).startsWith('part8')&&story.stage!=='part8-complete'?'Continuer':complete?'Rejouer':'Commencer';
+ $('#chapter1Part8Status').textContent=!unlocked?'Terminez la partie 7.':complete?'Le temple est derrière vous — le lac rose se dévoile.':'Un portail, une rencontre troublante et un choix risqué.';
+ $('#chapter2Card').classList.toggle('locked',!complete);$('#chapter2Status').textContent=complete?'La suite sera ajoutée prochainement.':'Terminez la partie 8 pour continuer.';$('#chapter2Btn').textContent=complete?'Bientôt disponible':'Verrouillé';
+}
+function restartLakePart(){
+ if(story.part7!=='complete')return;
+ story.stage='part8-intro';story.lakeStep=0;story.lakePath=null;story.lakeWon=false;story.lakeEncounterResolved=false;
+ try{localStorage.removeItem('hackenia-story-match')}catch{}saveStory();startLakePart();
+}
+function startLakePart(){
+ if(story.part7!=='complete')return;
+ const saved=readSaved('hackenia-story-match',null);
+ if(story.stage==='part8-match'&&saved?.mode==='story-caleizis'){restoreStoryMatch(saved);return}
+ if(story.stage==='part8-epilogue'&&story.lakeEncounterResolved){showLakeEpilogue();return}
+ if(story.stage==='part8-match'){startLakeGame();return}
+ const resume=story.stage==='part8-intro'?story.lakeStep:0;
+ story.part8='started';story.chapter1='started';story.stage='part8-intro';story.lakeWon=false;story.lakeEncounterResolved=false;story.lakePath=null;saveStory();
+ runStorySequence([
+ {speaker:'Grimgors',location:'La grotte des jumeaux',portal:true,cast:['grimgors','bolduc','jhimm'],text:'Avant de nous y jeter, essayons avec un caillou.'},
+ {speaker:'Voix off',location:'La grotte des jumeaux',portal:true,cast:['grimgors','kala','eberien'],text:'Grimgors lance un caillou à travers le portail. Il disparaît dans la lumière… et ne revient pas.'},
+ {speaker:'Bolduc',location:'La grotte des jumeaux',portal:true,cast:['bolduc','balai','jhimm'],text:'Je pourrais y passer la tête, juste pour regarder de l’autre côté…'},
+ {speaker:'Voix off',location:'La grotte des jumeaux',portal:true,cast:['bolduc','kala','grimgors'],mood:'surprised',text:'Finalement, Bolduc tend la main. À peine touche-t-il le portail qu’il est aspiré ! Ses amis n’hésitent pas et passent aussitôt après lui.'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['bolduc','jhimm','balai'],text:'Tous se retrouvent dans une grande salle éclairée de torches bleutées. Les sculptures sur les murs représentent des couples de figures : un temple des jumeaux.'},
+ {speaker:'Kala',location:'Le temple des jumeaux',cast:['kala','eberien','grimgors'],text:'Une autre pièce, à gauche… et la sortie là-bas, à une trentaine de mètres.'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['caleizis'],text:'Un immense tourbillon de volutes violettes se déploie dans la salle. Caleizis apparaît au milieu de cette lumière, telle un mirage.'},
+ {speaker:'Caleizis',location:'Le temple des jumeaux',cast:['caleizis','kala'],text:'Vous voilà enfin. Vous portez bien plus que vos armes… Je connais les histoires que vous préférez taire.'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['eberien','jhimm','bolduc'],text:'Elle évoque des noms, des lieux et des instants précis de leurs vies. Certains réveillent une douleur ancienne ; d’autres, une rancœur qu’ils croyaient enfouie. Elle en sait beaucoup trop.'},
+ {speaker:'Grimgors',location:'Le temple des jumeaux',cast:['grimgors','caleizis'],text:'Assez. Comment sais-tu tout cela ?'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['kala','jhimm','grimgors'],mood:'surprised',text:'Ils tentent de réagir, mais quelque chose dans l’air les paralyse tous. Impossible de faire un pas. La puissance de Caleizis dépasse clairement la leur.'},
+ {speaker:'Caleizis',location:'Le temple des jumeaux',cast:['caleizis'],text:'Eh bien ? Plus personne n’a rien à dire ?',choices:[
+  {label:'Provoquer Caleizis — lancer le duel',onChoose:()=>chooseLakeReaction('duel')},
+  {label:'Garder le silence',secondary:true,onChoose:()=>chooseLakeReaction('silence')}
+ ]}
+ ].map(beat=>({mood:'neutral',...beat})),null,resume);
+}
+function chooseLakeReaction(path){
+ if(story.stage!=='part8-intro'||!['duel','silence'].includes(path))return;
+ story.lakePath=path;story.lakeStep=0;saveStory();
+ if(path==='duel')startLakeGame();
+ else{story.lakeEncounterResolved=true;story.stage='part8-epilogue';saveStory();showLakeEpilogue()}
+}
+function startLakeGame(){
+ if(story.part7!=='complete')return;
+ if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
+ applyRulePreset('basic-open');currentMode='story-caleizis';gameType='ai';
+ const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
+ board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:['p56','p56','p56','p05','p05'].map(id=>cloneCard(catalogById(id)))};
+ selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
+ story.lakePath='duel';story.lakeEncounterResolved=false;story.part8='started';story.stage='part8-match';story.lakeWon=false;story.lakeStep=0;saveStory();
+ $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
+ $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Caleizis';$('#rulesBtn').style.display='none';
+ msg('Le défi de Caleizis','Vous avez choisi de provoquer Caleizis.');render();saveStoryMatch();
+}
+
+
+function endLakeGame(counts){
+ try{localStorage.removeItem('hackenia-story-match')}catch{}
+ if(counts.p>counts.a){story.lakeWon=true;story.lakeEncounterResolved=true;story.stage='part8-epilogue';story.lakeStep=0;saveStory();setTimeout(showLakeEpilogue,1200)}
+ else{story.part8='retry';story.stage='part8-retry';story.lakeWon=false;story.lakeEncounterResolved=false;story.lakeStep=0;story.lakePath=null;saveStory();setTimeout(()=>runStorySequence([{speaker:'Voix off',location:'Le temple des jumeaux',cast:['caleizis'],text:'Caleizis a pris le dessus. Il faut reprendre la partie 8 depuis le début.',finalLabel:'Recommencer la partie 8'}],restartLakePart),1200)}
+}
+function showLakeEpilogue(){
+ if(!story.lakeEncounterResolved)return;
+ const resume=story.stage==='part8-epilogue'?story.lakeStep:0;story.stage='part8-epilogue';saveStory();
+ const departure=story.lakePath==='duel'?
+ [{speaker:'Caleizis',location:'Le temple des jumeaux',cast:['caleizis'],mood:'crying',text:'Non… Ce n’est pas possible ! Vous… !'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['caleizis'],mood:'crying',text:'Caleizis s’emporte. Des larmes coulent sur ses joues ; ses volutes se déchirent et elle disparaît, furieuse et en pleurs.'}]:
+ [{speaker:'Caleizis',location:'Le temple des jumeaux',cast:['caleizis'],text:'Votre silence est bien décevant…'},
+ {speaker:'Voix off',location:'Le temple des jumeaux',cast:['caleizis'],text:'Un peu vexée de ne recevoir aucune réponse, Caleizis finit par disparaître dans ses volutes.'}];
+ runStorySequence([...departure,
+ {speaker:'Jhimm',location:'Le temple des jumeaux',cast:['jhimm','kala','grimgors'],text:'Je peux à nouveau bouger. Tout le monde va bien ?'},
+ {speaker:'Ébérien',location:'Le temple des jumeaux',cast:['eberien','bolduc','balai'],text:'Allons voir cette pièce à gauche avant de partir.'},
+ {speaker:'Voix off',location:'La salle de rituel',cast:[],artwork:'ice-ritual-background',artworkAlt:'Deux statues dans la salle de rituel et la source élémentaire de glace',text:'Les aventuriers fouillent la salle de rituel. Deux belles statues y sont installées, face à face.'},
+ {speaker:'Kala',location:'La salle de rituel',cast:['kala','eberien'],text:'Au fond… une source élémentaire de glace !'},
+ {speaker:'Voix off',location:'La salle de rituel',cast:[],artwork:'ice-ritual-background',artworkAlt:'Deux statues dans la salle de rituel et la source élémentaire de glace',text:'Des cristaux bleus s’élèvent au-dessus d’une eau lumineuse. La source de glace éclaire les sculptures d’une lueur froide.'},
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'pink-lake-background',artworkAlt:'Panorama du lac rose sous une lune rose entre les montagnes',text:'Enfin, ils sortent de la grotte. Devant eux s’étend un panorama magnifique : le lac rose scintille entre les montagnes sous la lumière de la lune.'},
+ {speaker:'Voix off',location:'Le lac rose',cast:['grimgors','kala','jhimm'],text:'Après les pièges et cette rencontre troublante, les aventuriers s’arrêtent un instant pour contempler le lac. La partie 8 s’achève ici.',finalLabel:'Terminer la partie 8'}
+ ].map(beat=>({mood:'neutral',...beat})),finishLakePart,resume);
+}
+function finishLakePart(){
+ if(!story.lakeEncounterResolved||story.part7!=='complete')return;
+ queueStoryBooster('part8');story.part8='complete';story.chapter1='complete';story.stage='part8-complete';story.lakeStep=0;story.unlocked=Math.max(2,story.unlocked);
+ if(!economy.storyRewards.part8){economy.storyRewards.part8=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
