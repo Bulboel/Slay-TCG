@@ -390,3 +390,24 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #shopScreen .shop-offer strong{grid-column:2;grid-row:1;font-size:11px}
  #shopScreen .shop-offer .menu-btn{grid-column:2;grid-row:2;font-size:10px;padding:5px 3px}
 }
+
+/* Preserve full-size desktop opponent cards within the existing fixed hand area. */
+@media(min-width:901px){
+ #gameApp .side.ai .hand{--opponent-card-height:min(230px,calc(var(--duel-board)*.43));--opponent-step:clamp(18px,calc(((100dvh - 84px)*.55 - var(--opponent-card-height) - 64px)/4),62px)}
+ #gameApp .side.ai .hand .card{height:var(--opponent-card-height)}
+ #gameApp .side.ai .hand .card+.card{margin:calc(-1*var(--opponent-card-height) + var(--opponent-step)) 0 0}
+}
+/* Give mobile crystals their own clear layer above the card glow. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp .side.player{isolation:isolate}
+ #gameApp .side.player .player-label{position:relative;z-index:20;min-height:30px;height:30px;gap:6px;margin:0;padding:2px 8px;justify-content:center;background:linear-gradient(90deg,transparent,#ead7a4ee 15% 85%,transparent);border-radius:9px}
+ #gameApp .side.player .memory-orbs{position:relative;z-index:21;flex-shrink:0;box-shadow:0 2px 5px #14292330,inset 0 1px #e2c48125}
+ #gameApp #playerHand{position:relative;z-index:0;padding-top:10px;height:calc(100% - 30px);--hand-card-width:calc((clamp(104px,22dvh,190px) - 40px)*.7142857)}
+ #gameApp .side.player .hand-inspect{position:relative;z-index:21}
+ #gameApp #playerHand .card:has(.mastery-halo.diamond){filter:drop-shadow(0 0 5px #9ef4ff);box-shadow:0 0 6px #b7eaff,0 0 10px #85e7f555}
+}
+
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp #playerHand .card:has(.mastery-halo.diamond){animation-name:mobileDiamondAura}
+}
+@keyframes mobileDiamondAura{0%,100%{box-shadow:-3px 0 6px #ff55ad80,3px 0 6px #55d6ff90,0 4px 7px #85f7a380}50%{box-shadow:-3px 0 8px #be7aff90,3px 0 8px #6cffc590,0 4px 8px #ffe57980}}
