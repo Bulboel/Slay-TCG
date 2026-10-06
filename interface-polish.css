@@ -605,3 +605,5 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #landingFrame{position:fixed;z-index:1002;box-sizing:border-box;pointer-events:none;border:4px solid #fff0a0;border-radius:9px;background:#52ef8b12;box-shadow:inset 0 0 0 2px #1c8050,0 0 0 2px #16683f,0 0 20px 4px #fff0a0bb}
 #landingFrame>span{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);padding:4px 9px;border:1px solid #ffeba0;border-radius:7px;background:#125036;color:#fff4b9;white-space:nowrap;font:700 12px/1.15 Georgia,serif;box-shadow:0 2px 7px #00190ddd}
 #gameApp .cell.drop-target{background:#4a9969!important;box-shadow:inset 0 0 0 4px #fff0a0,inset 0 0 35px #97ffc588!important}
+/* Engraved serif numerals for the duel score. */
+#gameApp .score>b{font-family:Georgia,'Palatino Linotype','Times New Roman',serif;font-weight:700;font-style:normal;font-variant-numeric:lining-nums tabular-nums;line-height:1;letter-spacing:.015em;display:grid;place-items:center;align-self:center;-webkit-text-stroke:.25px color-mix(in srgb,currentColor 75%,#fff1c5);text-shadow:0 1px 1px #081e15,0 -1px 0 #fff3,0 0 7px currentColor}
