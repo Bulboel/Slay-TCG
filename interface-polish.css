@@ -304,8 +304,8 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 
 /* Battle banners: transparent character artwork over an animated magical burst. */
 .battle-result{position:fixed;inset:0;z-index:160;display:grid;place-items:center;padding:20px;background:#06151bdd;backdrop-filter:blur(6px);overflow:hidden;isolation:isolate}
-.battle-result-content{position:relative;z-index:2;width:min(96vw,1100px);text-align:center}
-#battleResultArt{display:block;width:100%;height:auto;max-height:68dvh;object-fit:contain;filter:drop-shadow(0 14px 28px #0009)}
+.battle-result-content{position:relative;z-index:2;width:100%;max-width:1100px;min-width:0;box-sizing:border-box;text-align:center}
+#battleResultArt{display:block;width:88%;margin-inline:auto;height:auto;max-height:68dvh;object-fit:contain;filter:drop-shadow(0 14px 28px #0009)}
 .battle-result.win #battleResultArt{animation:victoryBounce 1.35s cubic-bezier(.18,.8,.3,1) both}
 .battle-result.lose #battleResultArt{animation:defeatArrival 1.65s ease-out both}
 #battleResultLabel{font-size:clamp(14px,3vw,22px);font-weight:800;color:#fff5da;text-shadow:0 2px 8px #000;margin:18px 0}
