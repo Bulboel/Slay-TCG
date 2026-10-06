@@ -106,7 +106,7 @@
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
 <link rel="stylesheet" href="presentation.css">
-<link rel="stylesheet" href="interface-polish.css?v=20261006-results2">
+<link rel="stylesheet" href="interface-polish.css?v=20261006-options1">
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
@@ -215,23 +215,17 @@
     <div class="panel-actions"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="pvpRulesBtn">Choisir la règle</button></div>
   </div>
 </section>
-<section class="panel-screen hidden" id="optionsScreen">
-  <div class="panel-card">
-    <h2>Options</h2>
-    <p>Choisissez les couleurs utilisées pendant les affrontements.</p>
-    <div class="color-options">
+<section class="panel-screen hidden" id="optionsScreen"><div class="panel-card"><h2>Options</h2><a class="lore-workshop-link menu-btn" id="loreWorkshopLink" href="lore-editor.html"><strong>✧ Atelier du lore</strong><small>Écris les histoires de tes cartes</small><span aria-hidden="true">›</span></a><div class="options-groups"><details class="options-group"><summary>Couleurs des joueurs</summary><div class="options-group-body"><div class="color-options">
       <div class="color-box"><label for="playerColor">Votre couleur</label><input type="color" id="playerColor" value="#45b85d"></div>
       <div class="color-box"><label for="opponentColor">Couleur adverse</label><input type="color" id="opponentColor" value="#d95050"></div>
     </div>
-    <h2 style="font-size:1.35rem">Ambiance sonore</h2>
-    <div class="audio-options">
+    </div></details><details class="options-group"><summary>Ambiance sonore</summary><div class="options-group-body"><div class="audio-options">
       <label class="audio-row" for="musicVolume"><span>Musique</span><input type="range" id="musicVolume" min="0" max="100" step="1"><span class="audio-value" id="musicVolumeValue">35 %</span></label>
       <label class="audio-row" for="sfxVolume"><span>Effets sonores</span><input type="range" id="sfxVolume" min="0" max="100" step="1"><span class="audio-value" id="sfxVolumeValue">70 %</span></label>
       <label class="audio-toggle"><input type="checkbox" id="audioMuted"><span class="sound-indicator">♪</span><span>Couper tous les sons</span></label>
-      <button class="menu-btn secondary" id="testAudioBtn" type="button">Activer / tester le son</button><p id="audioStatus" role="status"></p><p class="audio-note">La musique démarre après votre première interaction, conformément aux règles des navigateurs et des smartphones.</p>
+      <button class="menu-btn secondary" id="testAudioBtn" type="button">Activer / tester le son</button><p id="audioStatus" role="status"></p><p class="audio-note">Touchez « Tester le son » pour lancer l’audio.</p>
     </div>
-    <h2 style="font-size:1.35rem">Votre élément</h2>
-    <p class="element-explain">Votre affinité apparaît entre vos deux cristaux de Souvenirs et sur les cartes du même élément. Elle n’altère pas leurs valeurs.</p>
+    </div></details><details class="options-group"><summary>Votre élément</summary><div class="options-group-body"><p class="element-explain">Votre affinité apparaît entre vos deux cristaux de Souvenirs et sur les cartes du même élément. Elle n’altère pas leurs valeurs.</p>
     <div class="element-options" id="elementOptions">
       <button class="element-choice" data-element="wind" style="--element-color:#43a85b"><span class="element-icon">≋</span><span>Vent</span></button>
       <button class="element-choice" data-element="water" style="--element-color:#3287d8"><span class="element-icon">●</span><span>Eau</span></button>
@@ -240,19 +234,15 @@
       <button class="element-choice" data-element="ice" style="--element-color:#78cfe8"><span class="element-icon">❄</span><span>Glace</span></button>
       <button class="element-choice" data-element="fire" style="--element-color:#d94d45"><span class="element-icon">♨</span><span>Feu</span></button>
     </div>
-    <h2 style="font-size:1.35rem">Dos des cartes adverses</h2>
-    <div class="back-options">
+    </div></details><details class="options-group"><summary>Dos des cartes adverses</summary><div class="options-group-body"><div class="back-options">
       <button class="back-choice" data-back="official"><span class="card card-back back-official"></span><span>Emblème élémentaire</span></button>
       <button class="back-choice" data-back="sun"><span class="card card-back back-sun"></span><span>Sceau d’Hackénia</span></button>
       <button class="back-choice" data-back="mist"><span class="card card-back back-mist"></span><span>Courants élémentaires</span></button>
     </div>
-    <h2 style="font-size:1.35rem">Illustrations des Souvenirs</h2>
-    <p>Choisissez, parmi vos illustrations découvertes, celle qui apparaîtra lorsque chaque Souvenir est pioché.</p>
+    </div></details><details class="options-group"><summary>Illustrations des Souvenirs</summary><div class="options-group-body"><p>Choisissez, parmi vos illustrations découvertes, celle qui apparaîtra lorsque chaque Souvenir est pioché.</p>
     <div class="memory-skin-options" id="memorySkinOptions"></div>
-    <section class="save-transfer"><h3>Jouer sur un autre appareil</h3><p>Exportez toute votre progression, puis importez ce fichier sur votre téléphone ou votre ordinateur.</p><div class="panel-actions"><button class="menu-btn secondary" id="exportSaveBtn">Exporter</button><button class="menu-btn secondary" id="importSaveBtn">Importer</button><input class="hidden" type="file" id="importSaveFile" accept="application/json,.json"></div><div class="transfer-note" id="transferNote"></div></section>
-    <div class="panel-actions"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="saveOptionsBtn">Enregistrer</button></div>
-  </div>
-</section>
+    </div></details><details class="options-group"><summary>Sauvegarde et transfert</summary><div class="options-group-body"><section class="save-transfer"><h3>Jouer sur un autre appareil</h3><p>Exportez toute votre progression, puis importez ce fichier sur votre téléphone ou votre ordinateur.</p><div class="panel-actions"><button class="menu-btn secondary" id="exportSaveBtn">Exporter</button><button class="menu-btn secondary" id="importSaveBtn">Importer</button><input class="hidden" type="file" id="importSaveFile" accept="application/json,.json"></div><div class="transfer-note" id="transferNote"></div></section>
+    </div></details></div><div class="panel-actions options-footer"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="saveOptionsBtn">Enregistrer</button></div></div></section>
 <div class="app hidden" id="gameApp">
   <header class="topbar"><div class="brand"><div class="sigil">H</div><div><h1>TRIADE D'HACKÉNIA</h1><small>Prototype tactique • 1 contre 1</small></div></div><div class="actions"><span class="wallet-display"><span class="gold-value">0</span> or</span><button class="ghost" id="saveGameBtn">Sauvegarder</button><button class="ghost" id="menuBtn">Menu</button><button class="ghost" id="rulesBtn">Règles</button><button class="primary" id="newBtn">Rejouer</button></div></header>
   <main>
