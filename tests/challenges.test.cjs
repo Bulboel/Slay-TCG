@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const context=vm.createContext({document:{addEventListener(){}},Date});
+vm.runInContext('let economy={gold:0},catalog=Array.from({length:150},(_,i)=>({id:String(i)})),collection={counts:{}},saveSlotActive=true,saves=0;function ownedCopies(id){return collection.counts[id]||0}function saveEconomy(){saves++}function syncProgressSave(){saves++}',context);
+vm.runInContext(fs.readFileSync('game-upgrades.js','utf8'),context);
+const run=s=>vm.runInContext(s,context);
+run('checkChallenges()');assert.equal(run('economy.gold'),0);assert.equal(run("!!backUnlocked('element-water')"),false);
+run('checkChallenges(true);checkChallenges(true)');assert.equal(run('economy.gold'),50);assert.equal(run('!!economy.challenges.quickWin'),true);
+run('collection.counts=Object.fromEntries(catalog.slice(0,99).map(c=>[c.id,20]));checkChallenges()');assert.equal(run('!!economy.challenges.collection100'),false);
+run('collection.counts[99]=1;checkChallenges()');assert.equal(run('!!economy.challenges.collection100'),true);assert.equal(run("Object.keys(elementalBacks).every(k=>backUnlocked('element-'+k))"),true);
+run('economy=JSON.parse(JSON.stringify(economy));checkChallenges(true)');assert.equal(run('economy.gold'),50);
+run('economy={gold:0};collection.counts={};checkChallenges()');assert.equal(run("!!backUnlocked('element-water')"),false);assert.equal(run('backUnlocked(undefined)'),false);
+console.log('PASS: one-time gold, 99/100 distinct cards, six locked backs, reload and reset.');

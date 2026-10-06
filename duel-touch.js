@@ -7,7 +7,7 @@ function bindDuelTouch(el,card,owner,index,hidden,playable){
   if(e.pointerType!=='touch'||!e.isPrimary)return;
   clear();const start={pointerId:e.pointerId,clientX:e.clientX,clientY:e.clientY,button:0,pointerType:'touch'};
   gesture={start,moved:false,held:false,timer:0};el.setPointerCapture?.(e.pointerId);
-  if(!hidden)gesture.timer=setTimeout(()=>{
+  if(!hidden&&index<0)gesture.timer=setTimeout(()=>{
    if(!gesture||gesture.moved||!el.isConnected||document.querySelector('#gameApp').classList.contains('hidden'))return;
    gesture.held=true;duelTouchZoomGuardUntil=Date.now()+1000;suppressClickUntil=Date.now()+800;cancelDuelDrag();
    openCardZoom({...card,mastery:card.mastery||masteryTier(ownedCopies(card.id))});
