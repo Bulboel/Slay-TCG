@@ -38,3 +38,12 @@ function clearBoardChoice(){boardChoice=null;if(choiceState?.board)choiceState=n
 function openBoardChoice(title,text,positions,onPick){clearBoardChoice();choiceState={board:true};boardChoice={title,text,positions,onPick};document.querySelector('#memoryChoice').classList.add('hidden');paintBoardChoice();document.querySelector('#board .memory-eligible')?.focus({preventScroll:true})}
 function paintBoardChoice(){if(!boardChoice)return;const holder=document.querySelector('#board');holder.classList.add('choosing-memory');holder.querySelectorAll('.cell').forEach(cell=>{const eligible=boardChoice.positions.includes(Number(cell.dataset.index));cell.classList.toggle('memory-eligible',eligible);cell.classList.toggle('memory-ineligible',!eligible);cell.setAttribute('aria-disabled',String(!eligible))});let prompt=document.querySelector('#boardChoicePrompt');if(!prompt){prompt=document.createElement('div');prompt.id='boardChoicePrompt';prompt.setAttribute('role','status');document.querySelector('.memory-zone').prepend(prompt)}prompt.textContent=boardChoice.title+' — '+boardChoice.text;document.querySelector('#turn').textContent='Choisissez sur le plateau'}
 document.addEventListener('click',event=>{const cell=event.target.closest('#board .cell');if(!cell||!boardChoice)return;event.preventDefault();event.stopImmediatePropagation();const position=Number(cell.dataset.index);if(!boardChoice.positions.includes(position))return;const onPick=boardChoice.onPick;clearBoardChoice();onPick(position)},true);
+// Keep the landing frame above the enlarged dragged card, without intercepting input.
+function showLandingFrame(cell){
+ let frame=document.querySelector('#landingFrame');
+ if(!cell){frame?.remove();return}
+ if(!frame){frame=document.createElement('div');frame.id='landingFrame';frame.setAttribute('aria-hidden','true');frame.innerHTML='<span>Poser ici</span>';document.body.append(frame)}
+ const bounds=cell.getBoundingClientRect();
+ Object.assign(frame.style,{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px'});
+ frame.dataset.index=cell.dataset.index;
+}
