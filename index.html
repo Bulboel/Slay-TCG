@@ -106,7 +106,7 @@
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
 <link rel="stylesheet" href="presentation.css">
-<link rel="stylesheet" href="interface-polish.css?v=20261006-expressions3">
+<link rel="stylesheet" href="interface-polish.css?v=20261006-storycalm4">
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
@@ -270,12 +270,12 @@
 <script src="assets/data/card-stats.js"></script>
 <script src="assets/data/september28-cards.js"></script>
 <script src="assets/data/card-numbers.js"></script>
-<script src="collection-polish.js?v=20261006-expressions3"></script>
+<script src="collection-polish.js?v=20261006-storycalm4"></script>
 <script src="booster-presentation.js"></script>
 <script src="duel-touch.js"></script>
 <script src="tutorial-duel.js"></script>
 <script src="collection-updates.js?v=20261006-results1"></script>
-<script src="story-mine.js?v=20261006-expressions3"></script>
+<script src="story-mine.js?v=20261006-storycalm4"></script>
 <script>
 const art=n=>({src:`assets/cards/s${Math.floor((n-1)/9)+1}.webp`,x:(n-1)%3,y:Math.floor(((n-1)%9)/3)});
 const newArt=n=>({src:`assets/cards/new-set/n${Math.floor((n-1)/9)+1}.webp`,x:(n-1)%3,y:Math.floor(((n-1)%9)/3)});
@@ -586,7 +586,7 @@ function beatCast(beat){if(beat.cast)return beat.cast;const key=String(beat.port
 const storyEmotionSlots={kayla:0,hilam:1,eberien:2,bolduc:3,grimgors:4,violette:5,mirahel:6,lama:7,farmer:8,kala:9,jhimm:10,balai:11};
 function storySpriteAppearance(beat,key){
  const portraitMood=String(beat.portrait||'').startsWith(key+'-')?String(beat.portrait).slice(key.length+1):'';
- const mood=beat.emotions?.[key]||beat.mood||({content:'happy',amused:'happy',surprise:'surprised',suspicious:'surprised',embarrassed:'embarrassed'}[portraitMood])||'neutral';
+ const mood=beat.emotions?.[key]||beat.mood||({content:'neutral',amused:'happy',surprise:'surprised',suspicious:'surprised',embarrassed:'embarrassed'}[portraitMood])||'neutral';
  const slot=storyEmotionSlots[key];
  if(key==='mirahel'&&mood!=='happy')return {mood,file:mood==='embarrassed'?'mirahel-embarrassed-v3':mood==='surprised'?'mirahel-surprised-v3':'mirahel-neutral-v3'};
  if((mood==='happy'||mood==='surprised')&&slot!==undefined)return {mood,file:'dialogue-'+mood+'-v3',slot};
@@ -638,7 +638,7 @@ function startForestPart(){if(story.part1!=='complete'&&story.chapter1!=='comple
  {speaker:'Kala',portrait:'kala-content',text:'Bonne idée. Gardons-les soigneusement, sans les goûter pour le moment.'},
  {speaker:'Voix off',text:'Soudain, toutes les couleurs disparaissent. La forêt semble figée dans une scène venue d’une autre aventure.',flashback:true},
  {speaker:'Violette',portrait:'violette-suspicious',text:'Mais pourquoi tu les as toutes bouffées ?!?',flashback:true},
- {speaker:'Voix off',cast:['violette','mirahel','lama'],emotions:{mirahel:'embarrassed',violette:'surprised',lama:'happy'},text:'Mirahel la regarde avec de grands yeux, les joues pleines de baies. Il tente de répondre, puis renonce, manifestement gêné.',flashback:true},
+ {speaker:'Voix off',cast:['violette','mirahel','lama'],emotions:{mirahel:'embarrassed',violette:'surprised',lama:'neutral'},text:'Mirahel la regarde avec de grands yeux, les joues pleines de baies. Il tente de répondre, puis renonce, manifestement gêné.',flashback:true},
  {speaker:'Lama',cast:['mirahel','lama'],emotions:{mirahel:'embarrassed',lama:'happy'},text:'Tu comptais au moins nous en laisser une ? Ha ha !',flashback:true},
  {speaker:'Voix off',text:'La vision s’efface et les couleurs reviennent dans le Bois Tendre.'},
  {speaker:'Bolduc',portrait:'bolduc-amused',text:'On s’ennuie un peu pendant cette halte… Grimgors, ça te dit un duel de Triade ?'},
@@ -656,12 +656,12 @@ function startCabinPart(){
  {speaker:'Voix off',cast:['farmer','horse'],text:'En suivant la fumée aperçue au loin, les aventuriers arrivent devant la cabane. Elle se tient à la bifurcation : un chemin part à gauche, l’autre à droite.'},
  {speaker:'Voix off',cast:['farmer','horse'],text:'Un vieux fermier, assis près de sa barrière sous un chapeau de paille, voit approcher les aventuriers. Son cheval nain lève à peine la tête.'},
  {speaker:'Vieux fermier',cast:['eberien','farmer'],emotions:{eberien:'surprised'},text:'Ah non, j’achèterai rien du tout, hein !'},
- {speaker:'Ébérien',cast:['eberien','farmer'],emotions:{eberien:'happy'},text:'Rassurez-vous, nous ne vendons rien. Nous sommes en mission. Nous cherchons simplement notre chemin.'},
+ {speaker:'Ébérien',cast:['eberien','farmer'],emotions:{eberien:'neutral'},text:'Rassurez-vous, nous ne vendons rien. Nous sommes en mission. Nous cherchons simplement notre chemin.'},
  {speaker:'Voix off',cast:['eberien','farmer'],text:'Le vieux monsieur les observe un instant. Ses épaules se relâchent et sa voix se fait moins brusque.'},
  {speaker:'Vieux fermier',cast:['eberien','farmer'],text:'En mission ? Vous venez pour Berdésa, alors ? Il semble y avoir un souci là-bas…'},
- {speaker:'Voix off',cast:['kala','horse','bolduc'],mood:'happy',text:'Pendant cet échange, Kala et Bolduc se sont approchés du cheval nain. Ils le caressent doucement ; le petit cheval accueille leurs attentions sans inquiétude.'},
- {speaker:'Bolduc',cast:['kala','horse','bolduc'],mood:'happy',text:'Eh bien, toi, tu es nettement moins méfiant que ton propriétaire !'},
- {speaker:'Ébérien',cast:['eberien','farmer'],mood:'happy',text:'Nous allons passer par Berdésa. Merci de nous avoir prévenus.'},
+ {speaker:'Voix off',cast:['kala','horse','bolduc'],mood:'neutral',text:'Pendant cet échange, Kala et Bolduc se sont approchés du cheval nain. Ils le caressent doucement ; le petit cheval accueille leurs attentions sans inquiétude.'},
+ {speaker:'Bolduc',cast:['kala','horse','bolduc'],emotions:{bolduc:'happy',kala:'neutral'},text:'Eh bien, toi, tu es nettement moins méfiant que ton propriétaire !'},
+ {speaker:'Ébérien',cast:['eberien','farmer'],mood:'neutral',text:'Nous allons passer par Berdésa. Merci de nous avoir prévenus.'},
  {speaker:'Voix off',cast:['farmer','horse'],text:'Le groupe remercie le fermier et se prépare à prendre le chemin de Berdésa. Mais, un instant, les couleurs de la scène s’effacent…'},
  {speaker:'Voix off',cast:['violette','farmer','lama'],flashback:true,text:'Une autre aventure, au même endroit. Violette s’installe tout près du vieux monsieur. Celui-ci se décale aussitôt sur son siège.'},
  {speaker:'Vieux fermier',cast:['violette','farmer'],flashback:true,text:'Hé… vous pourriez me laisser un peu de place ?'},
