@@ -125,7 +125,7 @@ function showFinalMineVictory(){
 }
 function finishFinalMinePart(){
  if(!story.finalMineWon)return;
- queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part5');story.part5='complete';story.part6=story.part6==='complete'?'complete':'new';story.chapter1=story.part9==='complete'?'complete':'started';story.stage='part5-complete';story.finalMineStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part5){economy.storyRewards.part5=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -192,7 +192,7 @@ function showRescueVictory(){
 }
 function finishRescuePart(){
  if(!story.rescueWon)return;
- queueStoryBooster('part6');story.part6='complete';story.part6bis=story.part6bis==='complete'?'complete':'new';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part6');story.part6='complete';story.part6bis=story.part6bis==='complete'?'complete':'new';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part9==='complete'?'complete':'started';story.stage='part6-complete';story.rescueStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part6){economy.storyRewards.part6=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -257,7 +257,7 @@ function showCaveVictory(){
 }
 function finishCavePart(){
  if(!story.caveWon)return;
- queueStoryBooster('part7');story.part7='complete';story.part8=story.part8==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part7');story.part7='complete';story.part8=story.part8==='complete'?'complete':'new';story.chapter1=story.part9==='complete'?'complete':'started';story.stage='part7-complete';story.caveStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part7){economy.storyRewards.part7=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -330,7 +330,7 @@ function showNewFacesVictory(){
 }
 function finishNewFacesPart(){
  if(!story.newFacesWon)return;
- queueStoryBooster('part6bis');story.part6bis='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part8==='complete'?'complete':'started';story.stage='part6bis-complete';story.newFacesStep=0;
+ queueStoryBooster('part6bis');story.part6bis='complete';story.part7=story.part7==='complete'?'complete':'new';story.chapter1=story.part9==='complete'?'complete':'started';story.stage='part6bis-complete';story.newFacesStep=0;
  if(!economy.storyRewards.part6bis){economy.storyRewards.part6bis=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
 
@@ -418,6 +418,73 @@ function showLakeEpilogue(){
 }
 function finishLakePart(){
  if(!story.lakeEncounterResolved||story.part7!=='complete')return;
- queueStoryBooster('part8');story.part8='complete';story.chapter1='complete';story.stage='part8-complete';story.lakeStep=0;story.unlocked=Math.max(2,story.unlocked);
+ queueStoryBooster('part8');story.part8='complete';story.part9=story.part9==='complete'?'complete':'new';story.chapter1=story.part9==='complete'?'complete':'started';story.stage='part8-complete';story.lakeStep=0;story.unlocked=Math.max(2,story.unlocked);
  if(!economy.storyRewards.part8){economy.storyRewards.part8=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
+}
+
+function renderFinaleMenu(){
+ const unlocked=story.part8==='complete',complete=story.part9==='complete';
+ $('#storyPart9').classList.toggle('locked',!unlocked);$('#storyPart9').classList.toggle('complete',complete);
+ $('#chapter1Part9Btn').disabled=!unlocked;$('#chapter1Part9Btn').textContent=!unlocked?'Verrouillé':String(story.stage).startsWith('part9')&&story.stage!=='part9-complete'?'Continuer':complete?'Rejouer':'Commencer';
+ $('#chapter1Part9Status').textContent=!unlocked?'Terminez la partie 8.':complete?'Les nouveaux jumeaux sont retrouvés — chapitre terminé.':'Une veille au bord du lac… et un dernier danger.';
+ $('#chapter2Card').classList.toggle('locked',!complete);$('#chapter2Status').textContent=complete?'La suite sera ajoutée prochainement.':'Terminez la partie 9 pour continuer.';$('#chapter2Btn').textContent=complete?'Bientôt disponible':'Verrouillé';
+}
+function startFinalePart(){
+ if(story.part8!=='complete')return;
+ const saved=readSaved('hackenia-story-match',null);
+ if(story.stage==='part9-match'&&saved?.mode==='story-lake-finale'){restoreStoryMatch(saved);return}
+ if(story.stage==='part9-victory'&&story.finaleWon){showFinaleVictory();return}
+ if(['part9-match','part9-retry'].includes(story.stage)){startFinaleGame();return}
+ const resume=story.stage==='part9-intro'?story.finaleStep:0;
+ story.part9='started';story.stage='part9-intro';story.finaleWon=false;saveStory();
+ runStorySequence([
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'pink-lake-background',text:'Les aventuriers atteignent enfin le fameux lac rose. C’est ici qu’ils doivent trouver les nouveaux jumeaux. Pourtant, personne ne les attend.'},
+ {speaker:'Kala',location:'Le lac rose',cast:['kala','eberien','jhimm'],text:'Pas une silhouette… Restons dans les environs.'},
+ {speaker:'Grimgors',location:'La rive du lac rose',cast:['grimgors','bolduc','balai'],text:'Le bois longe le lac sur la droite. Nous pourrons y passer la nuit tout en surveillant la rive.'},
+ {speaker:'Voix off',location:'La rive du lac rose',cast:['kala','jhimm','eberien'],text:'Ils s’installent entre les arbres, assez près de l’eau pour apercevoir au loin une éventuelle arrivée. Ils organisent une ronde pour la nuit.'},
+ {speaker:'Jhimm',location:'La rive du lac rose',cast:['jhimm','grimgors'],text:'Je prends le premier tour. Reposez-vous.'},
+ {speaker:'Voix off',location:'La rive du lac rose',cast:['jhimm'],text:'La veille de Jhimm se déroule calmement. Seuls le vent dans les branches et le clapotis du lac troublent le silence.'},
+ {speaker:'Kala',location:'La rive du lac rose',cast:['kala','jhimm'],text:'À mon tour. Va dormir, je garde un œil sur le lac.'},
+ {speaker:'Voix off',location:'La rive du lac rose',cast:['kala'],mood:'surprised',text:'Kala entend soudain des voix dans sa tête. Douces, insistantes, elles l’invitent à entrer dans le lac… à les rejoindre sous la surface.'},
+ {speaker:'Ébérien',location:'La rive du lac rose',cast:['eberien','kala'],mood:'surprised',text:'Kala… Ces voix, tu les entends aussi ?'},
+ {speaker:'Voix off',location:'La rive du lac rose',cast:['eberien','kala'],mood:'surprised',text:'Ébérien vient de se réveiller. Le même charme s’empare de lui. Malgré leurs efforts, tous deux se sentent attirés vers les profondeurs du lac.'},
+ {speaker:'Kala',location:'La rive du lac rose',cast:['kala','eberien'],mood:'surprised',text:'Réveillez-vous ! Aidez-nous ! Quelque chose nous attire dans l’eau !'},
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'lake-attack-chibi',artworkAlt:'Trois gardiennes rouges et deux hydrelithes bleus émergent du lac rose, en version chibi',text:'Leurs amis se précipitent hors du campement. Les gardiennes commencent à sortir du lac, suivies de deux hydrelithes mineurs.'},
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'lake-attack-chibi',text:'Au loin, le rire de Caleizis résonne dans la nuit, comme si elle était satisfaite de ce qui se déroule devant eux.'},
+ {speaker:'Grimgors',location:'Le lac rose',cast:['grimgors','jhimm','bolduc'],text:'Tenez bon ! On est là !',finalLabel:'Affronter les créatures du lac'}
+ ].map(beat=>({mood:'neutral',...beat})),startFinaleGame,resume);
+}
+function startFinaleGame(){
+ if(story.part8!=='complete')return;
+ if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
+ applyRulePreset('basic-open');currentMode='story-lake-finale';gameType='ai';
+ const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
+ board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:['p11','p11','p11','p17','p17'].map(id=>cloneCard(catalogById(id)))};
+ selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
+ story.part9='started';story.stage='part9-match';story.finaleWon=false;story.finaleStep=0;saveStory();
+ $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
+ $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Les gardiennes du lac';$('#rulesBtn').style.display='none';
+ msg('Fin de la mission','Libérez Kala et Ébérien du charme du lac.');render();saveStoryMatch();
+}
+function endFinaleGame(counts){
+ try{localStorage.removeItem('hackenia-story-match')}catch{}
+ if(counts.p>counts.a){story.finaleWon=true;story.stage='part9-victory';story.finaleStep=0;saveStory();setTimeout(showFinaleVictory,1200)}
+ else{story.part9='retry';story.stage='part9-retry';story.finaleWon=false;saveStory();setTimeout(()=>runStorySequence([{speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'lake-attack-chibi',text:'Les créatures tiennent encore la rive. Il faut les vaincre pour libérer Kala et Ébérien.',finalLabel:'Réessayer le duel'}],startFinaleGame),1200)}
+}
+function showFinaleVictory(){
+ if(!story.finaleWon)return;
+ const resume=story.stage==='part9-victory'?story.finaleStep:0;story.stage='part9-victory';saveStory();
+ runStorySequence([
+ {speaker:'Voix off',location:'Le lac rose',cast:['kala','eberien','jhimm'],text:'Les créatures disparaissent dans les eaux roses. Le charme se brise : Kala et Ébérien retrouvent enfin le contrôle de leurs mouvements.'},
+ {speaker:'Jhimm',location:'Le lac rose',cast:['jhimm','kala','eberien'],text:'Vous êtes avec nous. Éloignons-nous du bord.'},
+ {speaker:'Messire Balai',location:'Le lac rose',cast:['balai','grimgors','bolduc'],mood:'surprised',text:'Regardez… quelque chose remonte !'},
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'twins-bubble-chibi',artworkAlt:'Les deux nouveaux jumeaux blonds reposent dans une immense bulle irisée au-dessus du lac rose, en version chibi',text:'Une énorme bulle émerge lentement du lac. Des reflets irisés courent sur sa surface. À l’intérieur reposent les nouveaux jumeaux.'},
+ {speaker:'Kala',location:'Le lac rose',cast:['kala','eberien'],mood:'happy',text:'Les voilà… Nous les avons enfin trouvés.'},
+ {speaker:'Voix off',location:'Le lac rose',cast:[],artwork:'twins-bubble-chibi',text:'La bulle s’élève au-dessus de l’eau, les jumeaux à l’abri en son cœur. Après cette dernière épreuve, leur mission touche à sa fin. Fin du chapitre 1.',finalLabel:'Terminer le chapitre 1'}
+ ].map(beat=>({mood:'neutral',...beat})),finishFinalePart,resume);
+}
+function finishFinalePart(){
+ if(!story.finaleWon||story.part8!=='complete')return;
+ queueStoryBooster('part9');story.part9='complete';story.chapter1='complete';story.stage='part9-complete';story.finaleStep=0;story.unlocked=Math.max(2,story.unlocked);
+ if(!economy.storyRewards.part9){economy.storyRewards.part9=true;awardGold(50)}saveCollection();saveStory();showStoryMenu();
 }
