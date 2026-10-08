@@ -1,0 +1,633 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Triade of Hackenia — Decks personnels</title><style>
+*{box-sizing:border-box}body{background:radial-gradient(circle at top,#61482d,#162330 70%);color:#f4e1b5;font:16px system-ui;margin:0;padding:14px}main{max-width:850px;margin:auto}h1{text-align:center;font-family:Georgia,serif}p{line-height:1.5}button,input{font:inherit;border-radius:8px;padding:10px}button{background:#e3c486;color:#251b11;border:1px solid #f5d99f;cursor:pointer}button:disabled{opacity:.45}input{width:130px;text-transform:uppercase}header,.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}#roomInfo,#status{text-align:center;padding:10px;min-height:35px}#board{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;background:radial-gradient(circle at center,#c6a66c,#75512c 85%);border:8px ridge #c8a56c;border-radius:17px;padding:8px;aspect-ratio:1;margin:12px auto;max-width:490px;box-shadow:0 14px 40px #0009,inset 0 0 30px #29190e}.cell{background:radial-gradient(circle at 50% 40%,#f2ddb1,#d2ae75);display:grid;place-items:center;border:2px solid #896333;padding:2px;min-width:0;box-shadow:inset 0 0 15px #75532a77;transition:background .2s} .cell:not(:disabled):hover{background:#f8e4b4;box-shadow:inset 0 0 16px #fff8bd,0 0 10px #f6d487}.card{background:#203c3d;color:white;border:3px solid #6ac782;border-radius:9px;position:relative;aspect-ratio:3/4;width:100%;display:grid;place-items:center;font-weight:700;font-size:clamp(10px,2vw,14px)}.guest{border-color:#ef8383;background:#4d2c38}.card span{position:absolute}.t{top:2px}.r{right:5px}.b{bottom:2px}.l{left:5px}.card strong{font-size:clamp(9px,2vw,13px)}.hand{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}.hand button{width:18%;padding:2px;min-width:55px;background:transparent;border:2px solid transparent}.hand button.active{border-color:#ffdd77}.hand .card{width:100%}.label{text-align:center;font-weight:700;margin:14px 0 6px}.note{font-size:.85rem;color:#d2c19e}#roomPanel{border:1px solid #a88953;border-radius:12px;padding:12px}.card.concealed{background:repeating-linear-gradient(45deg,#24313d,#24313d 12px,#42546b 13px,#42546b 16px);font:700 2rem Georgia,serif;color:#d6ba77;display:grid;place-items:center}.card{overflow:hidden;isolation:isolate;box-shadow:0 5px 12px #0008;transition:transform .22s ease,border-color .2s ease}
+.card::before{content:'';position:absolute;inset:0;z-index:-1;background-image:var(--card-art);background-size:var(--card-size,300% 300%);background-position:var(--card-pos);background-repeat:no-repeat;filter:saturate(1.07)}
+.card::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0008 0%,transparent 30%,transparent 55%,#000b 100%)}
+.card span{z-index:2;text-shadow:0 1px 4px #000,0 0 3px #000;font-size:clamp(11px,2.5vw,19px)}
+.card strong{z-index:2;position:absolute;bottom:20%;max-width:94%;padding:3px;background:#101720a6;border-radius:4px;text-align:center;text-shadow:0 1px 4px #000}
+.hand button:not(:disabled):hover .card{transform:translateY(-6px) scale(1.04)}
+.hand button.active .card{box-shadow:0 0 0 3px #ffdc6c,0 0 18px #ffdd78}
+.cell .card.just-placed{animation:triade-arrive .3s ease-out both}.cell .card.just-captured{animation:triade-capture .6s ease-out both}@keyframes triade-capture{0%{transform:rotateY(0deg);filter:brightness(1)}45%{transform:rotateY(90deg);filter:brightness(1.7)}100%{transform:rotateY(0deg);filter:brightness(1)}}#status{font-weight:700;letter-spacing:.025em}#status.game-result{font-size:clamp(22px,4vw,34px);color:#fbe09c;text-shadow:0 0 15px #e8b765}
+@media (prefers-reduced-motion:reduce){.cell .card,.cell .card.just-placed{animation:none!important;transition:none!important}}
+@keyframes triade-arrive{from{opacity:.5;transform:scale(.82) rotate(-3deg)}to{opacity:1;transform:scale(1)}}
+#gamePanel[hidden],#rulePanel[hidden],#hostRules[hidden],#acceptRule[hidden]{display:none!important}#rulePanel{margin:15px 0;padding:14px;border:1px solid #d6b77b;border-radius:13px;background:#1a292cbb}#rulePanel select{width:100%;padding:11px;margin:8px 0;background:#fff1ce;color:#2d2218;border-radius:7px}#rulePanel h2{font:700 1.3rem Georgia,serif}
+/* Plateau fidèle au jeu principal : dimensions et textures du plateau d'origine. */
+#onlineBoardWrap{position:relative;padding:24px;border-radius:34px;background:radial-gradient(circle at 18% 12%,#e8d08c55 0 1px,transparent 2px),linear-gradient(135deg,#d8bd72,#9a682b 48%,#543618);background-size:17px 17px,auto;box-shadow:0 32px 85px #000c,inset 0 0 0 3px #fff1a84d,inset 0 0 38px #37200d;transform:perspective(1100px) rotateX(1deg);width:min(100%,748px);margin:12px auto;isolation:isolate}
+#onlineBoardWrap:before{content:'';position:absolute;inset:-10px;border-radius:40px;z-index:-1;background:radial-gradient(ellipse at 7% 12%,#7fa348 0 6%,transparent 14%),radial-gradient(ellipse at 93% 18%,#557b39 0 7%,transparent 15%),radial-gradient(ellipse at 12% 92%,#436c36 0 7%,transparent 15%),radial-gradient(ellipse at 90% 88%,#86a64d 0 6%,transparent 14%),linear-gradient(135deg,#294525,#172817);filter:drop-shadow(0 14px 18px #0008)}
+#onlineBoardWrap:after{content:'❧  ❧';position:absolute;left:-18px;right:-18px;bottom:-20px;color:#89aa55;font-size:2.2rem;letter-spacing:14px;text-shadow:0 4px 8px #10200c;display:flex;justify-content:space-between;pointer-events:none}
+#board{width:100%;max-width:none;aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);gap:11px;padding:12px;margin:0;background:linear-gradient(#d7c28eeb,#b49a63eb),radial-gradient(circle,#5f4321 0 1px,transparent 2px);background-blend-mode:multiply;border:2px solid #4d351b;border-radius:18px;box-shadow:inset 0 0 40px #62461f99}
+#board .cell{min-width:0;border:2px solid #76572e99;border-radius:15px;background:linear-gradient(145deg,#ddca98cc,#b69d68cc);box-shadow:inset 0 0 22px #5b421d35;display:grid;place-items:center;position:relative;cursor:pointer;transition:.2s ease;overflow:visible}
+#board .cell:not(:disabled):hover,#board .cell.drop-target{border-color:#f2d677;background:#e2cc98;box-shadow:inset 0 0 30px #fff3b75c,0 0 22px #f8c75b4d;transform:scale(.98)}
+#board .cell.drop-target:after{content:'✦';color:#9b6a17;transform:scale(1.3)}
+#board .cell .card{width:auto;height:94%;max-width:100%;max-height:none}
+#board .cell.placed .card{animation:land .42s cubic-bezier(.2,.9,.2,1)}
+#board .cell.captured .card{--capture:#f4cc72;animation:captureGlow 1.12s ease both}
+#board .cell.captured .card:after{content:'';position:absolute;inset:-25%;z-index:6;pointer-events:none;border-radius:50%;background:conic-gradient(#ff4b55,#ff9f43,#ffe66d,#4cd964,#45d6e8,#5b8cff,#b56cff,#ff4b55);filter:blur(10px);mix-blend-mode:screen;animation:rainbowHalo 1.12s ease both}
+@keyframes land{0%{transform:translateY(-32px) scale(1.14);opacity:.15}70%{transform:translateY(5px) scale(.98)}100%{transform:none;opacity:1}}
+@keyframes captureGlow{0%{filter:brightness(1) drop-shadow(0 0 0 transparent);transform:rotateY(0) scale(1)}38%{filter:brightness(1.55) drop-shadow(0 0 20px #ffe66d);transform:rotateY(88deg) scale(1.1)}58%{filter:brightness(2) drop-shadow(0 0 34px var(--capture));transform:rotateY(272deg) scale(1.1)}100%{filter:brightness(1) drop-shadow(0 0 8px var(--capture));transform:rotateY(360deg) scale(1)}}
+@keyframes rainbowHalo{0%,100%{opacity:0;transform:scale(.45) rotate(0)}35%{opacity:.7;transform:scale(1.15) rotate(90deg)}55%{opacity:.95;transform:scale(1.32) rotate(190deg)}75%{opacity:.45;transform:scale(1.1) rotate(290deg)}}
+.card.rarity-rare{box-shadow:0 0 0 2px #c69b46,0 0 13px #f1ca6280}.card.rarity-divine,.card.rarity-parallel{box-shadow:0 0 0 2px #b7d6f5,0 0 15px #b9a4fa;animation:onlineDivine 3s ease-in-out infinite alternate}.card.rarity-alternative{box-shadow:0 0 0 2px #cdb6e9,0 0 12px #b891f7a0}@keyframes onlineDivine{from{filter:drop-shadow(0 0 2px #83e6e9)}to{filter:drop-shadow(0 0 9px #dcb5ff)}}@media(prefers-reduced-motion:reduce){.card.rarity-divine,.card.rarity-parallel{animation:none}}
+#onlineResult[hidden]{display:none!important}#onlineResult{position:fixed;inset:0;z-index:1000;background:#0d101ce8;display:grid;place-items:center;padding:15px;backdrop-filter:blur(9px)}.result-content{text-align:center;max-width:min(94vw,600px);animation:resultEnter .65s ease-out}.result-content img{display:block;max-width:100%;max-height:68vh;object-fit:contain;margin:auto;filter:drop-shadow(0 0 25px #dfb9688a)}.result-content p{font:700 clamp(25px,5vw,42px) Georgia,serif;color:#fbe3a1;text-shadow:0 0 14px #f6ce7b}.result-content button{min-width:190px}@keyframes resultEnter{from{opacity:0;transform:translateY(25px) scale(.86)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.result-content{animation:none}}
+.online-drag-preview{position:fixed!important;z-index:9999;pointer-events:none!important;width:clamp(95px,16vw,160px)!important;transform:translate(-50%,-50%) scale(1.12)!important;box-shadow:0 18px 38px #000c,0 0 22px #e8c36a88!important;touch-action:none}#board .cell.drop-target{border-color:#f7e09a!important;background:#e2cc98!important;box-shadow:inset 0 0 30px #fff3b75c,0 0 22px #f8c75b!important}#gamePanel .hand button{touch-action:none}#gamePanel .hand button:focus-visible{outline:3px solid #ffe3a0;outline-offset:3px}
+body.duel-active main>h1,body.duel-active main>p.note,body.duel-active #rulePanel,body.duel-active #deckPanel,body.duel-active #roomPanel{display:none!important}
+body.duel-active #gamePanel{display:flex;flex-direction:column;gap:3px}
+body.duel-active #gamePanel[hidden]{display:none!important}
+body.duel-active #gamePanel .opponent-label{order:1}
+body.duel-active #gamePanel .opponent-hand{order:2}
+body.duel-active #onlineBoardWrap{order:3;margin:5px auto;width:min(100%,748px)}
+body.duel-active #gamePanel .own-label{order:4}
+body.duel-active #gamePanel .own-hand{order:5}
+body.duel-active #gamePanel .hand{flex-wrap:nowrap}
+body.duel-active #gamePanel .hand button{min-width:0;flex:0 1 19%}
+@media(max-width:700px){body.duel-active{padding:4px}body.duel-active #status{padding:3px;min-height:20px;font-size:12px}body.duel-active #gamePanel .label{font-size:11px;margin:0}body.duel-active #gamePanel .hand{gap:2px}body.duel-active #gamePanel .hand button{padding:1px}body.duel-active #onlineBoardWrap{width:min(100%,calc(100dvh - 220px),470px);padding:8px}body.duel-active #board{gap:3px;padding:4px}}
+#duelExit[hidden]{display:none!important}#duelExit{text-align:center;margin:3px auto 8px}#duelExitLink{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 15px;border:1px solid #d5b579;border-radius:10px;background:#2b352ee0;color:#f7e3b3;text-decoration:none;font-size:13px;font-weight:700}#duelExitLink:hover,#duelExitLink:focus-visible{background:#485842;outline:2px solid #f5d99f;outline-offset:2px}body.duel-active #duelExit{margin:1px auto 3px}@media(max-width:700px){#duelExitLink{min-height:30px;padding:3px 11px;font-size:12px}}
+/* Disposition de l'arène en trois colonnes, fidèle à la composition du mode original. */
+body.duel-active{background:radial-gradient(ellipse at 30% 35%,#fff0bb,#d8b47c 65%,#a47b47);color:#332616}
+body.duel-active main{max-width:1600px}
+body.duel-active #gamePanel{display:grid!important;grid-template-columns:minmax(140px,210px) minmax(400px,700px) minmax(140px,210px);align-items:start;justify-content:center;gap:18px;max-width:1250px;margin:0 auto}
+body.duel-active #gamePanel[hidden]{display:none!important}
+.online-side{display:flex;flex-direction:column;gap:7px;min-width:0}
+.online-player-head{display:flex;align-items:center;gap:8px;min-height:35px;font-size:11px;letter-spacing:.08em}
+.online-player-name{font-weight:700;color:#6e5738}
+.online-memory-orbs{display:flex;gap:5px;align-items:center}
+.online-arena{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
+#onlineScore{display:flex;align-items:center;gap:18px;border-radius:20px;background:#36251e;color:#eee0bc;padding:7px 22px;font-size:12px;white-space:nowrap}
+#onlineScore b{font-size:23px;color:#59b876}#onlineGuestScore{color:#ef6b79!important}
+#onlineMemoryZone{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:#7c6040}
+#onlineMemoryPile{font-size:11px;padding:5px 14px;background:#dfc895;border:1px solid #aa8e5a;color:#725e3f}
+#onlineHistory{background:linear-gradient(145deg,#f7e4b8,#d5b37b);border:2px solid #9c7341;border-radius:15px;padding:12px;color:#4b341d;min-height:145px;font:12px Georgia,serif}
+#onlineHistory strong{display:block;border-bottom:1px solid #9c7341;padding-bottom:7px}
+#onlineHistoryLog{padding-top:12px}
+body.duel-active #gamePanel .hand{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:center;gap:0}
+body.duel-active #gamePanel .hand button{width:124px;min-width:0;margin-bottom:-64px;position:relative;transition:transform .18s}
+body.duel-active #gamePanel .hand button:last-child{margin-bottom:0}
+body.duel-active #gamePanel .hand button:hover{transform:translateY(-8px);z-index:3}
+body.duel-active #onlineBoardWrap{order:initial;width:100%;max-width:700px;margin:0 auto}
+body.duel-active #gamePanel .own-hand,body.duel-active #gamePanel .opponent-hand,body.duel-active #gamePanel .own-label,body.duel-active #gamePanel .opponent-label{order:initial}
+@media(max-width:850px){
+body.duel-active #gamePanel{grid-template-columns:minmax(0,1fr);gap:8px}
+body.duel-active #gamePanel .online-arena{order:2}
+body.duel-active #gamePanel #hostSide{order:3}
+body.duel-active #gamePanel #guestSide{order:1}
+body.duel-active #gamePanel.guest-view #guestSide{order:3}
+body.duel-active #gamePanel.guest-view #hostSide{order:1}
+body.duel-active #gamePanel .hand{flex-direction:row;justify-content:center;overflow:visible}
+body.duel-active #gamePanel .hand button{width:19%;max-width:92px;margin:0 -2px 0 0}
+body.duel-active #gamePanel .online-side{align-items:center}
+body.duel-active #gamePanel #onlineHistory{display:none}
+body.duel-active #onlineBoardWrap{width:min(100%,calc(100dvh - 260px),500px);padding:10px}
+body.duel-active #onlineBoardWrap #board{gap:5px;padding:6px}
+}
+
+/* En-tête et cristaux repris directement des styles du jeu principal. */
+.topbar{height:68px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff16;background:#0e1524cc;backdrop-filter:blur(14px)}
+    
+.memory-orb{position:relative;width:19px;height:19px;border:1px solid #d9fff0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#84ffe0 13%,#2db7a6 40%,#18566b 72%,#071f31);box-shadow:0 0 8px #55e9ce,0 0 16px #63a8f077,inset -3px -4px 7px #082543;overflow:hidden;transition:.35s ease}.memory-orb:before{content:'';position:absolute;inset:2px;border-radius:50%;background:conic-gradient(from 40deg,transparent,#fff9,transparent 34%,#7fd8ff99,transparent 70%);animation:orbSwirl 2.2s linear infinite}.memory-orb.empty{background:#342d29;border-color:#806b59;box-shadow:inset 0 0 7px #0008;opacity:.35;transform:scale(.8)}.memory-orb.empty:before{animation:none;opacity:0}@keyframes orbSwirl{to{transform:rotate(360deg)}}
+    
+body.duel-active{padding-top:0}
+#onlineOriginalHeader{display:none}
+body.duel-active #onlineOriginalHeader{display:flex;position:relative;z-index:5;width:100%;margin-bottom:12px}
+body.duel-active #onlineOriginalHeader .brand h1{font:700 1.05rem Georgia,serif;color:#f7f0d7}
+body.duel-active #onlineOriginalHeader .brand small{color:#c2b7a0}
+body.duel-active #onlineOriginalHeader .ghost{color:#f7f4eb;text-decoration:none}
+body.duel-active #onlineOriginalHeader .sigil{border-color:#e8c36a;color:#e8c36a}
+body.duel-active #onlineOriginalHeader .actions{display:flex}
+@media(max-width:650px){#onlineOriginalHeader{padding:6px 12px;height:auto;min-height:56px}#onlineOriginalHeader .brand small{display:none}#onlineOriginalHeader .brand h1{font-size:12px!important}}
+
+/* Sources CSS réelles du jeu principal (index.html) : plateau, score, pioche. */
+#onlineBoardWrap{position:relative;padding:24px;border-radius:34px;background:radial-gradient(circle at 18% 12%,#e8d08c55 0 1px,transparent 2px),linear-gradient(135deg,#d8bd72,#9a682b 48%,#543618);background-size:17px 17px,auto;box-shadow:0 32px 85px #000c,inset 0 0 0 3px #fff1a84d,inset 0 0 38px #37200d;transform:perspective(1100px) rotateX(1deg)}#onlineBoardWrap:before{content:'';position:absolute;inset:-10px;border-radius:40px;z-index:-1;background:radial-gradient(ellipse at 7% 12%,#7fa348 0 6%,transparent 14%),radial-gradient(ellipse at 93% 18%,#557b39 0 7%,transparent 15%),radial-gradient(ellipse at 12% 92%,#436c36 0 7%,transparent 15%),radial-gradient(ellipse at 90% 88%,#86a64d 0 6%,transparent 14%),linear-gradient(135deg,#294525,#172817);filter:drop-shadow(0 14px 18px #0008)}#onlineBoardWrap:after{content:'❧  ❧';position:absolute;left:-18px;right:-18px;bottom:-20px;color:#89aa55;font-size:2.2rem;letter-spacing:14px;text-shadow:0 4px 8px #10200c;display:flex;justify-content:space-between;pointer-events:none}#boardwidth:min(63vw,700px);aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);gap:11px;padding:12px;background:linear-gradient(#d7c28eeb,#b49a63eb),radial-gradient(circle,#5f4321 0 1px,transparent 2px);background-blend-mode:multiply;border:2px solid #4d351b;border-radius:18px;box-shadow:inset 0 0 40px #62461f99}
+#onlineScore{display:flex;align-items:center;gap:18px;background:#2b1b11e8;border:1px solid #ffffff20;border-radius:16px;padding:10px 20px;box-shadow:var(--shadow),inset 0 0 20px #ffffff06;backdrop-filter:blur(12px)}#onlineScore b{font-size:1.4rem;text-shadow:0 0 14px currentColor}#onlineScore #onlineHostScore{color:var(--blue)}#onlineScore #onlineGuestScore{color:var(--red)}#onlineTurnLabel{min-width:118px;text-align:center;font-size:.76rem;color:#d8c7aa;letter-spacing:.08em;text-transform:uppercase}
+#onlineMemoryZone{display:flex;flex-direction:column;align-items:center;gap:7px;min-height:116px;margin-top:2px}.memory-title{font:900 .72rem Georgia;letter-spacing:.18em;text-transform:uppercase;color:#4c321d}#onlineMemoryPile{position:relative;width:146px;height:88px;border:0;background:none;cursor:pointer;perspective:800px}#onlineMemoryPile .card{position:absolute;inset:0;margin:auto;width:84px;transform:rotate(90deg);pointer-events:none;transition:.25s}#onlineMemoryPile:before,#onlineMemoryPile:after{content:'';position:absolute;left:31px;top:4px;width:80px;height:112px;border-radius:13px;background:#0b4650;border:2px solid #8fc9b5;transform:rotate(90deg) translateY(-4px);transform-origin:center;box-shadow:0 8px 18px #0006}#onlineMemoryPile:after{left:27px;top:1px;opacity:.7}#onlineMemoryPile .card{z-index:2}#onlineMemoryPile.available{filter:drop-shadow(0 0 12px color-mix(in srgb,var(--player),#fff 25%));animation:memoryPulse 1.6s ease-in-out infinite}#onlineMemoryPile:not(.available){cursor:default;filter:grayscale(.55);opacity:.66}
+#onlineMemoryPile:disabled{cursor:not-allowed;opacity:.72}
+#onlineMemoryPile .card-back{display:block;position:absolute;inset:0;margin:auto;width:84px;height:116px;border:3px solid #9ac7bb;border-radius:12px;background:repeating-linear-gradient(45deg,#123e47,#123e47 9px,#246271 10px,#246271 15px);box-shadow:0 7px 15px #0008;transform:rotate(90deg)}
+#onlineMemoryPile .memory-draw-arrow{position:absolute;inset:0;display:grid;place-items:center;z-index:4;pointer-events:none}
+#onlineMemoryPile .memory-draw-arrow svg{width:65px;height:33px;filter:drop-shadow(0 1px 2px #0008)}
+body.duel-active #onlineScore{background:#2b1b11e8;border:1px solid #ffffff20;border-radius:16px;box-shadow:0 10px 25px #0005}
+body.duel-active #onlineBoardWrap{border-radius:34px}
+
+/* Interface des Souvenirs raccordée à la synchronisation Supabase. */
+#onlineMemoryHint{max-width:350px;text-align:center;font:700 12px Georgia,serif;color:#634321;min-height:20px}
+#onlineMemoryActions{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:420px}
+#onlineMemoryActions[hidden],#onlineMemoryActions button[hidden]{display:none!important}
+#onlineMemoryActions button{font-size:12px;padding:7px 10px;background:#efe0b5;color:#51351a;border:1px solid #967045;border-radius:8px}
+#onlineMemoryPile.available{animation:memoryPulse 1.6s ease-in-out infinite}
+@keyframes memoryPulse{50%{filter:drop-shadow(0 0 16px #5ba27a)}}
+body.duel-active .online-player-head .memory-orbs{display:inline-flex;gap:7px}
+
+/* Arena layout v2: follow CURRENT main (2026-10) rather than legacy mockup. */
+body.duel-active{background:linear-gradient(180deg,#e6d4a5,#f3e3b6);color:#382718}
+body.duel-active #gamePanel{grid-template-columns:minmax(140px,200px) minmax(0,700px) minmax(140px,200px);gap:14px;align-items:start}
+body.duel-active #onlineBoardWrap{background:linear-gradient(135deg,#c7a861,#8c5e27);padding:9px;border:3px solid #9a7b39;border-radius:19px;box-shadow:0 7px 24px #2e231a66}
+body.duel-active #onlineBoardWrap:before,body.duel-active #onlineBoardWrap:after{content:none}
+body.duel-active #board{background:linear-gradient(150deg,#123c36,#0d5a4c 55%,#174b40);border:2px solid #bda15e;border-radius:12px;gap:4px;padding:5px;box-shadow:inset 0 0 16px #001c1b88}
+body.duel-active #board .cell{border:2px solid #719a87;border-radius:9px;background:linear-gradient(140deg,#17483f,#236c5c 60%,#155044);box-shadow:inset 0 0 20px #102f2d55;color:#9ebca1}
+body.duel-active #board .cell:not(:disabled):hover{background:#2c7968;border-color:#b3d4b0}
+body.duel-active #board .cell:empty:after{content:'✦';color:#9ab88d99}
+body.duel-active #onlineScore{background:#4d3427;color:#f6ebcb;border:2px solid #bfa16a;border-radius:20px;padding:5px 17px}
+body.duel-active #onlineMemoryZone{width:100%;padding:9px 10px;border:1px solid #d0b575;border-radius:13px;background:linear-gradient(135deg,#fff3cd,#d9bc80);min-height:100px}
+body.duel-active #onlineMemoryPile{flex:none}
+body.duel-active #onlineMemoryPile .card-back{background:#071d2d url('../assets/card-back-official.webp') center/cover no-repeat;border:2px solid #d7b661;box-shadow:0 6px 14px #0007}
+body.duel-active .online-side .hand button{width:118px;margin-bottom:-58px}
+body.duel-active #onlineHistory{background:linear-gradient(145deg,#f4e2b7,#cda96c);border:2px solid #8c693b}
+@media(min-width:851px){
+ body.duel-active #gamePanel{max-width:1220px}
+ body.duel-active .online-arena{gap:10px}
+ body.duel-active #onlineMemoryZone{order:3}
+ body.duel-active #onlineBoardWrap{order:2}
+ body.duel-active #onlineScore{order:1}
+}
+@media(max-width:850px){
+ body.duel-active{padding:0;margin:0}
+ body.duel-active #onlineOriginalHeader{position:sticky;top:0;z-index:50;margin:0;background:#0e3434}
+ body.duel-active main{width:100%;max-width:100%;padding:0 3px}
+ body.duel-active #duelExit{display:none}
+ body.duel-active #status{position:relative;margin:2px auto;font-size:11px;padding:2px;min-height:16px}
+ body.duel-active #gamePanel,body.duel-active #gamePanel.guest-view{display:flex!important;flex-direction:column;align-items:stretch;gap:3px;width:100%;max-width:100%}
+ body.duel-active #gamePanel[hidden]{display:none!important}
+ body.duel-active #gamePanel #hostSide,body.duel-active #gamePanel #guestSide{display:contents}
+ body.duel-active #gamePanel .online-arena{display:contents}
+ body.duel-active #onlineScore{order:1;align-self:center;padding:3px 13px;min-height:30px;margin:0}
+ body.duel-active #onlineBoardWrap{order:2!important;width:100%;max-width:100%;padding:3px;margin:0!important;border-radius:12px;transform:none}
+ body.duel-active #board{width:100%;aspect-ratio:1;gap:2px;padding:3px}
+ body.duel-active #board .cell{border-radius:6px;border-width:1px}
+ body.duel-active #onlineMemoryZone{order:3!important;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;min-height:75px;width:100%;margin:2px 0;padding:5px;border-radius:10px}
+ body.duel-active #onlineMemoryZone .memory-title{flex:0 0 30%;text-align:center;font-size:11px}
+ body.duel-active #onlineMemoryPile{width:100px;height:64px;transform:scale(.78);margin:-8px}
+ body.duel-active #onlineMemoryHint{flex:1 1 100%;min-height:0;font-size:10px}
+ body.duel-active .online-player-head{order:4!important;justify-content:center;min-height:24px;gap:5px;font-size:11px}
+ body.duel-active #hostSide .online-player-head{order:4!important}
+ body.duel-active #guestSide .online-player-head{order:0!important}
+ body.duel-active #gamePanel .hand{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;justify-content:space-evenly;align-items:flex-start;width:100%;gap:0;padding:0 2px}
+ body.duel-active #gamePanel .hand button{width:20%;max-width:20%;min-width:0;margin:0!important;padding:1px}
+ body.duel-active #gamePanel .hand button .card{width:100%;height:auto;aspect-ratio:2.5/3.5;border-radius:5px;border-width:2px}
+ body.duel-active #hostHand,body.duel-active #guestHand{order:5!important}
+ body.duel-active #hostSide .label,body.duel-active #guestSide .label{display:none}
+ body.duel-active #onlineHistory{order:7;display:none}
+ body.duel-active #gamePanel .online-player-head .online-player-name{font-size:10px}
+ body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:15px;height:15px}
+ body.duel-active #gamePanel .opponent-hand{display:none!important}
+ body.duel-active #gamePanel .opponent-label{display:none!important}
+ body.duel-active #gamePanel .opponent-hand + *{display:none}
+ body.duel-active #gamePanel .own-hand{display:flex!important;order:6!important}
+ body.duel-active #gamePanel .own-label{order:5!important}
+ body.duel-active #gamePanel .online-player-head:has(+ .label + .own-hand){order:5!important}
+}
+
+/* Current main: original crystal placement beside each player's hand label. */
+body.duel-active .online-player-head{display:flex;gap:6px;align-items:center}
+body.duel-active .online-memory-orbs{display:inline-flex;gap:6px;align-items:center}
+body.duel-active .online-memory-orbs .memory-orb{width:19px;height:19px}
+body.duel-active #onlineMemoryZone{position:relative}
+body.duel-active #onlineMemoryPile .card-back{background:#071d2d url('../assets/card-back-official.webp') center/cover no-repeat}
+body.duel-active #gamePanel .card strong{display:none!important}
+@media(max-width:850px){
+ body.duel-active #gamePanel .online-player-head{justify-content:center;min-height:25px}
+ body.duel-active #gamePanel .online-memory-orbs{gap:5px}
+ body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:19px;height:19px}
+ body.duel-active #gamePanel .own-hand{order:6!important}
+ body.duel-active #gamePanel .opponent-hand{display:none!important}
+ body.duel-active #gamePanel .online-player-head:has(+ .label + .opponent-hand){order:0!important}
+ body.duel-active #gamePanel .online-player-head:has(+ .label + .own-hand){order:5!important}
+}
+
+#onlineMemoryRevealCard:not([hidden]){display:flex;flex-direction:column;align-items:center;gap:4px;width:min(300px,100%);padding:10px 16px;margin:3px auto;border:2px solid #c5a360;border-radius:14px;background:radial-gradient(circle at 50% 0%,#fff9d9,#d4af6c);color:#54371c;box-shadow:0 5px 15px #3d2a1e55;text-align:center}
+#onlineMemoryRevealCard[hidden]{display:none!important}
+#onlineMemoryRevealCard .memory-kicker{font:700 10px Georgia,serif;letter-spacing:.16em;color:#806042}
+#onlineMemoryRevealName{font:900 15px Georgia,serif}
+#onlineMemoryRevealOwner{font:700 11px Georgia,serif;color:#76512c}
+body.duel-active #onlineMemoryActions button:not([hidden]){cursor:pointer}
+
+/* Exact SVG crystal shape and element badge from current main. */
+.memory-orbs{display:inline-flex;gap:7px;margin-left:4px;align-items:center}.side.ai .memory-orbs{margin:0 4px 0 0;order:-1}.memory-orb{position:relative;width:19px;height:19px;border:1px solid #d9fff0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#84ffe0 13%,#2db7a6 40%,#18566b 72%,#071f31);box-shadow:0 0 8px #55e9ce,0 0 16px #63a8f077,inset -3px -4px 7px #082543;overflow:hidden;transition:.35s ease}.memory-orb:before{content:'';position:absolute;inset:2px;border-radius:50%;background:conic-gradient(from 40deg,transparent,#fff9,transparent 34%,#7fd8ff99,transparent 70%);animation:orbSwirl 2.2s linear infinite}.memory-orb.empty{background:#342d29;border-color:#806b59;box-shadow:inset 0 0 7px #0008;opacity:.35;transform:scale(.8)}.memory-orb.empty:before{animation:none;opacity:0}@keyframes orbSwirl{to{transform:rotate(360deg)}}
+    
+body.duel-active .online-memory-orbs .memory-orb{width:24px!important;height:34px!important;display:inline-flex;align-items:center;justify-content:center;overflow:visible;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;opacity:1}
+body.duel-active .online-memory-orbs .memory-orb:before{content:none!important}
+body.duel-active .online-memory-orbs .memory-orb svg{display:block;width:100%;height:100%;filter:drop-shadow(0 0 6px var(--crystal-color,#56d6a2))}
+body.duel-active .online-memory-orbs .memory-orb.empty{opacity:.35;transform:scale(.85)}
+body.duel-active .online-memory-orbs .memory-element{width:24px;height:24px;display:grid;place-items:center;border-radius:6px;border:1px solid #f9e3b4;background:#125447;color:#f9e3b4}
+@media(max-width:850px){body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:21px!important;height:30px!important}}
+
+/* Exact reveal card treatment from main; click to continue or choose target. */
+.memory-reveal{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 42%,#66d5c245,transparent 32%),#07191edb;backdrop-filter:blur(10px)}
+.memory-reveal[hidden]{display:none!important}
+.memory-reveal-card{width:min(82vw,440px);aspect-ratio:2.5/3.5;border:4px double #b8e7d5;border-radius:28px;padding:34px 30px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;color:#efffe9;background:radial-gradient(circle at 50% 35%,var(--memory-accent,#4bb9a6) 0 8%,transparent 32%),repeating-radial-gradient(circle at 50% 35%,transparent 0 32px,#aee6d017 33px 35px),linear-gradient(145deg,#0b5558,#092e43 58%,#071e31);box-shadow:0 35px 100px #000e,inset 0 0 0 7px #082d35,inset 0 0 0 9px #75c6b4;cursor:pointer;animation:memoryReveal .55s cubic-bezier(.2,.9,.2,1)}
+.memory-reveal-card .memory-kicker{font-size:.72rem;font-weight:900;letter-spacing:.24em;color:#b8e8d4}
+.memory-reveal-card .memory-icon{width:120px;height:120px;display:grid;place-items:center;border:2px solid #d9f2ce;border-radius:50% 12% 50% 12%;transform:rotate(45deg);font:900 3.8rem Georgia;background:#0b4852bb;box-shadow:0 0 35px var(--memory-accent)}
+.memory-reveal-card .memory-icon span{transform:rotate(-45deg)}
+.memory-reveal-card h2{font:900 clamp(1.7rem,5vw,2.5rem) Georgia;color:#fff1bd}
+.memory-reveal-card p{font:1rem/1.5 Georgia;color:#dff5e9}
+.memory-reveal-card .memory-continue{font-size:.75rem;font-weight:900;letter-spacing:.12em;color:#fff2bd}
+.memory-reveal-card .memory-owner{padding:6px 12px;border:1px solid #bce6d185;border-radius:99px;background:#041b2488;font-size:.72rem;font-weight:900}
+@keyframes memoryReveal{from{opacity:0;transform:translateY(40px) rotateY(18deg) scale(.72)}to{opacity:1;transform:none}}
+@media(max-height:700px){.memory-reveal-card{max-height:92dvh;aspect-ratio:auto;gap:9px;padding:16px}.memory-reveal-card .memory-icon{width:72px;height:72px;font-size:2.5rem}}
+
+/* Cristaux officiels à facettes : classe indépendante des anciennes billes. */
+body.duel-active #gamePanel .online-memory-orbs{display:inline-flex!important;align-items:center;gap:5px}
+body.duel-active #gamePanel .online-faceted-crystal{position:relative;display:inline-flex!important;flex:none;width:24px!important;height:34px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;opacity:1!important;overflow:visible}
+body.duel-active #gamePanel .online-faceted-crystal svg{display:block!important;width:24px!important;height:34px!important;max-width:none;filter:drop-shadow(0 0 5px var(--crystal-color,#56d6a2))}
+body.duel-active #gamePanel .online-faceted-crystal.empty{opacity:.3!important;filter:grayscale(1)}
+body.duel-active #gamePanel .online-faceted-crystal.empty svg{filter:none}
+body.duel-active #gamePanel .online-faceted-crystal .crystal-glint{animation:onlineCrystalGlimmer 2.4s ease-in-out infinite}
+@keyframes onlineCrystalGlimmer{50%{opacity:.2}}
+/* La pioche a UN SEUL dos de carte. Supprimer les faux dos CSS historiques. */
+body.duel-active #onlineMemoryPile::before,body.duel-active #onlineMemoryPile::after{content:none!important;display:none!important}
+body.duel-active #onlineMemoryPile{display:block;position:relative;flex:0 0 146px;width:146px!important;height:88px!important;min-width:0;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;overflow:visible}
+body.duel-active #onlineMemoryPile .card-back{position:absolute!important;inset:0!important;margin:auto!important;width:84px!important;height:116px!important;max-width:none;transform:rotate(90deg)!important;transform-origin:center!important;box-shadow:0 7px 15px #0008}
+body.duel-active #onlineMemoryPile .memory-draw-arrow{position:absolute;inset:0;z-index:3;pointer-events:none}
+body.duel-active #onlineMemoryPile .memory-draw-arrow svg{width:65px;height:33px}
+body.duel-active #onlineMemoryHint:empty{display:none!important}
+@media(max-width:850px){
+ body.duel-active #gamePanel .online-faceted-crystal{width:21px!important;height:30px!important}
+ body.duel-active #gamePanel .online-faceted-crystal svg{width:21px!important;height:30px!important}
+ body.duel-active #onlineMemoryZone{display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;min-height:94px}
+ body.duel-active #onlineMemoryPile{flex:0 0 146px!important;width:146px!important;height:88px!important;margin:0!important;transform:none!important}
+ body.duel-active #onlineMemoryZone .memory-title{flex:0 0 auto!important;width:auto;min-width:85px;text-align:center}
+}
+.online-nickname-settings{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:10px;border:1px solid #d2b67d;border-radius:10px;background:#e6ce9d22}.online-nickname-settings label{font-weight:700}.online-nickname-settings input{width:min(220px,100%);text-transform:none}.online-nickname-settings button{font-size:12px}#onlineTurnLabel{max-width:min(42vw,250px);overflow:hidden;text-overflow:ellipsis}@media(max-width:850px){#onlineTurnLabel{max-width:48vw;font-size:10px}.online-nickname-settings{justify-content:center}}
+/* Original main memory crystal component, no custom gem replacement. */
+.memory-orbs{display:inline-flex;gap:7px;margin-left:4px;align-items:center}.side.ai .memory-orbs{margin:0 4px 0 0;order:-1}.memory-orb{position:relative;width:19px;height:19px;border:1px solid #d9fff0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#84ffe0 13%,#2db7a6 40%,#18566b 72%,#071f31);box-shadow:0 0 8px #55e9ce,0 0 16px #63a8f077,inset -3px -4px 7px #082543;overflow:hidden;transition:.35s ease}.memory-orb:before{content:'';position:absolute;inset:2px;border-radius:50%;background:conic-gradient(from 40deg,transparent,#fff9,transparent 34%,#7fd8ff99,transparent 70%);animation:orbSwirl 2.2s linear infinite}.memory-orb.empty{background:#342d29;border-color:#806b59;box-shadow:inset 0 0 7px #0008;opacity:.35;transform:scale(.8)}.memory-orb.empty:before{animation:none;opacity:0}@keyframes orbSwirl{to{transform:rotate(360deg)}}
+
+body.duel-active #gamePanel .online-memory-orbs .memory-orb{display:inline-flex!important;align-items:center;justify-content:center;position:relative!important;width:24px!important;height:34px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;transform:none!important}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb::before{display:none!important}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb svg{width:24px!important;height:34px!important;display:block!important;filter:drop-shadow(0 0 6px var(--crystal-color,#56d6a2))}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb.empty{opacity:.35!important;filter:grayscale(1);transform:scale(.85)!important}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb.empty svg{filter:none}
+body.duel-active #gamePanel .online-memory-orbs .memory-element{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:var(--element-color,#45b85d);color:white;border:1px solid #fff9;box-shadow:0 0 12px var(--element-color,#45b85d)}
+body.duel-active #onlineMemoryOverlayCard.has-art{position:relative;width:min(92vw,560px);aspect-ratio:auto;max-height:94dvh;padding:18px;gap:10px;overflow:auto}
+body.duel-active #onlineMemoryArtwork.memory-artwork{display:block;width:min(100%,340px);aspect-ratio:5/7;background-repeat:no-repeat;border-radius:18px;box-shadow:0 18px 40px #000b;flex-shrink:1;min-height:0}
+body.duel-active #onlineMemoryArtwork[hidden],body.duel-active #onlineMemoryIconWrap[hidden]{display:none!important}
+body.duel-active #onlineMemoryOverlayCard.has-art .memory-kicker,body.duel-active #onlineMemoryOverlayCard.has-art .memory-owner{position:relative}
+body.duel-active #onlineMemoryOverlayCard.has-art h2{font-size:1.25rem;margin:0}
+body.duel-active #onlineMemoryOverlayCard.has-art p{font-size:.85rem;margin:0}
+@media(max-width:850px){body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:21px!important;height:30px!important}body.duel-active #gamePanel .online-memory-orbs .memory-orb svg{width:21px!important;height:30px!important}}
+#onlineOriginalHeader .brand{display:flex;align-items:center;gap:12px;min-width:0}
+#onlineOriginalHeader .online-official-crest{display:block;flex:none;width:58px;height:58px;object-fit:cover;border:2px solid #c5a76b;border-radius:14px;box-shadow:0 0 15px #e9c57b30}
+#onlineOriginalHeader .brand h1{margin:2px 0;font:900 clamp(19px,3vw,31px)/1.1 Georgia,serif;letter-spacing:0;color:#f5e7b9;text-align:left}
+#onlineOriginalHeader .brand h1 span{color:#efcc82}
+#onlineOriginalHeader .online-edition{font-size:10px;letter-spacing:.17em;font-weight:900;color:#d6b877}
+#onlineOriginalHeader .brand small{display:block;font-size:11px;color:#c6e0d1}
+@media(max-width:650px){#onlineOriginalHeader{padding:10px 12px!important;gap:6px}#onlineOriginalHeader .online-official-crest{width:43px;height:43px;border-radius:11px}#onlineOriginalHeader .brand{gap:8px}#onlineOriginalHeader .brand h1{font-size:19px}#onlineOriginalHeader .online-edition{font-size:8px}#onlineOriginalHeader .brand small{font-size:9px}}/* Entrée de salon lisible et utilisable sur les petits écrans. */
+@media(max-width:650px){
+ #roomPanel{padding:12px!important}
+ #roomPanel .online-nickname-settings{display:flex!important;flex-direction:column;align-items:stretch!important;gap:8px}
+ #roomPanel #onlineNickname{display:block!important;width:100%!important;max-width:none!important;min-width:0;font-size:16px!important;padding:12px!important;text-transform:none!important}
+ #roomPanel #saveOnlineNickname{width:100%}
+ #roomPanel>.actions:first-of-type{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+ #roomPanel #create{grid-column:1/-1;width:100%;min-height:44px}
+ #roomPanel #code{width:100%!important;min-width:0;font-size:16px!important;padding:12px!important;letter-spacing:.08em}
+ #roomPanel #join{width:100%;min-height:44px}
+ #roomPanel .actions button{white-space:normal}
+}/* Fidélité au MAIN : mêmes dimensions et SVG, sans perle ronde derrière. */
+.memory-orbs{display:inline-flex;gap:7px;margin-left:4px;align-items:center}.side.ai .memory-orbs{margin:0 4px 0 0;order:-1}.memory-orb{position:relative;width:19px;height:19px;border:1px solid #d9fff0;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0 8%,#84ffe0 13%,#2db7a6 40%,#18566b 72%,#071f31);box-shadow:0 0 8px #55e9ce,0 0 16px #63a8f077,inset -3px -4px 7px #082543;overflow:hidden;transition:.35s ease}.memory-orb:before{content:'';position:absolute;inset:2px;border-radius:50%;background:conic-gradient(from 40deg,transparent,#fff9,transparent 34%,#7fd8ff99,transparent 70%);animation:orbSwirl 2.2s linear infinite}.memory-orb.empty{background:#342d29;border-color:#806b59;box-shadow:inset 0 0 7px #0008;opacity:.35;transform:scale(.8)}.memory-orb.empty:before{animation:none;opacity:0}@keyframes orbSwirl{to{transform:rotate(360deg)}}
+
+body.duel-active #gamePanel .online-memory-orbs .memory-orb{position:relative!important;width:24px!important;height:34px!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;overflow:visible!important;transform:none!important;display:inline-flex!important;align-items:center}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb:before{content:none!important}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb svg{width:100%!important;height:100%!important;display:block!important;filter:drop-shadow(0 0 6px var(--crystal-color))}
+body.duel-active #gamePanel .online-memory-orbs .memory-orb.empty{opacity:.35!important;filter:grayscale(1)}
+body.duel-active #gamePanel .online-memory-orbs .memory-element{width:24px;height:24px;display:grid;place-items:center;border:1px solid #fff9;border-radius:50%;color:white;background:var(--element-color,#45b85d);box-shadow:0 0 12px var(--element-color,#45b85d)}
+@media(max-width:850px){body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:21px!important;height:30px!important}}
+
+/* Main's ORIGINAL faceted SVG and elemental SVG, in its dark framed HUD.
+   Dedicated selectors deliberately bypass all legacy .memory-orb overrides. */
+body.duel-active #gamePanel .online-player-head{gap:9px}
+body.duel-active #gamePanel .online-memory-orbs.memory-orbs{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ gap:8px!important;padding:6px 9px!important;margin-left:4px!important;
+ border:2px solid #c9ad79!important;border-radius:8px!important;
+ background:linear-gradient(135deg,#153f42,#0c3035 60%,#124b47)!important;
+ box-shadow:inset 0 0 0 2px #062b2b,inset 0 0 12px #0008,0 2px 8px #0005!important;
+ width:max-content!important;min-width:0!important;min-height:48px!important;
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal{
+ position:relative!important;display:inline-flex!important;flex:none!important;
+ width:28px!important;height:39px!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;overflow:visible!important;opacity:1!important;
+ transform:none!important;transition:filter .25s,opacity .25s!important;
+ filter:drop-shadow(0 0 3px #bbfff6) drop-shadow(0 0 6px #6effdd);
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal::before,
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal::after{content:none!important;display:none!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal svg{width:100%!important;height:100%!important;display:block!important;overflow:visible!important;animation:officialCrystalBreathe 2.6s ease-in-out infinite!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal:nth-of-type(3) svg{animation-delay:-1.3s!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal .crystal-glint{transform-origin:8px 12px;animation:officialCrystalSparkle 2.6s ease-in-out infinite!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty{opacity:.27!important;filter:grayscale(1)!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty svg,
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty .crystal-glint{animation:none!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-element{
+ width:37px!important;height:37px!important;display:grid!important;place-items:center!important;
+ flex:none!important;color:#c2f8d3!important;background:linear-gradient(145deg,#0c5b4a,#063f3b)!important;
+ border:2px solid #c9ad79!important;border-radius:8px!important;
+ box-shadow:inset 0 0 0 2px #0c342e,0 0 8px #8effc350!important;
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-element svg{width:29px!important;height:29px!important;display:block!important;filter:drop-shadow(0 0 2px #c7ffe6)}
+@keyframes officialCrystalBreathe{0%,100%{filter:brightness(1) drop-shadow(0 0 1px #9cfff1);transform:scale(1)}50%{filter:brightness(1.4) drop-shadow(0 0 6px #b9fff1);transform:scale(1.065)}}
+@keyframes officialCrystalSparkle{0%,65%,100%{opacity:.25;transform:scale(.65)}30%{opacity:1;transform:scale(1.4)}}
+@media(max-width:850px){
+ body.duel-active #gamePanel .online-memory-orbs.memory-orbs{gap:5px!important;padding:4px 6px!important;min-height:39px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal{width:23px!important;height:33px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-element{width:32px!important;height:32px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-element svg{width:25px!important;height:25px!important}
+}
+@media(prefers-reduced-motion:reduce){body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal svg,body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal .crystal-glint{animation:none!important}}
+
+/* Les Souvenirs Fromage/Coincé masquent la PROPRE main du joueur ciblé.
+   Utilise le dos de carte officiel de main, sans changer les interactions. */
+body.duel-active #gamePanel .hand .card.card-back.back-official.concealed{
+ display:block!important;position:relative!important;width:100%!important;height:100%!important;
+ background:#071d2d url('../assets/card-back-official.webp') center/cover no-repeat!important;
+ border:2px solid #d4b778!important;border-radius:9px!important;
+ box-shadow:0 5px 14px #0007!important;overflow:hidden!important;
+}
+body.duel-active #gamePanel .hand .card.card-back.back-official.concealed::before,
+body.duel-active #gamePanel .hand .card.card-back.back-official.concealed::after{content:none!important}
+</style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Choisis ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden>
+<div class="online-side" id="hostSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 1</span><span class="online-memory-orbs memory-orbs" aria-label="Deux cristaux de Souvenirs inactifs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></div>
+<div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><div class="memory-title"><span>Pioche</span> <strong>souvenirs</strong></div><button class="memory-pile" id="onlineMemoryPile" disabled title="Piocher un Souvenir" aria-label="Piocher un Souvenir"><span class="memory-draw-arrow" aria-hidden="true"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#b99b54" stroke-width="6" stroke-linecap="round"/><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#2b7652" stroke-width="3" stroke-linecap="round"/><path d="M38 7L57 16L38 25L42 16Z" fill="#327a55" stroke="#d6b96e" stroke-width="2" stroke-linejoin="round"/><path d="M4 10L8 16L4 22L0 16Z" fill="#548b5b" stroke="#c7aa64" stroke-width="1"/></svg></span><span class="card card-back back-official"></span></button><div id="onlineMemoryHint" role="status" aria-live="polite"></div><div id="onlineMemoryRevealCard" hidden><span class="memory-kicker">SOUVENIR RÉVÉLÉ</span><strong id="onlineMemoryRevealName"></strong><span id="onlineMemoryRevealOwner"></span></div><div id="onlineMemoryOverlay" class="memory-reveal" hidden><button type="button" id="onlineMemoryOverlayCard" class="memory-reveal-card"><span class="memory-kicker">SOUVENIR</span><span id="onlineMemoryArtwork" class="memory-artwork" hidden role="img"></span><span class="memory-icon" id="onlineMemoryIconWrap"><span id="onlineMemoryIcon">✦</span></span><h2 id="onlineMemoryTitle"></h2><p id="onlineMemoryDescription"></p><span class="memory-owner" id="onlineMemoryOwner"></span><span class="memory-continue" id="onlineMemoryContinue">TOUCHER POUR CONTINUER</span></button></div><div id="onlineMemoryActions" hidden><button id="onlineMemorySkip">Terminer sans piocher</button><button id="onlineMemoryResolve" hidden>Résoudre le Souvenir</button><button id="onlineJokerKeep" hidden>Conserver mon Joker</button><button id="onlineJokerCancel" hidden>Annuler avec mon Joker</button><button id="onlineJokerCopy" hidden>Dupliquer avec mon Joker</button></div></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
+<div class="online-side" id="guestSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 2</span><span class="online-memory-orbs memory-orbs" aria-label="Cristaux de Souvenirs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><aside id="onlineHistory"><strong>CHRONIQUE DU DUEL</strong><div id="onlineHistoryLog">Le duel commence…</div></aside></div>
+</section><div id="onlineResult" hidden role="dialog" aria-modal="true" aria-label="Résultat du duel"><div class="result-content"><img id="onlineResultArt" alt="" src=""><p id="onlineResultText"></p><button id="closeResult">Voir le plateau</button></div></div><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
+import {supabase,ensureOnlineIdentity,createOnlineRoom,joinOnlineRoom,getOnlineRoom} from './supabase-client.js?v=20261008-nickfix2';
+const $=id=>document.getElementById(id);
+const ruleNames={'basic-open':'Clair','basic-dark':'Obscur','same-open':'Identique clair','same-dark':'Identique obscur','plus-open':'Addition clair','plus-dark':'Addition obscur','elements-open':'Éléments actifs clair','elements-dark':'Éléments actifs obscur'};
+const artwork = {
+  'Kala':27,'Bolduc':4,'Jhimm':23,'Grimgors':13,'Araignée':2,
+  'Hilam':15,'Kayla':29,'Gardienne':11,'Frolgor':10,'Ven':42
+};
+const localDecks=JSON.parse(localStorage.getItem('triade-online-deck-snapshot')||'[]');
+const decks={host:[],guest:[]};
+const deckSelect=$('myDeck');
+for(const deck of localDecks){const option=document.createElement('option');option.value=deck.id;option.textContent=deck.name;deckSelect.append(option)}
+$('deckInfo').textContent=localDecks.length?'Sélectionne ton deck puis crée ou rejoins un salon.':'Aucun deck transféré. Retourne au menu PVP du jeu et utilise « Jouer avec mes decks ».';
+function selectedLocalDeck(){return localDecks.find(d=>String(d.id)===deckSelect.value)}
+function showDeckValues(){const d=selectedLocalDeck();if(!d)return;$('deckInfo').textContent='Deck : '+d.cards.map(c=>c.name+' ['+(Array.isArray(c.v)?c.v.map(v=>JSON.stringify(v)).join(', '):'statistiques absentes')+']').join(' · ')}
+deckSelect.addEventListener('change',showDeckValues);showDeckValues();
+function setDecks(rows){for(const player of ['host','guest']){const row=rows.find(d=>d.player_id===room[player+'_id']);decks[player]=row?row.cards.map(c=>[c.name,c.v,c]):[]}}
+
+let roomId=null,role=null,game=null,room=null,selected=null,working=false;
+const NICK_KEY='triade-online-nickname';
+function ownNickname(){return $('onlineNickname').value.trim()}
+function playerNickname(which){return (which==='host'?room?.host_nickname:room?.guest_nickname)||('Joueur '+(which==='host'?'1':'2'))}
+function validateNickname(){const nick=ownNickname();if(!/^[\p{L}\p{N} _.-]{2,20}$/u.test(nick))throw Error('Choisis un pseudo de 2 à 20 caractères (lettres, chiffres, espaces, _, . ou -).');localStorage.setItem(NICK_KEY,nick);return nick}
+async function publishNickname(){const nick=validateNickname();if(!roomId)return;const {error}=await supabase.rpc('slay_custom_set_nickname',{p_room:roomId,p_nickname:nick});if(error)throw error;}
+function renderNicknames(){
+ if(!room)return;
+ for(const which of ['host','guest']){const label=$(which+'Side').querySelector('.online-player-name');if(label)label.textContent=playerNickname(which)}
+}
+
+let privateHand=null;
+let previousBoard=null, previousRoomId=null, lastRenderedState=null, persistentError=null;const resultShownFor=new Set();function showResult(won){const overlay=$('onlineResult');$('onlineResultArt').src=won?'../assets/results/victory.webp':'../assets/results/defeat.webp';$('onlineResultArt').alt=won?'You win !':'You lose...';$('onlineResultText').textContent=won?'Victoire !':'Défaite !';overlay.hidden=false;}
+function say(message){$('status').textContent=persistentError||message}
+function card(name,v,owner,meta){const d=document.createElement('div');d.className='card '+owner+' rarity-'+(meta?.rarity||'common');d.innerHTML='<span class="t">'+v[0]+'</span><span class="r">'+v[1]+'</span><span class="b">'+v[2]+'</span><span class="l">'+v[3]+'</span>';d.setAttribute('aria-label',name);d.title=name;
+const img=meta?.image;
+if(img?.src && typeof img.src==='string' && !/^([a-z]+:|\/\/|\/)/i.test(img.src)){
+  d.style.setProperty('--card-art',`url("../${img.src.replace(/"/g,'%22')}")`);
+  if(img.full){d.style.setProperty('--card-size','cover');d.style.setProperty('--card-pos','center');}
+  else if(Number.isFinite(Number(img.x))&&Number.isFinite(Number(img.y))){d.style.setProperty('--card-pos',(Number(img.x)*50)+'% '+(Number(img.y)*50)+'%');}
+}else{const n=artwork[name];if(n){const sheet=Math.floor((n-1)/9)+1,x=(n-1)%3,y=Math.floor(((n-1)%9)/3);d.style.setProperty('--card-art',"url('../assets/cards/s"+sheet+".webp')");d.style.setProperty('--card-pos',(x*50)+'% '+(y*50)+'%');}}
+return d}
+async function load(){if(!roomId)return;room=await getOnlineRoom(roomId);const user=await ensureOnlineIdentity();role=room.host_id===user.id?'host':'guest';renderNicknames();$('saveOnlineNickname').hidden=false;$('roomInfo').textContent='Salle '+room.room_code+' — '+(room.guest_id?'2 joueurs connectés':'en attente du second joueur');$('copy').hidden=false;
+$('rulePanel').hidden=false;
+$('hostRules').hidden=role!=='host'||!!game;
+$('ruleSelect').value=room.custom_rule||'basic-open';
+const accepted=Number.isInteger(room.custom_rule_version)&&Number.isInteger(room.custom_rule_accepted_version)&&room.custom_rule_version>=0&&room.custom_rule_accepted_version>=0&&room.custom_rule_accepted_version===room.custom_rule_version;
+$('ruleSummary').textContent='Proposition : '+(ruleNames[room.custom_rule]||'Clair')+' — '+(accepted?'acceptée par l’invité ✓':'en attente de l’accord de l’invité');
+$('acceptRule').hidden=role!=='guest'||accepted||!!game; $('acceptRule').disabled=$('acceptRule').hidden;
+const {data:deckRows,error:deckError}=await supabase.from('slay_custom_duel_decks').select('player_id,cards').eq('room_id',roomId);if(deckError)throw deckError;setDecks(deckRows||[]);
+$('deckInfo').textContent='Decks validés : '+(decks.host.length?'vert ✓':'vert en attente')+' · '+(decks.guest.length?'rouge ✓':'rouge en attente');
+const {data,error}=await supabase.from('slay_custom_duel_games').select('*').eq('room_id',roomId).maybeSingle();if(error){if(error.code==='42P01'){say('Exécute d’abord le script SQL de synchronisation dans Supabase.');return}throw error}game=data;
+privateHand=null;
+if(game?.memory_enabled&&game?.memory_hands_ready){
+ const {data:handRow,error:handError}=await supabase.from('slay_custom_duel_hands').select('cards').eq('room_id',roomId).eq('player_id',user.id).maybeSingle();
+ if(handError)throw handError;
+ if(handRow?.cards)privateHand=handRow.cards.map(c=>c?[c.name,c.v,c]:null);
+}
+document.body.classList.toggle('duel-active',!!game);$('duelExit').hidden=!game;if(game)updateDuelLayout();$('start').hidden=!!game||!room.guest_id||decks.host.length!==5||decks.guest.length!==5||!accepted; $('start').disabled=$('start').hidden;if(game)render();else if(room.guest_id&&decks.host.length===5&&decks.guest.length===5&&accepted)say('Les deux decks et les règles sont validés ! Démarre le duel.');else if(!accepted)say('En attente de l’acceptation des règles par l’invité.');else say('En attente des deux decks : chaque joueur doit cliquer sur « Valider mon deck ».');}
+function updateDuelLayout(){
+ document.getElementById('gamePanel').classList.toggle('guest-view',role==='guest');
+ for(const player of ['host','guest']){
+  const hand=$(player+'Hand'),label=hand.previousElementSibling,mine=player===role;
+  hand.classList.toggle('own-hand',mine);hand.classList.toggle('opponent-hand',!mine);
+  label.classList.toggle('own-label',mine);label.classList.toggle('opponent-label',!mine);
+  label.textContent=mine?'Ta main ('+(player==='host'?'vert':'rouge')+')':'Main adverse ('+(player==='host'?'vert':'rouge')+')';
+ }
+}
+function renderOnlineScore(){
+ if(!game)return;
+ let host=0,guest=0;
+ for(const entry of game.board||[]){if(entry?.owner==='host')host++;if(entry?.owner==='guest')guest++;}
+ $('onlineHostScore').textContent=host;$('onlineGuestScore').textContent=guest;
+ $('onlineTurnLabel').textContent=game.winner!==null?'PARTIE TERMINÉE':'TOUR DE '+playerNickname(game.turn).toLocaleUpperCase('fr');
+ const log=$('onlineHistoryLog');
+ log.textContent='Cartes posées : '+game.move_count+' / 9';
+}
+
+function render(){const stateKey=JSON.stringify({roomId,role,host_nickname:room?.host_nickname,guest_nickname:room?.guest_nickname,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected,memory_pending:game.memory_pending,memory_reveal:game.memory_reveal,memory_reaction:game.memory_reaction,memory_draws:game.memory_draws,memory_joker:game.memory_joker,memory_joker_choices:game.memory_joker_choices,memory_blind:game.memory_blind,privateHand});
+if(onlineDrag)return;if(stateKey===lastRenderedState)return;
+lastRenderedState=stateKey;
+renderOnlineScore();
+renderOnlineMemories();
+$('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
+$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=ended||((game.memory_reaction==='pending'&&game.memory_reveal&&['fire','rock'].includes(game.memory_reveal.id))?!memoryBoardTargetAllowed(entry,pos):(game.turn!==role||(game.memory_pending?!memoryBoardTargetAllowed(entry,pos):!!entry)));btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=entry.played_by===role&&privateHand?privateHand[entry.hand_index]:decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦'}btn.onclick=()=>onlineBoardClick(pos);board.append(btn)});
+previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
+for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();const items=player===role&&privateHand?privateHand:decks[player];items.forEach((item,i)=>{if(!item||game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role||(!!game.memory_pending&&!(game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'));if((player!==role&&hiddenOpponent)||(player===role&&game.memory_blind?.[role])){const back=document.createElement('div');back.className='card card-back back-official '+player+' concealed';back.setAttribute('aria-label',player===role?'Carte de ta main masquée par un Souvenir':'Carte adverse masquée');btn.setAttribute('aria-label',player===role?'Choisir une carte à l’aveugle':'Carte adverse');btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{if(game.memory_pending&&game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'){onlineMemoryRpc('slay_custom_memory_reunion',{p_hand_index:i});return}selected=i;render()};if(player===role&&!btn.disabled)bindOnlineDrag(btn,i);hand.append(btn)})}}
+
+
+function elementIconMarkup(key){
+ const shapes={
+  wind:'<path d="M5 10h16c6 0 6-7 1-7-3 0-4 2-4 3M3 16h22c6 0 6 8 1 8-3 0-4-2-4-3M7 22h7c5 0 5 7 1 7"/>',
+  water:'<path d="M16 3C13 9 6 14 6 21a10 10 0 0 0 20 0C26 14 19 9 16 3Z" fill="currentColor" fill-opacity=".22"/><path d="M11 20c0 4 2 6 5 6"/>',
+  earth:'<path d="m3 26 10-19 6 11 4-7 7 15Z" fill="currentColor" fill-opacity=".22"/><path d="m9 15 4 3 3-4M18 26l5-9 3 2"/>',
+  lightning:'<path d="m18 2-12 17h9l-2 11 13-18h-9Z" fill="currentColor" fill-opacity=".5"/>',
+  ice:'<path d="M16 3v26M5 9l22 14M5 23 27 9M12 5l4 4 4-4M12 27l4-4 4 4M5 14l5-2-1-5M27 18l-5 2 1 5M9 25l1-5-5-2M23 7l-1 5 5 2"/>',
+  fire:'<path d="M17 2c2 8-7 9-5 16 3-1 5-4 6-7 5 5 9 8 8 13-2 9-20 9-21-1-1-5 2-9 5-12-1 5 0 6 1 7-1-7 6-9 6-16Z" fill="currentColor" fill-opacity=".25"/><path d="M17 19c1 4-3 5-2 9"/>',
+  neutral:'<circle cx="16" cy="16" r="9"/><path d="m8 24 16-16"/>',
+  multi:'<path d="m16 2 5 9 9 5-9 5-5 9-5-9-9-5 9-5Z" fill="currentColor" fill-opacity=".25"/><circle cx="16" cy="16" r="4"/>',
+  redSpiral:'<path d="M28 17A12 12 0 1 1 16 4c12 0 12 19 1 19-7 0-7-11 0-11 4 0 4 6 0 6"/>'
+ };
+ return `<svg class="element-glyph" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[key]||shapes.multi}</svg>`;
+}
+function memoryCrystalMarkup(active){return `<span class="memory-orb ${active?'':'empty'}" title="${active?'Pioche Souvenir disponible':'Pioche Souvenir utilisée ou indisponible'}" aria-hidden="true"><svg viewBox="0 0 24 34" fill="none"><path d="M12 1 23 17 12 33 1 17Z" fill="#0a3948" stroke="#c9b774"/><path d="m12 3 0 11-9 3Z" fill="#a5fff0"/><path d="m12 3 9 14-9-3Z" fill="#45c5cb"/><path d="m3 17 9-3-3 10Z" fill="#52dfd1"/><path d="m12 14 9 3-6 7Z" fill="#2194b9"/><path d="m9 24 3-10 3 10-3 7Z" fill="#c1fffa"/><path d="m3 17 6 7 3 7Z" fill="#19728e"/><path d="m21 17-6 7-3 7Z" fill="#135b7c"/><path d="m12 3-9 14 9 14 9-14Z" stroke="#efffde" stroke-opacity=".5"/><path class="crystal-glint" d="m8 8 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#fffbe2"/></svg></span>`}
+const ONLINE_MEMORY_NAMES={rest:'Un repos mérité',cheese:'Vous avez du fromage ?',stuck:'Je suis coincé',fire:'Trait de feu raté',rock:'Jet de caillou habile',master:'LE MAÎTRE DU JEU',target:'Cible sphérique',spider:'On ne tue pas les araignées blanches !',reunion:'Retrouvailles'};
+function memoryBoardTargetAllowed(entry,pos){
+ const rev=game?.memory_reveal;
+ if(!rev)return false;
+ if(['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending')return game.memory_joker_choices?.[role]===undefined&&entry?.owner===role;
+ if(rev.owner!==role||game.memory_reaction==='pending')return false;
+ if(['fire','rock'].includes(rev.id))return entry?.owner===role;
+ if(rev.id==='target')return onlineTargetSource===null?entry?.owner===(role==='host'?'guest':'host'):!entry;
+ return false;
+}
+let onlineTargetSource=null;
+function onlineBoardClick(pos){
+ const rev=game?.memory_reveal;
+ if(rev&&['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending'&&game.memory_joker_choices?.[role]===undefined&&game.board[pos]?.owner===role){onlineMemoryRpc('slay_custom_memory_joker_choose_stats',{p_position:pos});return}
+ if(game?.memory_pending&&rev?.owner===role&&game.memory_reaction!=='pending'){
+  if(['fire','rock'].includes(rev.id)){onlineMemoryRpc('slay_custom_resolve_memory',{p_position:pos});return}
+  if(rev.id==='target'){
+   if(onlineTargetSource===null){if(game.board[pos]?.owner!== (role==='host'?'guest':'host')){say('Choisis une carte adverse à déplacer.');return}onlineTargetSource=pos;lastRenderedState=null;render();say('Choisis maintenant une case vide.');return}
+   const from=onlineTargetSource;onlineTargetSource=null;lastRenderedState=null;
+   onlineMemoryRpc('slay_custom_memory_target',{p_from:from,p_to:pos});return;
+  }
+ }
+ move(pos);
+}
+const ONLINE_MEMORY_ART={target:46,fire:51,rock:20,cheese:53,stuck:19,rest:52};
+function onlineMemoryArtStyle(n){const index=n-1,sheet=Math.floor(index/9)+1,x=index%3,y=Math.floor((index%9)/3);return {backgroundImage:"url('../assets/cards/s"+sheet+".webp')",backgroundSize:'300% 300%',backgroundPosition:(x*50)+'% '+(y*50)+'%'};}
+const ONLINE_MEMORY_INFO={
+ target:['◉','#66cbd0','Déplace une carte adverse vers une case vide.'],
+ fire:['🔥','#e76a43','Choisis une de tes cartes : ses quatre valeurs diminuent de 1.'],
+ spider:['🕸','#d9e8df','Ta dernière carte posée revient dans ta main.'],
+ rock:['◆','#a8c96f','Choisis une de tes cartes : ses quatre valeurs augmentent de 1.'],
+ cheese:['◒','#f0c85c','Ton adversaire choisira sa prochaine carte à l’aveugle.'],
+ reunion:['↔','#db8cc8','Échange une carte de ta main contre une carte adverse aléatoire.'],
+ stuck:['⌁','#6f9cc7','Ta prochaine sélection de carte se fera à l’aveugle.'],
+ master:['★','#e7bf4f','Tu obtiens un Joker, mais ne peux plus piocher.'],
+ rest:['❦','#68b6a4','Un instant de calme : aucun effet.']
+};
+let onlineLastMemoryReveal=null,onlineMemoryDismissed=null;
+function syncMemoryOverlay(rev){
+ const overlay=$('onlineMemoryOverlay');
+ if(!rev){overlay.hidden=true;onlineLastMemoryReveal=null;onlineMemoryDismissed=null;return}
+ const key=JSON.stringify([roomId,game.move_count,rev.id,rev.owner,game.memory_draws]);
+ if(key!==onlineLastMemoryReveal){onlineLastMemoryReveal=key;onlineMemoryDismissed=null}
+ overlay.hidden=onlineMemoryDismissed===key;
+ if(!overlay.hidden){
+  const info=ONLINE_MEMORY_INFO[rev.id]||['✦','#68b6a4',''];
+  $('onlineMemoryOverlayCard').style.setProperty('--memory-accent',info[1]);
+  $('onlineMemoryIcon').textContent=info[0];
+  const artNumber=ONLINE_MEMORY_ART[rev.id],artEl=$('onlineMemoryArtwork'),hasArt=Number.isInteger(artNumber);
+  $('onlineMemoryOverlayCard').classList.toggle('has-art',hasArt);
+  artEl.hidden=!hasArt;$('onlineMemoryIconWrap').hidden=hasArt;
+  if(hasArt){Object.assign(artEl.style,onlineMemoryArtStyle(artNumber));artEl.setAttribute('aria-label',ONLINE_MEMORY_NAMES[rev.id]||rev.id)}
+
+  $('onlineMemoryTitle').textContent=ONLINE_MEMORY_NAMES[rev.id]||rev.id;
+  $('onlineMemoryDescription').textContent=rev.id==='target'&&rev.owner===role&&!game.board.some(c=>c?.owner===(role==='host'?'guest':'host'))?'Aucune carte adverse sur le plateau : cet effet est annulé. Touche la carte pour poursuivre le duel.':info[2];
+  $('onlineMemoryOwner').textContent=rev.owner===role?'TON SOUVENIR':'SOUVENIR ADVERSE';
+  $('onlineMemoryContinue').textContent=rev.owner!==role?'TOUCHER POUR FERMER':game.memory_reaction==='pending'?'TOUCHER POUR ATTENDRE LA RÉACTION':(['rest','cheese','stuck','master','spider'].includes(rev.id)?'TOUCHER POUR APPLIQUER L’EFFET':'TOUCHER POUR CHOISIR UNE CIBLE');
+ }
+}
+$('onlineMemoryOverlayCard').onclick=()=>{
+ const rev=game?.memory_reveal;if(!rev)return;
+ if(rev.id==='target'&&rev.owner===role&&game.memory_reaction!=='pending'&&!game.board.some(c=>c?.owner===(role==='host'?'guest':'host'))){onlineMemoryDismissed=onlineLastMemoryReveal;$('onlineMemoryOverlay').hidden=true;onlineMemoryRpc('slay_custom_memory_target_no_target');return}
+ onlineMemoryDismissed=onlineLastMemoryReveal;$('onlineMemoryOverlay').hidden=true;
+ if(rev.owner!==role||game.memory_reaction==='pending')return;
+ if(rev.id==='spider'){onlineMemoryRpc('slay_custom_memory_spider');return}
+ if(['rest','cheese','stuck','master'].includes(rev.id)){onlineMemoryRpc('slay_custom_resolve_memory',{p_position:null});return}
+ lastRenderedState=null;render();
+};
+
+function renderOnlineMemories(){
+ const enabled=!!game.memory_enabled,phase=game.memory_pending===role,rev=game.memory_reveal;
+ const ownPending=phase&&rev?.owner===role;
+ const isMine=rev?.owner===role,reactor=rev&&rev.owner!==role;
+ const canReact=reactor&&game.memory_reaction==='pending'&&!!game.memory_joker?.[role];
+ const statChoice=!!rev&&['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending'&&(rev.owner===role||canReact)&&game.memory_joker_choices?.[role]===undefined;
+ const draws=game.memory_draws||{};
+ for(const player of ['host','guest']){
+  const zone=$(player+'Side').querySelector('.online-memory-orbs');
+  if(!zone)continue;
+  const count=enabled?Number(draws[player]||0):0;
+  zone.innerHTML='';
+  zone.style.setProperty('--crystal-color',player==='host'?'#56d6a2':'#f16e78');zone.style.setProperty('--element-color',player==='host'?'#45b85d':'#d95050');
+  zone.innerHTML=memoryCrystalMarkup(count>0).replace('class="memory-orb ','class="official-memory-crystal ')+'<span class="official-memory-element" title="Affinité élémentaire">'+elementIconMarkup(player==='host'?'wind':'multi')+'</span>'+memoryCrystalMarkup(count>1).replace('class="memory-orb ','class="official-memory-crystal ');
+  zone.setAttribute('aria-label',count+' cristaux Souvenirs disponibles');
+ }
+ const pile=$('onlineMemoryPile');
+ pile.disabled=!enabled||!phase||!!rev||!!game.memory_blocked?.[role]||Number(draws[role]||0)<1;
+ pile.classList.toggle('available',!pile.disabled);
+ const actions=$('onlineMemoryActions');actions.hidden=!enabled||(!phase&&!canReact);
+ $('onlineMemorySkip').hidden=!phase||!!rev;
+ $('onlineMemoryResolve').hidden=!phase||!isMine||game.memory_reaction==='pending'||!['rest','cheese','stuck','master','spider'].includes(rev?.id);
+ $('onlineJokerKeep').hidden=!canReact;
+ $('onlineJokerCancel').hidden=!canReact;
+ $('onlineJokerCopy').hidden=!canReact||!['rest','cheese','stuck'].includes(rev?.id);
+ const hint=$('onlineMemoryHint');
+ syncMemoryOverlay(rev);
+ const revealCard=$('onlineMemoryRevealCard');revealCard.hidden=!rev;
+ if(rev){$('onlineMemoryRevealName').textContent=ONLINE_MEMORY_NAMES[rev.id]||rev.id;$('onlineMemoryRevealOwner').textContent=rev.owner===role?'Ton Souvenir':'Souvenir adverse';}
+ if(!enabled){hint.textContent='Souvenirs : activation en attente des tests multijoueurs';return}
+ if(canReact){hint.textContent='Réaction au Souvenir adverse : '+(ONLINE_MEMORY_NAMES[rev.id]||rev.id)+(statChoice?' — clique sur une de tes cartes pour copier son effet':'');return}
+ if(statChoice){hint.textContent='Le Joker adverse copie le Souvenir : choisis une de tes cartes sur le plateau.';return}
+ if(rev){hint.textContent=(ONLINE_MEMORY_NAMES[rev.id]||rev.id)+' — '+(isMine?(game.memory_reaction==='pending'?'En attente du Joker adverse':(['fire','rock','target'].includes(rev.id)?'Clique sur une carte du plateau pour choisir la cible':rev.id==='spider'?'Résous le Souvenir avec le bouton ci-dessous':rev.id==='reunion'?'Choisis une carte de ta main à échanger':'Souvenir révélé')):'Résolution adverse en cours');return}
+ hint.textContent=phase?'Pioche un Souvenir ou termine ton tour.':'';
+}
+async function onlineMemoryRpc(name,args={}){
+ await action(async()=>{if(!roomId)throw Error('Salon absent');
+  const {error}=await supabase.rpc(name,{p_room:roomId,...args});
+  if(error)throw error;
+  lastRenderedState=null;await load();
+ });
+}
+$('onlineMemoryPile').onclick=()=>onlineMemoryRpc('slay_custom_draw_memory');
+$('onlineMemorySkip').onclick=()=>onlineMemoryRpc('slay_custom_skip_memory');
+$('onlineMemoryResolve').onclick=()=>game?.memory_reveal?.id==='spider'?onlineMemoryRpc('slay_custom_memory_spider'):onlineMemoryRpc('slay_custom_resolve_memory',{p_position:null});
+$('onlineJokerKeep').onclick=()=>onlineMemoryRpc('slay_custom_memory_joker_keep');
+$('onlineJokerCancel').onclick=()=>onlineMemoryRpc('slay_custom_memory_joker_cancel');
+$('onlineJokerCopy').onclick=()=>onlineMemoryRpc('slay_custom_memory_joker_copy_simple');
+
+// Déplacement tactile/souris : aperçu agrandi et dépôt sur une case libre.
+// Le serveur reste seul responsable de la validation du coup.
+let onlineDrag=null;
+let suppressOnlineClickUntil=0;
+function clearOnlineDrag(){
+ const d=onlineDrag;
+ if(!d)return;
+ d.preview?.remove();
+ document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
+ onlineDrag=null;
+}
+function onlineDragTarget(x,y){
+ const el=document.elementFromPoint(x,y)?.closest('#board .cell');
+ return el&&!el.disabled?el:null;
+}
+function bindOnlineDrag(button,handIndex){
+ button.addEventListener('pointerdown',e=>{
+  if(e.button!==0||button.disabled||game?.turn!==role)return;
+  clearOnlineDrag();
+  onlineDrag={pointerId:e.pointerId,handIndex,startX:e.clientX,startY:e.clientY,preview:null,source:button};
+ });
+ button.addEventListener('click',e=>{
+  if(Date.now()<suppressOnlineClickUntil){e.preventDefault();e.stopImmediatePropagation()}
+ },true);
+}
+document.addEventListener('pointermove',e=>{
+ const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+ if(!d.preview&&Math.hypot(e.clientX-d.startX,e.clientY-d.startY)<10)return;
+ if(!d.preview){
+  selected=d.handIndex;
+  d.preview=d.source.querySelector('.card').cloneNode(true);
+  d.preview.classList.add('online-drag-preview');
+  document.body.append(d.preview);
+ }
+ d.preview.style.left=e.clientX+'px';d.preview.style.top=e.clientY+'px';
+ document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
+ onlineDragTarget(e.clientX,e.clientY)?.classList.add('drop-target');
+});
+document.addEventListener('pointerup',e=>{
+ const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+ const dragged=!!d.preview;
+ const target=dragged?onlineDragTarget(e.clientX,e.clientY):null;
+ clearOnlineDrag();
+ if(dragged){
+  suppressOnlineClickUntil=Date.now()+350;
+  if(target)move(Number(target.dataset.position));
+  else render();
+ }
+});
+document.addEventListener('pointercancel',e=>{if(onlineDrag?.pointerId===e.pointerId)clearOnlineDrag()});
+
+async function move(pos){if(selected===null){say('Choisis une carte avant de sélectionner une case.');return}if(working)return;working=true;try{const {error}=await supabase.rpc('slay_custom_move',{p_room:roomId,p_hand_index:selected,p_position:pos});if(error)throw error;selected=null;await load()}catch(e){say('Coup refusé : '+e.message)}finally{working=false}}
+async function action(fn){if(working)return;working=true;persistentError=null;try{await fn()}catch(e){const msg=e.message||String(e);persistentError='Erreur : '+msg+(msg.toLowerCase().includes('expir')||msg.toLowerCase().includes('introuvable')?' — Créez une nouvelle salle depuis cet écran sur les deux appareils.':'');$('status').textContent=persistentError}finally{working=false}}
+$('onlineNickname').value=localStorage.getItem(NICK_KEY)||'';
+$('saveOnlineNickname').onclick=()=>action(async()=>{await publishNickname();await load();say('Pseudo enregistré !')});
+$('create').onclick=()=>action(async()=>{validateNickname();const result=await createOnlineRoom();roomId=result.room_id;await publishNickname();await load();say('Salle créée ! Partage le code avec ton ami.')});
+$('join').onclick=()=>action(async()=>{validateNickname();roomId=await joinOnlineRoom($('code').value);await publishNickname();await load();say('Salon rejoint ! Sélectionne ton deck et clique sur « Valider mon deck ».')});
+$('proposeRule').onclick=()=>action(async()=>{if(!roomId)throw Error('Crée une salle');const {error}=await supabase.rpc('slay_custom_set_rule',{p_room:roomId,p_rule:$('ruleSelect').value});if(error)throw error;await load()});
+$('acceptRule').onclick=()=>action(async()=>{if(!roomId)throw Error('Rejoins une salle');const {error}=await supabase.rpc('slay_custom_accept_rule',{p_room:roomId,p_version:room.custom_rule_version});if(error)throw error;await load();say('Règles acceptées et enregistrées ✓')});
+$('start').onclick=()=>action(async()=>{await load();if($('start').hidden)throw Error('Les règles ne sont pas encore acceptées par l’invité.');const {error}=await supabase.rpc('slay_custom_start',{p_room:roomId});if(error)throw error;await load()});
+$('submitDeck').onclick=()=>action(async()=>{if(!roomId)throw Error('Crée ou rejoins un salon avant de valider ton deck');const deck=selectedLocalDeck();if(!deck)throw Error('Aucun deck sélectionné');const normalize=v=>typeof v==='string'&&/^A\+*$/.test(v)?10+v.length-1:Number(v);const cards=deck.cards.map(c=>({...c,v:Array.isArray(c.v)?c.v.map(normalize):[]}));const invalid=cards.find(c=>!Array.isArray(c.v)||c.v.length!==4||c.v.some(v=>!Number.isInteger(v)||v<0||v>20));if(invalid)throw Error('Valeur non reconnue pour '+invalid.name+' : '+JSON.stringify(invalid.v));const {error}=await supabase.rpc('slay_custom_submit_deck',{p_room:roomId,p_cards:cards});if(error){const detail=cards.map(c=>c.name+' ['+c.v.join(', ')+']').join(' · ');throw Error(error.message+' | Valeurs envoyées : '+detail)}await load();say('Deck enregistré pour ce duel !')});
+$('closeResult').onclick=()=>{$('onlineResult').hidden=true};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(room.room_code);say('Code '+room.room_code+' copié !')}catch{say('Code à copier : '+room.room_code)}};
+$('code').oninput=()=>{$('code').value=$('code').value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)};
+if(new URLSearchParams(location.search).get('create')==='1'){if(ownNickname())$('create').click();else say('Choisis ton pseudo, puis clique sur « Créer une salle ».');}
+setInterval(()=>{if(roomId&&!working&&!onlineDrag)load().catch(e=>say('Synchronisation : '+e.message))},2500);
+</script></body></html>
