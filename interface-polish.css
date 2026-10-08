@@ -613,3 +613,10 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .story-scene.twins-temple{background:linear-gradient(#08172a11,#07162b77),url('assets/story/twins-temple-background.webp') center/cover no-repeat!important}.story-scene.ice-ritual{background:linear-gradient(#06162b11,#08192f66),url('assets/story/ice-ritual-background.webp') center/cover no-repeat!important}.story-scene.pink-lake{background:linear-gradient(#180c2422,#170e2844),url('assets/story/pink-lake-background.webp') center/cover no-repeat!important}.story-beat-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 18px}.story-beat-choices .menu-btn{min-width:0;white-space:normal;margin:0;padding:12px;line-height:1.35}@media(max-width:600px){.story-beat-choices{grid-template-columns:1fr;gap:8px}.story-beat-choices .menu-btn{font-size:.8rem}}
 
 .story-location-art{display:block;width:min(100%,950px);max-height:100%;object-fit:contain;align-self:center;border:1px solid #dcc27b88;border-radius:14px;box-shadow:0 15px 35px #03102299}
+
+/* Progression détaillée du défi Cercle des Six Éléments. */
+.grand-triade-checklist{list-style:none;margin:12px 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:6px 12px;text-align:left}
+.grand-triade-checklist li{display:flex;align-items:baseline;gap:8px;padding:7px 9px;border:1px solid #bda15f55;border-radius:7px;background:#092e2c70;color:#f7e9c9;font-size:12px;line-height:1.4}
+.grand-triade-checklist li.done{color:#b9f0c6;background:#1c503e88}
+.grand-triade-checklist .challenge-task-mark{font-size:16px;font-weight:800;flex:none;color:#e9c879}
+.grand-triade-checklist li.done .challenge-task-mark{color:#8ff0a7}
