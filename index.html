@@ -339,7 +339,7 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
       <button class="element-choice" data-element="ice" style="--element-color:#78cfe8"><span class="element-icon">❄</span><span>Glace</span></button>
       <button class="element-choice" data-element="fire" style="--element-color:#d94d45"><span class="element-icon">♨</span><span>Feu</span></button>
     </div>
-    </div></details><details class="options-group"><summary>Plateau de jeu</summary><div class="options-group-body"><p>Choisis l’apparence des neuf cases du plateau. De nouveaux plateaux apparaîtront ici au fil de tes défis accomplis.</p><div class="board-theme-options" id="boardThemeOptions"><button type="button" class="board-theme-choice" data-board-theme="classic"><span class="board-theme-preview classic" aria-hidden="true"></span><strong>Classique</strong><small>Disponible</small></button><button type="button" class="board-theme-choice" data-board-theme="arcane"><span class="board-theme-preview arcane" aria-hidden="true"></span><strong>Sceau des Arcanes</strong><small>Défi : victoire Identique</small></button><button type="button" class="board-theme-choice" data-board-theme="jordan"><span class="board-theme-preview jordan" aria-hidden="true"></span><strong>Les Petits Chevaux de Jordan</strong><small>Défi : victoire Addition</small></button><button type="button" class="board-theme-choice" data-board-theme="elements-wheel"><span class="board-theme-preview elements-wheel" aria-hidden="true"></span><strong>Le Cercle des Six Éléments</strong><small>Débloqué</small></button></div></div></details><details class="options-group"><summary>Dos des cartes adverses</summary><div class="options-group-body"><div class="back-options">
+    </div></details><details class="options-group"><summary>Plateau de jeu</summary><div class="options-group-body"><p>Choisis l’apparence des neuf cases du plateau. De nouveaux plateaux apparaîtront ici au fil de tes défis accomplis.</p><div class="board-theme-options" id="boardThemeOptions"><button type="button" class="board-theme-choice" data-board-theme="classic"><span class="board-theme-preview classic" aria-hidden="true"></span><strong>Classique</strong><small>Disponible</small></button><button type="button" class="board-theme-choice" data-board-theme="arcane"><span class="board-theme-preview arcane" aria-hidden="true"></span><strong>Sceau des Arcanes</strong><small>Défi : victoire Identique</small></button><button type="button" class="board-theme-choice" data-board-theme="jordan"><span class="board-theme-preview jordan" aria-hidden="true"></span><strong>Les Petits Chevaux de Jordan</strong><small>Défi : victoire Addition</small></button><button type="button" class="board-theme-choice" data-board-theme="elements-wheel"><span class="board-theme-preview elements-wheel" aria-hidden="true"></span><strong>Le Cercle des Six Éléments</strong><small>Débloqué</small></button><button type="button" class="board-theme-choice" data-board-theme="treasure"><span class="board-theme-preview treasure" aria-hidden="true"></span><strong>Trésor d’Hackénia</strong><small>Défi : collection complète, foils comprises</small></button></div></div></details><details class="options-group"><summary>Ornements du compteur</summary><div class="options-group-body"><p>Choisis l’ornement qui entoure ton score pendant les duels. D’autres ornements seront disponibles avec les prochains défis.</p><div class="score-ornament-options" id="scoreOrnamentOptions"><button type="button" class="score-ornament-choice" data-score-ornament="none"><span class="score-ornament-preview none">0</span><strong>Aucun</strong><small>Disponible</small></button><button type="button" class="score-ornament-choice" data-score-ornament="treasure"><span class="score-ornament-preview treasure">0</span><strong>Hexagone du Trésor</strong><small>Défi : collection complète, foils comprises</small></button></div></div></details><details class="options-group"><summary>Dos des cartes adverses</summary><div class="options-group-body"><div class="back-options">
       <button class="back-choice" data-back="official"><span class="card card-back back-official"></span><span>Emblème élémentaire</span></button>
       <button class="back-choice" data-back="sun"><span class="card card-back back-sun"></span><span>Sceau d’Hackénia</span></button>
       <button class="back-choice" data-back="mist"><span class="card card-back back-mist"></span><span>Courants élémentaires</span></button>
@@ -514,7 +514,7 @@ if(!Array.isArray(decks)||!decks.length)decks=[{id:'deck-1',name:'Mon premier de
 decks=decks.map((d,i)=>({id:String(d.id||`deck-${i+1}`),name:String(d.name||`Deck ${i+1}`),cards:Array.isArray(d.cards)?d.cards.filter(x=>Number.isInteger(x)&&pool[x]).slice(0,5):[]}));
 let activeDeckId=readSaved('hackenia-active-deck',decks[0].id);
 if(!decks.some(d=>d.id===activeDeckId))activeDeckId=decks[0].id;
-let settings={player:'#45b85d',opponent:'#d95050',back:'official',boardTheme:'classic',element:'wind',memorySkins:{},musicVolume:.35,sfxVolume:.7,audioMuted:false,...readSaved('hackenia-options',{})};
+let settings={player:'#45b85d',opponent:'#d95050',back:'official',boardTheme:'classic',scoreOrnament:'none',element:'wind',memorySkins:{},musicVolume:.35,sfxVolume:.7,audioMuted:false,...readSaved('hackenia-options',{})};
 settings.memorySkins=settings.memorySkins||{};
 let story={unlocked:1,chapter1:'new',part1:'new',part2:'locked',part3:'locked',part4:'locked',part5:'locked',part6:'locked',part6bis:'locked',part7:'locked',part8:'locked',part9:'locked',stage:'intro',pendingReward:false,...readSaved('hackenia-story',{})};
 const savedEconomy=readSaved('hackenia-economy',null);
@@ -527,7 +527,7 @@ if(!collection||collection.version!==CATALOG_VERSION||!collection.counts)collect
 collection.counts=Object.fromEntries(Object.entries(collection.counts).filter(([id,count])=>catalogById(id)&&Number.isInteger(count)&&count>0));
 collection.foils=Object.fromEntries(Object.entries(collection.foils||{}).filter(([id,count])=>catalogById(id)&&Number.isInteger(count)&&count>0));
 collection.starterBoosters=Math.max(0,Number(collection.starterBoosters)||0);
-const SAVE_KEY='hackenia-save-slot',defaultSettings=()=>({player:'#45b85d',opponent:'#d95050',back:'official',element:'wind',memorySkins:{},musicVolume:.35,sfxVolume:.7,audioMuted:false}),defaultStory=()=>({unlocked:1,chapter1:'new',part1:'new',part2:'locked',part3:'locked',part4:'locked',part5:'locked',part6:'locked',part6bis:'locked',part7:'locked',part8:'locked',part9:'locked',stage:'intro',pendingReward:false}),defaultEconomy=()=>({gold:0,storyRewards:{part1:false,part2:false,part3:false}}),defaultDecks=()=>[{id:'deck-1',name:'Mon premier deck',cards:[]}];
+const SAVE_KEY='hackenia-save-slot',defaultSettings=()=>({player:'#45b85d',opponent:'#d95050',back:'official',boardTheme:'classic',scoreOrnament:'none',element:'wind',memorySkins:{},musicVolume:.35,sfxVolume:.7,audioMuted:false}),defaultStory=()=>({unlocked:1,chapter1:'new',part1:'new',part2:'locked',part3:'locked',part4:'locked',part5:'locked',part6:'locked',part6bis:'locked',part7:'locked',part8:'locked',part9:'locked',stage:'intro',pendingReward:false}),defaultEconomy=()=>({gold:0,storyRewards:{part1:false,part2:false,part3:false}}),defaultDecks=()=>[{id:'deck-1',name:'Mon premier deck',cards:[]}];
 if(story.chapter1==='complete'&&story.part1==='new')story.part1='complete';
 if(story.chapter1==='complete'&&story.part2==='complete'&&story.part3==='locked'){story.part3='new';story.chapter1='started';story.pendingReward=false}
 let saveSlotActive=false,matchInProgress=false,matchRewarded=false;
@@ -667,7 +667,7 @@ if((c.p!==c.a)&&(gameType==='local'||c.p>c.a)&&currentRuleKey.startsWith('plus-'
 function msg(a,b){$('#message').innerHTML=`<strong>${a}</strong><small>${b}</small>`}
 function applyBoardTheme(){
  const state=economy.challenges||{};
- const unlocked={classic:true,arcane:!!state.identicalWin,jordan:!!state.additionWin,'elements-wheel':!!state.grandTriadeWin};
+ const unlocked={classic:true,arcane:!!state.identicalWin,jordan:!!state.additionWin,'elements-wheel':!!state.grandTriadeWin,treasure:!!state.treasureComplete};
  if(!unlocked[settings.boardTheme])settings.boardTheme='classic';
  const boardEl=document.getElementById('board');if(boardEl)boardEl.dataset.theme=settings.boardTheme;
  document.querySelectorAll('[data-board-theme]').forEach(btn=>{
@@ -679,8 +679,24 @@ function applyBoardTheme(){
   const hint=btn.querySelector('small');if(hint)hint.textContent=theme==='classic'?'Disponible':'Débloqué';
  });
 }
+function applyScoreOrnament(){
+ const available=!!(economy.challenges||{}).treasureComplete;
+ if(settings.scoreOrnament!=='treasure'||!available)settings.scoreOrnament='none';
+ const score=document.querySelector('#gameApp .score');if(score)score.dataset.ornament=settings.scoreOrnament;
+ document.querySelectorAll('[data-score-ornament]').forEach(btn=>{
+  const unlocked=btn.dataset.scoreOrnament==='none'||available;
+  btn.hidden=!unlocked;btn.disabled=!unlocked;
+  btn.classList.toggle('selected',settings.scoreOrnament===btn.dataset.scoreOrnament);
+  btn.setAttribute('aria-pressed',String(settings.scoreOrnament===btn.dataset.scoreOrnament));
+  const hint=btn.querySelector('small');if(hint)hint.textContent=btn.dataset.scoreOrnament==='none'?'Disponible':'Débloqué';
+ });
+}
+document.querySelectorAll('[data-score-ornament]').forEach(btn=>btn.addEventListener('click',()=>{
+ if(btn.disabled)return;settings.scoreOrnament=btn.dataset.scoreOrnament;applyScoreOrnament();
+ try{localStorage.setItem('hackenia-options',JSON.stringify(settings));if(saveSlotActive)syncProgressSave()}catch{}
+}));
 document.querySelectorAll('[data-board-theme]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.disabled)return;settings.boardTheme=btn.dataset.boardTheme;applyBoardTheme();try{localStorage.setItem('hackenia-options',JSON.stringify(settings));if(saveSlotActive)syncProgressSave()}catch{}}));
-function applySettings(){checkChallenges();applyBoardTheme();renderEarnedBacks();if(!backUnlocked(settings.back))settings.back="official";const element=elements[settings.element]||elements.wind;settings.musicVolume=Math.max(0,Math.min(1,Number(settings.musicVolume)??.35));settings.sfxVolume=Math.max(0,Math.min(1,Number(settings.sfxVolume)??.7));settings.audioMuted=!!settings.audioMuted;document.documentElement.style.setProperty('--player',settings.player);document.documentElement.style.setProperty('--opponent',settings.opponent);document.documentElement.style.setProperty('--element-color',element.color);$('#playerColor').value=settings.player;$('#opponentColor').value=settings.opponent;$('#musicVolume').value=Math.round(settings.musicVolume*100);$('#sfxVolume').value=Math.round(settings.sfxVolume*100);$('#musicVolumeValue').textContent=`${Math.round(settings.musicVolume*100)} %`;$('#sfxVolumeValue').textContent=`${Math.round(settings.sfxVolume*100)} %`;$('#audioMuted').checked=settings.audioMuted;document.querySelectorAll('[data-back]').forEach(x=>x.classList.toggle('selected',x.dataset.back===settings.back));document.querySelectorAll('[data-element]').forEach(x=>{x.classList.toggle('selected',x.dataset.element===settings.element);x.setAttribute('aria-pressed',String(x.dataset.element===settings.element));x.querySelector('.element-icon').innerHTML=elementIconMarkup(x.dataset.element)});AudioEngine.update()}
+function applySettings(){checkChallenges();applyBoardTheme();applyScoreOrnament();renderEarnedBacks();if(!backUnlocked(settings.back))settings.back="official";const element=elements[settings.element]||elements.wind;settings.musicVolume=Math.max(0,Math.min(1,Number(settings.musicVolume)??.35));settings.sfxVolume=Math.max(0,Math.min(1,Number(settings.sfxVolume)??.7));settings.audioMuted=!!settings.audioMuted;document.documentElement.style.setProperty('--player',settings.player);document.documentElement.style.setProperty('--opponent',settings.opponent);document.documentElement.style.setProperty('--element-color',element.color);$('#playerColor').value=settings.player;$('#opponentColor').value=settings.opponent;$('#musicVolume').value=Math.round(settings.musicVolume*100);$('#sfxVolume').value=Math.round(settings.sfxVolume*100);$('#musicVolumeValue').textContent=`${Math.round(settings.musicVolume*100)} %`;$('#sfxVolumeValue').textContent=`${Math.round(settings.sfxVolume*100)} %`;$('#audioMuted').checked=settings.audioMuted;document.querySelectorAll('[data-back]').forEach(x=>x.classList.toggle('selected',x.dataset.back===settings.back));document.querySelectorAll('[data-element]').forEach(x=>{x.classList.toggle('selected',x.dataset.element===settings.element);x.setAttribute('aria-pressed',String(x.dataset.element===settings.element));x.querySelector('.element-icon').innerHTML=elementIconMarkup(x.dataset.element)});AudioEngine.update()}
 function renderWallet(){document.querySelectorAll('.gold-value').forEach(x=>x.textContent=economy.unlimitedGold?'∞':economy.gold);const one=$('#buyOneBooster'),ten=$('#buyTenBoosters');if(one)one.disabled=!economy.unlimitedGold&&economy.gold<10;if(ten)ten.disabled=!economy.unlimitedGold&&economy.gold<90}
 function saveEconomy(){try{localStorage.setItem('hackenia-economy',JSON.stringify(economy));renderWallet();if(saveSlotActive)syncProgressSave()}catch{}}
 function awardGold(amount){economy.gold=Math.max(0,economy.gold+amount);saveEconomy();return amount}
@@ -943,7 +959,7 @@ function buildCompleteTestSlot(){
  return {
   version:3,label:'Sauvegarde de test complète — Jordan',updatedAt:now,
   profile:{
-   collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,20])),foils:{},starterBoosters:0},
+   collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,20])),foils:Object.fromEntries(catalog.map(c=>[c.id,20])),starterBoosters:0},
    decks:decks.map(d=>({id:d.id,name:d.name,cards:[...d.cards]})),
    activeDeckId,
    story:{...story},
