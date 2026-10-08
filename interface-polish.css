@@ -620,3 +620,6 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .grand-triade-checklist li.done{color:#b9f0c6;background:#1c503e88}
 .grand-triade-checklist .challenge-task-mark{font-size:16px;font-weight:800;flex:none;color:#e9c879}
 .grand-triade-checklist li.done .challenge-task-mark{color:#8ff0a7}
+
+/* Exclusive Jordan reward card back. */
+.card.card-back.back-jordan-cool{background:#102b42 url('assets/backs/jordan-cool.svg') center/100% 100% no-repeat!important}
