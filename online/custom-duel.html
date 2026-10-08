@@ -205,9 +205,23 @@ body.duel-active .online-memory-orbs .memory-orb svg{display:block;width:100%;he
 body.duel-active .online-memory-orbs .memory-orb.empty{opacity:.35;transform:scale(.85)}
 body.duel-active .online-memory-orbs .memory-element{width:24px;height:24px;display:grid;place-items:center;border-radius:6px;border:1px solid #f9e3b4;background:#125447;color:#f9e3b4}
 @media(max-width:850px){body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:21px!important;height:30px!important}}
+
+/* Exact reveal card treatment from main; click to continue or choose target. */
+.memory-reveal{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 42%,#66d5c245,transparent 32%),#07191edb;backdrop-filter:blur(10px)}
+.memory-reveal[hidden]{display:none!important}
+.memory-reveal-card{width:min(82vw,440px);aspect-ratio:2.5/3.5;border:4px double #b8e7d5;border-radius:28px;padding:34px 30px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;color:#efffe9;background:radial-gradient(circle at 50% 35%,var(--memory-accent,#4bb9a6) 0 8%,transparent 32%),repeating-radial-gradient(circle at 50% 35%,transparent 0 32px,#aee6d017 33px 35px),linear-gradient(145deg,#0b5558,#092e43 58%,#071e31);box-shadow:0 35px 100px #000e,inset 0 0 0 7px #082d35,inset 0 0 0 9px #75c6b4;cursor:pointer;animation:memoryReveal .55s cubic-bezier(.2,.9,.2,1)}
+.memory-reveal-card .memory-kicker{font-size:.72rem;font-weight:900;letter-spacing:.24em;color:#b8e8d4}
+.memory-reveal-card .memory-icon{width:120px;height:120px;display:grid;place-items:center;border:2px solid #d9f2ce;border-radius:50% 12% 50% 12%;transform:rotate(45deg);font:900 3.8rem Georgia;background:#0b4852bb;box-shadow:0 0 35px var(--memory-accent)}
+.memory-reveal-card .memory-icon span{transform:rotate(-45deg)}
+.memory-reveal-card h2{font:900 clamp(1.7rem,5vw,2.5rem) Georgia;color:#fff1bd}
+.memory-reveal-card p{font:1rem/1.5 Georgia;color:#dff5e9}
+.memory-reveal-card .memory-continue{font-size:.75rem;font-weight:900;letter-spacing:.12em;color:#fff2bd}
+.memory-reveal-card .memory-owner{padding:6px 12px;border:1px solid #bce6d185;border-radius:99px;background:#041b2488;font-size:.72rem;font-weight:900}
+@keyframes memoryReveal{from{opacity:0;transform:translateY(40px) rotateY(18deg) scale(.72)}to{opacity:1;transform:none}}
+@media(max-height:700px){.memory-reveal-card{max-height:92dvh;aspect-ratio:auto;gap:9px;padding:16px}.memory-reveal-card .memory-icon{width:72px;height:72px;font-size:2.5rem}}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><div class="sigil">H</div><div><h1>TRIADE D'HACKÉNIA</h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden>
 <div class="online-side" id="hostSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 1</span><span class="online-memory-orbs memory-orbs" aria-label="Deux cristaux de Souvenirs inactifs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></div>
-<div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><div class="memory-title"><span>Pioche</span> <strong>souvenirs</strong></div><button class="memory-pile" id="onlineMemoryPile" disabled title="Les Souvenirs seront activés après validation des mécaniques" aria-label="Pioche Souvenirs bientôt disponible"><span class="memory-draw-arrow" aria-hidden="true"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#b99b54" stroke-width="6" stroke-linecap="round"/><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#2b7652" stroke-width="3" stroke-linecap="round"/><path d="M38 7L57 16L38 25L42 16Z" fill="#327a55" stroke="#d6b96e" stroke-width="2" stroke-linejoin="round"/><path d="M4 10L8 16L4 22L0 16Z" fill="#548b5b" stroke="#c7aa64" stroke-width="1"/></svg></span><span class="card card-back back-official"></span></button><div id="onlineMemoryHint" role="status" aria-live="polite"></div><div id="onlineMemoryRevealCard" hidden><span class="memory-kicker">SOUVENIR RÉVÉLÉ</span><strong id="onlineMemoryRevealName"></strong><span id="onlineMemoryRevealOwner"></span></div><div id="onlineMemoryActions" hidden><button id="onlineMemorySkip">Terminer sans piocher</button><button id="onlineMemoryResolve" hidden>Résoudre le Souvenir</button><button id="onlineJokerKeep" hidden>Conserver mon Joker</button><button id="onlineJokerCancel" hidden>Annuler avec mon Joker</button><button id="onlineJokerCopy" hidden>Dupliquer avec mon Joker</button></div></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
+<div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><div class="memory-title"><span>Pioche</span> <strong>souvenirs</strong></div><button class="memory-pile" id="onlineMemoryPile" disabled title="Les Souvenirs seront activés après validation des mécaniques" aria-label="Pioche Souvenirs bientôt disponible"><span class="memory-draw-arrow" aria-hidden="true"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#b99b54" stroke-width="6" stroke-linecap="round"/><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#2b7652" stroke-width="3" stroke-linecap="round"/><path d="M38 7L57 16L38 25L42 16Z" fill="#327a55" stroke="#d6b96e" stroke-width="2" stroke-linejoin="round"/><path d="M4 10L8 16L4 22L0 16Z" fill="#548b5b" stroke="#c7aa64" stroke-width="1"/></svg></span><span class="card card-back back-official"></span></button><div id="onlineMemoryHint" role="status" aria-live="polite"></div><div id="onlineMemoryRevealCard" hidden><span class="memory-kicker">SOUVENIR RÉVÉLÉ</span><strong id="onlineMemoryRevealName"></strong><span id="onlineMemoryRevealOwner"></span></div><div id="onlineMemoryOverlay" class="memory-reveal" hidden><button type="button" id="onlineMemoryOverlayCard" class="memory-reveal-card"><span class="memory-kicker">SOUVENIR</span><span class="memory-icon"><span id="onlineMemoryIcon">✦</span></span><h2 id="onlineMemoryTitle"></h2><p id="onlineMemoryDescription"></p><span class="memory-owner" id="onlineMemoryOwner"></span><span class="memory-continue" id="onlineMemoryContinue">TOUCHER POUR CONTINUER</span></button></div><div id="onlineMemoryActions" hidden><button id="onlineMemorySkip">Terminer sans piocher</button><button id="onlineMemoryResolve" hidden>Résoudre le Souvenir</button><button id="onlineJokerKeep" hidden>Conserver mon Joker</button><button id="onlineJokerCancel" hidden>Annuler avec mon Joker</button><button id="onlineJokerCopy" hidden>Dupliquer avec mon Joker</button></div></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
 <div class="online-side" id="guestSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 2</span><span class="online-memory-orbs memory-orbs" aria-label="Cristaux de Souvenirs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><aside id="onlineHistory"><strong>CHRONIQUE DU DUEL</strong><div id="onlineHistoryLog">Le duel commence…</div></aside></div>
 </section><div id="onlineResult" hidden role="dialog" aria-modal="true" aria-label="Résultat du duel"><div class="result-content"><img id="onlineResultArt" alt="" src=""><p id="onlineResultText"></p><button id="closeResult">Voir le plateau</button></div></div><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
 import {supabase,ensureOnlineIdentity,createOnlineRoom,joinOnlineRoom,getOnlineRoom} from './supabase-client.js';
@@ -311,6 +325,43 @@ function onlineBoardClick(pos){
  }
  move(pos);
 }
+const ONLINE_MEMORY_INFO={
+ target:['◉','#66cbd0','Déplace une carte adverse vers une case vide.'],
+ fire:['🔥','#e76a43','Choisis une de tes cartes : ses quatre valeurs diminuent de 1.'],
+ spider:['🕸','#d9e8df','Ta dernière carte posée revient dans ta main.'],
+ rock:['◆','#a8c96f','Choisis une de tes cartes : ses quatre valeurs augmentent de 1.'],
+ cheese:['◒','#f0c85c','Ton adversaire choisira sa prochaine carte à l’aveugle.'],
+ reunion:['↔','#db8cc8','Échange une carte de ta main contre une carte adverse aléatoire.'],
+ stuck:['⌁','#6f9cc7','Ta prochaine sélection de carte se fera à l’aveugle.'],
+ master:['★','#e7bf4f','Tu obtiens un Joker, mais ne peux plus piocher.'],
+ rest:['❦','#68b6a4','Un instant de calme : aucun effet.']
+};
+let onlineLastMemoryReveal=null,onlineMemoryDismissed=null;
+function syncMemoryOverlay(rev){
+ const overlay=$('onlineMemoryOverlay');
+ if(!rev){overlay.hidden=true;onlineLastMemoryReveal=null;onlineMemoryDismissed=null;return}
+ const key=JSON.stringify([roomId,game.move_count,rev.id,rev.owner,game.memory_draws]);
+ if(key!==onlineLastMemoryReveal){onlineLastMemoryReveal=key;onlineMemoryDismissed=null}
+ overlay.hidden=onlineMemoryDismissed===key;
+ if(!overlay.hidden){
+  const info=ONLINE_MEMORY_INFO[rev.id]||['✦','#68b6a4',''];
+  $('onlineMemoryOverlayCard').style.setProperty('--memory-accent',info[1]);
+  $('onlineMemoryIcon').textContent=info[0];
+  $('onlineMemoryTitle').textContent=ONLINE_MEMORY_NAMES[rev.id]||rev.id;
+  $('onlineMemoryDescription').textContent=info[2];
+  $('onlineMemoryOwner').textContent=rev.owner===role?'TON SOUVENIR':'SOUVENIR ADVERSE';
+  $('onlineMemoryContinue').textContent=rev.owner!==role?'TOUCHER POUR FERMER':game.memory_reaction==='pending'?'TOUCHER POUR ATTENDRE LA RÉACTION':(['rest','cheese','stuck','master','spider'].includes(rev.id)?'TOUCHER POUR APPLIQUER L’EFFET':'TOUCHER POUR CHOISIR UNE CIBLE');
+ }
+}
+$('onlineMemoryOverlayCard').onclick=()=>{
+ const rev=game?.memory_reveal;if(!rev)return;
+ onlineMemoryDismissed=onlineLastMemoryReveal;$('onlineMemoryOverlay').hidden=true;
+ if(rev.owner!==role||game.memory_reaction==='pending')return;
+ if(rev.id==='spider'){onlineMemoryRpc('slay_custom_memory_spider');return}
+ if(['rest','cheese','stuck','master'].includes(rev.id)){onlineMemoryRpc('slay_custom_resolve_memory',{p_position:null});return}
+ lastRenderedState=null;render();
+};
+
 function renderOnlineMemories(){
  const enabled=!!game.memory_enabled,phase=game.memory_pending===role,rev=game.memory_reveal;
  const ownPending=phase&&rev?.owner===role;
@@ -337,6 +388,7 @@ function renderOnlineMemories(){
  $('onlineJokerCancel').hidden=!canReact;
  $('onlineJokerCopy').hidden=!canReact||!['rest','cheese','stuck'].includes(rev?.id);
  const hint=$('onlineMemoryHint');
+ syncMemoryOverlay(rev);
  const revealCard=$('onlineMemoryRevealCard');revealCard.hidden=!rev;
  if(rev){$('onlineMemoryRevealName').textContent=ONLINE_MEMORY_NAMES[rev.id]||rev.id;$('onlineMemoryRevealOwner').textContent=rev.owner===role?'Ton Souvenir':'Souvenir adverse';}
  if(!enabled){hint.textContent='Souvenirs : activation en attente des tests multijoueurs';return}
