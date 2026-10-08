@@ -151,6 +151,18 @@
   .side.ai .hand .card.disabled{opacity:1!important;filter:none!important}
   .side.player .hand .card.disabled{cursor:not-allowed}
 }
+
+/* Desktop player hand: remove inherited perspective and visual softening.
+   Keep cards interactive, with the existing overlapping hand layout. */
+@media (min-width:901px){
+ #gameApp #playerHand{perspective:none!important;filter:none!important;backdrop-filter:none!important;opacity:1!important}
+ #gameApp #playerHand>.card,
+ #gameApp #playerHand>.card.disabled,
+ #gameApp #playerHand>.card .card-image{
+  filter:none!important;backdrop-filter:none!important;opacity:1!important;
+ }
+ #gameApp #playerHand>.card:not(.is-foil)::before{display:none!important}
+}
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
