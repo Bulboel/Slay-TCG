@@ -20,7 +20,7 @@ panel.innerHTML = `
   </div>
   <div id="slayOnlineRoom" hidden>
     <strong>Code de la salle : <span id="slayOnlineRoomCode"></span></strong>
-    <button type="button" class="menu-btn secondary" id="slayOnlineCopy">Copier le code</button>
+    <button type="button" class="menu-btn secondary" id="slayOnlineCopy">📋 Copier le code</button>
     <p id="slayOnlinePlayers"></p>
   </div>
   <p id="slayOnlineStatus" role="status" aria-live="polite">Prêt à créer une salle.</p>
@@ -79,6 +79,15 @@ el('slayOnlineCreate').addEventListener('click', () => withBusy(el('slayOnlineCr
   await watchRoom(result.room_id);
   status('Salle créée. Partage ton code avec ton ami !');
 }));
+el('slayOnlineCode').addEventListener('paste', event => {
+  const pasted = event.clipboardData?.getData('text') || '';
+  const match = pasted.toUpperCase().match(/(?:^|[^A-Z0-9])([A-F0-9]{6})(?:$|[^A-Z0-9])/);
+  if (match) {
+    event.preventDefault();
+    el('slayOnlineCode').value = match[1];
+    status('Code collé. Clique sur « Rejoindre un duel ».');
+  }
+});
 el('slayOnlineJoin').addEventListener('click', () => withBusy(el('slayOnlineJoin'), async () => {
   status('Recherche de la salle…');
   const id = await joinOnlineRoom(el('slayOnlineCode').value);
@@ -89,5 +98,13 @@ el('slayOnlineCopy').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(el('slayOnlineRoomCode').textContent);
     status('Code copié !');
-  } catch { status('Sélectionne le code affiché pour le copier.'); }
+  } catch {
+    const code = el('slayOnlineRoomCode');
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(code);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status('Code sélectionné : copie-le avec Ctrl+C ou le menu de ton téléphone.');
+  }
 });
