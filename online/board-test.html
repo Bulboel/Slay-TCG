@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Triade d'Hackénia — Test du plateau</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#75522e,#17212b 75%);color:#f8e7be;font-family:system-ui,sans-serif;padding:14px}
+main{max-width:850px;margin:auto}h1,h2{text-align:center;font-family:Georgia,serif}p{text-align:center;line-height:1.45}button,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}
+.toolbar{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:12px 0}.toolbar button,.toolbar select{padding:10px 15px;border:1px solid #e0bc76;border-radius:9px;background:#e8cd91;color:#2d2114;font-weight:700}
+.status{text-align:center;min-height:55px;font-weight:700}#board{width:min(94vw,540px);aspect-ratio:1;margin:14px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;border:4px solid #9b753f;border-radius:16px;background:#cbb17b}
+.cell{border:2px solid #8b6d42;border-radius:9px;background:#eddbb1;min-width:0;display:grid;place-items:center;color:#654821;font-size:2rem}
+.cell:focus-visible,.pick:focus-visible{outline:4px solid #fff}
+.cell.available:hover{background:#fff0be}.card{position:relative;width:88%;aspect-ratio:2.5/3.5;border:3px solid #61ba70;border-radius:9px;background:linear-gradient(135deg,#294b3e,#17252a);color:white;display:grid;place-items:center;padding:5px;font-weight:700;box-shadow:0 4px 12px #0007}
+.card.guest{border-color:#ec7777;background:linear-gradient(135deg,#623332,#241d29)}
+.card .name{font-size:clamp(9px,1.8vw,14px);text-align:center;overflow-wrap:anywhere}.v{position:absolute;font-size:clamp(11px,2vw,17px);text-shadow:0 1px 3px black}.t{top:3px;left:50%;transform:translateX(-50%)}.r{right:5px;top:50%;transform:translateY(-50%)}.b{bottom:3px;left:50%;transform:translateX(-50%)}.l{left:5px;top:50%;transform:translateY(-50%)}
+.hand{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;min-height:110px;margin-bottom:12px}.pick{width:min(18%,112px);min-width:65px;padding:3px;border:2px solid transparent;border-radius:10px;background:transparent}.pick .card{width:100%}.pick.selected{border-color:#ffdb6e;background:#ffffff24}.hand-label{text-align:center;font-weight:700;margin-top:15px}.hint{font-size:.86rem;color:#d9c9a6}#log{margin:10px auto;max-width:540px;font-size:.85rem;text-align:center;min-height:30px}
+</style></head>
+<body><main>
+<h1>⚔ Triade d'Hackénia</h1>
+<p>Laboratoire du plateau — règles classiques. Sélectionne une carte, puis une case libre. Passe ensuite l'appareil à l'autre joueur.</p>
+<div class="toolbar"><label>Règle <select id="rule"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option></select></label><button id="reset">Nouvelle partie</button><a href="../index.html" style="color:#f5d48e;align-self:center">Retour au jeu</a></div>
+<div class="status" id="status" role="status"></div>
+<div class="hand-label">Main du joueur rouge</div><div class="hand" id="guestHand"></div>
+<div id="board" aria-label="Plateau de neuf cases"></div>
+<div class="hand-label">Main du joueur vert</div><div class="hand" id="hostHand"></div>
+<div id="log" aria-live="polite"></div>
+<p class="hint">Ceci est un test local du moteur de règles sur un seul appareil, pas encore un duel synchronisé entre PC et smartphone. Les decks sont des exemples temporaires.</p>
+</main>
+<script type="module">
+import {createMatchState,applyMove} from './match-engine.js';
+const cards=[
+{id:'kala',name:'Kala',v:[6,5,7,4]},
+{id:'bolduc',name:'Bolduc',v:[7,4,5,5]},
+{id:'jhimm',name:'Jhimm',v:[4,7,5,7]},
+{id:'grimgors',name:'Grimgors',v:[8,2,3,8]},
+{id:'araignee',name:'Araignée',v:[3,6,5,4]},
+{id:'hilam',name:'Hilam',v:[9,7,8,10]},
+{id:'kayla',name:'Kayla',v:[8,10,9,7]},
+{id:'gardienne',name:'Gardienne',v:[7,7,5,3]},
+{id:'frolgor',name:'Frolgor',v:[7,7,2,2]},
+{id:'ven',name:'Ven',v:[8,6,2,4]}
+];
+let state,selected=null;
+const $=id=>document.getElementById(id);
+function cardHtml(card,owner){return '<div class="card '+owner+'"><span class="v t">'+card.v[0]+'</span><span class="v r">'+card.v[1]+'</span><span class="v b">'+card.v[2]+'</span><span class="v l">'+card.v[3]+'</span><span class="name">'+(cards.find(c=>c.id===card.id)?.name||card.id)+'</span></div>'}
+function render(){
+$('status').textContent=state.finished?(state.winner==='draw'?'Égalité !':(state.winner==='host'?'Vert':'Rouge')+' remporte la partie !'):'Au tour du joueur '+(state.turn==='host'?'vert':'rouge');
+$('board').replaceChildren();
+state.board.forEach((entry,pos)=>{const cell=document.createElement('button');cell.className='cell'+(!entry?' available':'');cell.type='button';cell.setAttribute('aria-label','Case '+(pos+1)+(entry?' occupée':' libre'));if(entry){cell.innerHTML=cardHtml(entry.card,entry.owner);cell.disabled=true}else{cell.textContent='✦';cell.onclick=()=>play(pos)}$('board').append(cell)});
+for(const player of ['host','guest']){
+const hand=$(player+'Hand');hand.replaceChildren();state.hands[player].forEach((card,index)=>{const btn=document.createElement('button');btn.className='pick'+(selected?.player===player&&selected.index===index?' selected':'');btn.type='button';btn.disabled=state.finished||state.turn!==player;const hidden=state.rule==='basic-dark'&&state.turn!==player;btn.innerHTML=hidden?'<div class="card '+player+'">✦</div>':cardHtml(card,player);btn.onclick=()=>{selected={player,index};render()};hand.append(btn)})}
+}
+function play(position){if(!selected){$('log').textContent='Choisis d’abord une carte dans ta main.';return}try{const result=applyMove(state,selected.player,selected.index,position);state=result.state;selected=null;$('log').textContent=result.captures.length?result.captures.length+' carte(s) capturée(s) !':'Carte posée.';render()}catch(error){$('log').textContent=error.message}}
+function reset(){state=createMatchState(cards.slice(0,5),cards.slice(5,10),$('rule').value);selected=null;$('log').textContent='Partie initialisée.';render()}
+$('reset').onclick=reset;$('rule').onchange=reset;reset();
+</script></body></html>
