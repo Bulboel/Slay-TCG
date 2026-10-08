@@ -796,3 +796,40 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  justify-self:center;
  align-self:center;
 }
+
+/* Unified final geometry: preserve the illustration and fill each playable cell.
+   Container-relative height avoids the mobile percentage-height sizing bug. */
+#gameApp #board .cell{
+ container-type:size;
+}
+#gameApp #board .cell > .card{
+ box-sizing:border-box!important;
+ aspect-ratio:5/7!important;
+ width:auto!important;
+ height:98cqh!important;
+ block-size:98cqh!important;
+ max-height:98cqh!important;
+ max-width:98cqw!important;
+ min-width:0!important;
+ min-height:0!important;
+ margin:auto!important;
+ justify-self:center!important;
+ align-self:center!important;
+}
+#gameApp #board[data-theme="treasure"]{
+ padding:0!important;
+ gap:0!important;
+ background-size:100% 100%!important;
+}
+#gameApp #board[data-theme="treasure"] .cell{
+ padding:0!important;
+ border:0!important;
+ border-radius:0!important;
+}
+#gameApp #board[data-theme="treasure"] .cell > .card{
+ width:auto!important;
+ height:98cqh!important;
+ block-size:98cqh!important;
+ max-height:98cqh!important;
+ max-width:98cqw!important;
+}
