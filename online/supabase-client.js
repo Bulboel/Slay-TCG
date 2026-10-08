@@ -1,4 +1,4 @@
-// Slay TCG — client Supabase pour les salons privés (prototype).
+// Triade of Hackenia — client Supabase pour les salons privés (prototype).
 // Ce module n'est pas encore chargé par index.html : la version publique reste inchangée.
 // L'authentification anonyme doit être activée dans Supabase.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
