@@ -862,11 +862,11 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
   overflow:visible!important;
  }
  #gameApp .memory-pile .card{
-  width:48px!important;
-  height:34px!important;
-  aspect-ratio:7/5!important;
+  width:34px!important;
+  height:48px!important;
+  aspect-ratio:5/7!important;
   object-fit:contain!important;
-  transform:rotate(90deg) scale(.72)!important;
+  transform:rotate(90deg)!important;
   transform-origin:center!important;
  }
  #gameApp .memory-draw-arrow{width:30px!important;flex:0 0 30px!important}
