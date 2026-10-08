@@ -772,6 +772,21 @@ if(document.modelContext?.registerTool){
 }
 </script>
 <script>initCollectionUpdates();initCollectionPolish();initNavigationPolish();</script>
+<script>
+// Pont de lecture pour le futur PVP en ligne : les decks restent locaux.
+// N'autorise ni modification de collection ni envoi de cartes au serveur.
+window.triadeOnlineDeckPreview = () => {
+  const list = decks.filter(d => validDeck(d)).map(d => ({
+    id: d.id,
+    name: d.name,
+    cards: d.cards.map(index => {
+      const card = pool[index];
+      return { id: card.id, name: card.name, v: [...card.v], rarity: card.rarity, element: card.element };
+    })
+  }));
+  return { decks: list, activeDeckId };
+};
+</script>
 <script type="module" src="online/online-panel.js"></script>
 </body>
 </html>
