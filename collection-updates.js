@@ -70,19 +70,20 @@ function generateBooster(cards, state, rng = Math.random, setId = BOOSTER_SET) {
   };
   const commons = of('common'), commonPlayable = commons.filter(c => c.kind === 'playable'), uncommons = of('uncommon'), rares = of('rare');
   const pulls = [pick(commons),pick(commonPlayable),pick(rng() < .30 ? uncommons : commonPlayable)];
-  // Slot 4: 70% uncommon, 25% rare, 1% parallel, 4% divine.
-  // The exceptional 5% uses the same 1:4 split as the fifth slot.
+  // Slot 4 uses the same rarity odds as the foil slot, but is not foil:
+  // 60% uncommon, 20% rare, 15% alternative, 1% parallel, 4% divine.
   const fourth = rng(), fourthParallels = of('parallel'), fourthDivines = of('divine');
   if (fourth < .01 && fourthParallels.length) {
     pulls.push(pick(fourthParallels.filter(c=>c.kind==='playable')));
-  } else if (fourth < .05 && fourthDivines.length) {
-    // Same weighted Divine selection as slot 5, without missing-card preference.
+  } else if (fourth >= .36 && fourth < .40 && fourthDivines.length) {
+    // Keep the same weighted Divine draw as the fifth slot.
     let ticket=rng()*fourthDivines.reduce((sum,c)=>sum+(c.divineWeight||1),0);
     let divine=fourthDivines[fourthDivines.length-1];
     for(const card of fourthDivines){ticket-=card.divineWeight||1;if(ticket<0){divine=card;break}}
     pulls.push(divine);
   } else {
-    pulls.push(pick(fourth < .30 ? rares : uncommons));
+    const candidates=fourth < .01 ? fourthParallels : fourth < .16 ? of('alternative') : fourth < .36 ? rares : uncommons;
+    pulls.push(pick(candidates.filter(c=>c.kind==='playable')));
   }
   const foil = rng(), parallels = of('parallel');
   const needsParallel = pityProgress(state,setId).opened >= 199 && !parallels.some(c => state.counts[c.id] > 0);
