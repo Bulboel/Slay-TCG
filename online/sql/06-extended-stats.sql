@@ -22,7 +22,7 @@ begin
       or c->>'rarity' not in ('common','uncommon','rare','alternative','divine','parallel')
    then raise exception 'Carte invalide : %', coalesce(c->>'name','inconnue'); end if;
    for n in 0..3 loop
-     if jsonb_typeof(c->'v'->n)<>'number' or (c->'v'->>n)::numeric not between 1 and 10
+     if jsonb_typeof(c->'v'->n)<>'number' or (c->'v'->>n)::numeric not between 0 and 20
         or (c->'v'->>n)::numeric <> trunc((c->'v'->>n)::numeric)
      then raise exception 'Statistique invalide pour %',c->>'name'; end if;
    end loop;
