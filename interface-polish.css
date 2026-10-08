@@ -707,13 +707,15 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  transform:none;
  display:grid!important;place-items:center!important;
 }
+/* Preserve the original card dimensions and readability.
+   Align the decorative background/grid, never shrink the card to fit the art. */
 #board[data-theme="treasure"] .cell .card{
  box-sizing:border-box!important;
- display:block;
- height:90%!important;width:auto!important;
- max-width:94%!important;max-height:94%!important;
+ width:auto!important;
+ height:94%!important;
+ max-width:none!important;
+ max-height:none!important;
  margin:auto!important;
- object-fit:contain;
 }
 #board[data-theme="treasure"] .cell:empty:hover,
 #board[data-theme="treasure"] .cell.drop-target{
