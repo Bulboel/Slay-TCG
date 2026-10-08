@@ -30,6 +30,8 @@ panel.innerHTML = `
     <p id="slayOnlinePlayers"></p>
   </div>
   <p id="slayOnlineStatus" role="status" aria-live="polite">Prêt à créer une salle.</p>
+  <p class="slay-online-warning">⚠ Le bouton « Lancer la partie » du menu PVP principal démarre uniquement un duel local. Pour jouer sur deux appareils, utilise le laboratoire synchronisé ci-dessous.</p>
+  <a class="menu-btn slay-online-test-link" href="online/synced-test.html" target="_blank" rel="noopener">⚔ Ouvrir le duel synchronisé (decks de test)</a>
 `;
 card.insertBefore(panel, actions);
 const style = document.createElement('style');
@@ -46,6 +48,8 @@ style.textContent = `
 .slay-online-panel .menu-btn{width:100%;min-height:45px}
 .slay-online-panel #slayOnlineRoom{margin-top:14px;padding:12px;border-radius:10px;background:#fff7df}
 .slay-online-panel #slayOnlineStatus{min-height:24px;overflow-wrap:anywhere}
+.slay-online-panel .slay-online-warning{padding:10px;border-left:4px solid #ad7531;background:#fff4d4;color:#573617;font-size:.91rem;line-height:1.45}
+.slay-online-panel .slay-online-test-link{display:block;text-align:center;text-decoration:none;padding:12px;background:#684322;color:#fff1cc;border-radius:9px;margin-top:10px}
 `;
 document.head.append(style);
 
