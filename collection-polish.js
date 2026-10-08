@@ -63,9 +63,9 @@ function initNavigationPolish(){
 
 let boosterAngelCleanup=null;
 function cancelBoosterAngel(){boosterAngelCleanup?.(false);boosterAngelCleanup=null}
-function animateBoosterAngel(pull,done){
+function animateBoosterAngel(pull,done,index=4){
  cancelBoosterAngel();
- const last=$('#boosterCards .booster-pull:last-child');
+ const last=$('#boosterCards .booster-pull:nth-child('+(index+1)+')');
  if(!last||!['alternative','parallel','divine'].includes(pull?.card?.rarity)||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){done();return}
  last.classList.add('angel-pending');
  const stage=document.createElement('div');stage.className='booster-angel-stage '+pull.card.rarity;
