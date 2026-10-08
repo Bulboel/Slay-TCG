@@ -71,7 +71,7 @@ function showBoosterStep(index){
   if(rarity==='divine')AudioEngine.sfx('divine');else if(['rare','alternative','parallel'].includes(rarity))AudioEngine.sfx('rare');
   if(reduced)finish();else queueBoosterPresentation(finish,450);
  };
- queueBoosterPresentation(()=>{if(index===4)animateBoosterAngel(pendingBooster[index],flip);else flip()},reduced?0:130);
+ queueBoosterPresentation(()=>{if(index>=3)animateBoosterAngel(pendingBooster[index],flip,index);else flip()},reduced?0:130);
 }
 
 function burstRareStars(pull){
