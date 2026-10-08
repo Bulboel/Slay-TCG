@@ -425,7 +425,19 @@ if(onlineDrag)return;if(stateKey===lastRenderedState)return;
 lastRenderedState=stateKey;
 renderOnlineScore();
 renderOnlineMemories();
-$('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
+$('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){
+ resultShownFor.add(roomId);
+ if(game.winner===role){
+  try{
+   const key='hackenia-online-victories-v1';
+   const ids=JSON.parse(localStorage.getItem(key)||'[]');
+   const distinct=Array.isArray(ids)?ids.filter(id=>typeof id==='string'):[];
+   const id=String(roomId);
+   if(!distinct.includes(id)){distinct.push(id);localStorage.setItem(key,JSON.stringify(distinct.slice(-1000)))}
+  }catch(error){console.warn('Sauvegarde des victoires en ligne impossible',error)}
+ }
+ if(game.winner!=='draw')showResult(game.winner===role)
+}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
 $('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=ended||((game.memory_reaction==='pending'&&game.memory_reveal&&['fire','rock'].includes(game.memory_reveal.id))?!memoryBoardTargetAllowed(entry,pos):(game.turn!==role||(game.memory_pending?!memoryBoardTargetAllowed(entry,pos):!!entry)));btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=entry.played_by===role&&privateHand?privateHand[entry.hand_index]:decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦'}btn.onclick=()=>onlineBoardClick(pos);board.append(btn)});
 previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
 for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();const items=player===role&&privateHand?privateHand:decks[player];items.forEach((item,i)=>{if(!item||game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role||(!!game.memory_pending&&!(game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'));if((player!==role&&hiddenOpponent)||(player===role&&game.memory_blind?.[role])){const back=document.createElement('div');back.className='card card-back back-official '+player+' concealed';back.setAttribute('aria-label',player===role?'Carte de ta main masquée par un Souvenir':'Carte adverse masquée');btn.setAttribute('aria-label',player===role?'Choisir une carte à l’aveugle':'Carte adverse');btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{if(game.memory_pending&&game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'){onlineMemoryRpc('slay_custom_memory_reunion',{p_hand_index:i});return}selected=i;render()};if(player===role&&!btn.disabled)bindOnlineDrag(btn,i);hand.append(btn)})}}
