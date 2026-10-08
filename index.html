@@ -953,17 +953,17 @@ function downloadTestSlot(slot,filename){
  link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
 }
 function buildCompleteTestSlot(){
- const now=new Date().toISOString(),challengeIds=['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep'];
+ const now=new Date().toISOString(),challengeIds=['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete'];
  const challenges=Object.fromEntries(challengeIds.map(id=>[id,{completedAt:Date.now()}]));
  challenges.grandTriadeProgressV2={quick:true,story:true,rules:[...grandTriadeRules]};
  return {
-  version:3,label:'Sauvegarde de test complète — Jordan',updatedAt:now,
+  version:3,label:'Sauvegarde ultime — tous les défis',updatedAt:now,
   profile:{
    collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,20])),foils:Object.fromEntries(catalog.map(c=>[c.id,20])),starterBoosters:0},
    decks:decks.map(d=>({id:d.id,name:d.name,cards:[...d.cards]})),
    activeDeckId,
    story:{...story},
-   settings:{...settings,back:'jordan-cool'},
+   settings:{...settings,back:'treasure-gold',boardTheme:'treasure',scoreOrnament:'treasure'},
    economy:{...economy,gold:999999999,unlimitedGold:true,challenges,storyRewards:{part1:true,part2:true,part3:true}}
   },match:null
  };
@@ -980,10 +980,10 @@ if(testParams.get('full-test-save')==='1'){
    loadProfile(slot.profile);
    writeSaveSlot(null);
    $('#startupScreen').classList.add('hidden');
-   $('#gameApp').classList.add('jordan-preview');
+   $('#gameApp').classList.remove('jordan-preview');
    applyRulePreset('basic-dark');
    newGame('quick');
-   downloadTestSlot(slot,'triade-sauvegarde-test-complete-jordan.json');
+   downloadTestSlot(slot,'triade-sauvegarde-ultime-tous-defis.json');
   }catch(error){console.error('Sauvegarde test impossible',error);alert('La sauvegarde de test n’a pas pu être installée.')}
  }
  history.replaceState(null,'',location.pathname);
