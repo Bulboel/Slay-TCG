@@ -42,6 +42,17 @@ function renderEarnedBacks(){
  if(!treasure){treasure=document.createElement('button');treasure.type='button';treasure.className='back-choice';treasure.dataset.back='treasure-gold';treasure.innerHTML='<span class="card card-back back-treasure-gold"></span><span>Trésor d’Hackénia</span><small class="back-lock"></small>';holder.append(treasure);treasure.onclick=()=>{if(!backUnlocked('treasure-gold'))return;settings.back='treasure-gold';applySettings();renderMemory()}}
  treasure.disabled=!backUnlocked('treasure-gold');treasure.querySelector('.back-lock').textContent=treasure.disabled?'Défi : collection et foils complètes':'Débloqué';treasure.setAttribute('aria-pressed',String(settings.back==='treasure-gold'));
 
+ let caleizis=holder.querySelector('[data-back="caleizis-crying"]');
+ if(!caleizis){
+  caleizis=document.createElement('button');caleizis.type='button';caleizis.className='back-choice';caleizis.dataset.back='caleizis-crying';
+  caleizis.innerHTML='<span class="card card-back back-caleizis-crying"></span><span>Caleïzis en larmes</span><small class="back-lock"></small>';
+  holder.append(caleizis);
+  caleizis.onclick=()=>{if(!backUnlocked('caleizis-crying'))return;settings.back='caleizis-crying';applySettings();renderMemory()};
+ }
+ caleizis.disabled=!backUnlocked('caleizis-crying');
+ caleizis.querySelector('.back-lock').textContent=caleizis.disabled?'Défi : vaincre Caleïzis':'Débloqué';
+ caleizis.setAttribute('aria-pressed',String(settings.back==='caleizis-crying'));
+
  let jordan=holder.querySelector('[data-back="jordan-cool"]');
  if(!jordan){jordan=document.createElement('button');jordan.className='back-choice';jordan.dataset.back='jordan-cool';jordan.innerHTML='<span class="card card-back back-jordan-cool"></span><span>Jordan, l’étalon</span><small class="back-lock"></small>';holder.append(jordan);jordan.onclick=()=>{if(!backUnlocked('jordan-cool'))return;settings.back='jordan-cool';applySettings();renderMemory()}}
  jordan.disabled=!backUnlocked('jordan-cool');jordan.querySelector('.back-lock').textContent=jordan.disabled?'Défi : conquérir les 9 cases':'Débloqué';jordan.setAttribute('aria-pressed',String(settings.back==='jordan-cool'));
