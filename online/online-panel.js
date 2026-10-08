@@ -11,9 +11,9 @@ panel.id = 'slayOnlinePanel';
 panel.className = 'slay-online-panel';
 panel.innerHTML = `
   <h3>⚔ PVP en ligne <small>— laboratoire</small></h3>
-  <p>Crée une salle privée et invite un ami avec un code. Les salons fonctionnent. Tes decks sont visibles ci-dessous en aperçu local ; leur utilisation dans un duel synchronisé sera ajoutée après validation serveur.</p>
+  <p>Crée une salle privée et invite un ami avec un code. Les salons fonctionnent. Sélectionne un deck personnel et ouvre le duel synchronisé. Chaque joueur devra valider son deck avant de lancer la partie.</p>
   <div class="slay-online-decks">
-    <label for="triadeOnlineDeckSelect">Mon deck pour le futur PVP en ligne</label>
+    <label for="triadeOnlineDeckSelect">Mon deck pour le PVP en ligne</label>
     <select id="triadeOnlineDeckSelect" aria-label="Deck local à prévisualiser"></select>
     <p id="triadeOnlineDeckCards"></p>
     <button type="button" class="menu-btn secondary" id="triadeOnlineRefreshDecks">Actualiser mes decks</button>
@@ -89,7 +89,7 @@ el('triadeOnlineCustomDuel').addEventListener('click', () => {
     return;
   }
   localStorage.setItem('triade-online-deck-snapshot', JSON.stringify(snapshot.decks));
-  window.open('online/custom-duel.html', '_blank', 'noopener');
+  window.location.assign('online/custom-duel.html');
 });
 let roomId = null;
 let channel = null;
