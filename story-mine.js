@@ -226,20 +226,20 @@ function startCavePart(){
  {speaker:'Voix off',cast:['grimgors','bolduc','jhimm'],text:'La traversée commence. Une dalle déclenche des pointes ; un passage rassurant dissimule une fosse. Les aventuriers déjouent ces pièges malins, parfois franchement sournois, en avançant avec prudence.'},
  {speaker:'Grimgors',cast:['grimgors','kala','eberien'],text:'Ne vous fiez pas au chemin le plus facile. Regardez les marques au sol avant de faire un pas.'},
  {speaker:'Voix off',cast:[],text:'Au bout du passage, trois soldats fantomatiques leur barrent la route. Probablement d’anciens aventuriers qui ont péri durant cette même traversée…'},
- {speaker:'Jhimm',cast:['jhimm','grimgors','balai'],text:'Ils ne nous laisseront pas passer. Restez ensemble.',finalLabel:'Affronter les soldats fantomatiques'}
+ {speaker:'Jhimm',cast:['jhimm','grimgors','balai'],text:'Ils ne nous laisseront pas passer. Restez ensemble ! Attention : ce duel se joue avec la règle « Identique » (Clair). Si les valeurs de plusieurs côtés en contact sont identiques, vous pouvez retourner plusieurs cartes à la fois.',finalLabel:'Affronter les soldats fantomatiques'}
  ].map(beat=>({location:'La grotte des jumeaux',mood:'neutral',...beat})),startCaveGame,resume);
 }
 function startCaveGame(){
  if(!caveAccessible())return;
  if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
- applyRulePreset('basic-open');currentMode='story-ghosts';gameType='ai';
+ applyRulePreset('same-open');currentMode='story-ghosts';gameType='ai';
  const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
  board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:Array.from({length:5},()=>cloneCard(catalogById('p37')))};
  selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
  story.part7='started';story.stage='part7-match';story.caveWon=false;story.caveStep=0;saveStory();
  $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
  $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Soldats fantomatiques';$('#rulesBtn').style.display='none';
- msg('La traversée de la grotte','Vainquez les soldats fantomatiques pour poursuivre la traversée.');render();saveStoryMatch();
+ msg('Attention : règle Identique !','Dans ce duel contre les soldats fantomatiques, la règle « Identique » (Clair) est active. Faites correspondre les valeurs des côtés en contact pour déclencher des captures supplémentaires !');render();saveStoryMatch();
 }
 
 function endCaveGame(counts){
