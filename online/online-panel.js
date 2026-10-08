@@ -10,15 +10,15 @@ const panel = document.createElement('section');
 panel.id = 'slayOnlinePanel';
 panel.className = 'slay-online-panel';
 panel.innerHTML = `
-  <h3>⚔ PVP en ligne <small>— laboratoire</small></h3>
-  <p>Sur chaque appareil, sélectionne un deck puis ouvre « Jouer avec mes decks (test) ». Créez et rejoignez le salon depuis cet écran uniquement.</p>
+  <h3>⚔ PVP en ligne</h3>
+  <p>Choisis ton deck puis crée un duel en ligne, ou rejoins le salon d'un ami.</p>
   <div class="slay-online-decks">
     <label for="triadeOnlineDeckSelect">Mon deck pour le PVP en ligne</label>
     <select id="triadeOnlineDeckSelect" aria-label="Deck local à prévisualiser"></select>
     <p id="triadeOnlineDeckCards"></p>
     <button type="button" class="menu-btn secondary" id="triadeOnlineRefreshDecks">Actualiser mes decks</button>
   </div>
-  <button type="button" class="menu-btn" id="triadeOnlineCustomDuel">⚔ Jouer avec mes decks (test)</button>
+  <button type="button" class="menu-btn" id="triadeOnlineCustomDuel">⚔ Créer un duel en ligne</button>
   <div class="slay-online-controls" hidden aria-hidden="true">
     <button type="button" class="menu-btn" id="slayOnlineCreate">Créer un duel en ligne</button>
     <label for="slayOnlineCode">Code d'invitation (6 caractères)</label>
@@ -31,7 +31,7 @@ panel.innerHTML = `
     <p id="slayOnlinePlayers"></p>
   </div>
   <p id="slayOnlineStatus" role="status" aria-live="polite">Prêt à créer une salle.</p>
-  <p class="slay-online-warning">⚠ Pour jouer en ligne avec tes cartes, utilise exclusivement « Jouer avec mes decks (test) » sur les DEUX appareils. Le bouton « Lancer la partie » reste réservé au PVP local.</p>
+  <p class="slay-online-warning">Le mode en ligne utilise tes decks personnels. Le bouton « Lancer la partie » reste réservé au PVP local.</p>
 
 `;
 card.insertBefore(panel, actions);
@@ -89,7 +89,7 @@ el('triadeOnlineCustomDuel').addEventListener('click', () => {
     return;
   }
   localStorage.setItem('triade-online-deck-snapshot', JSON.stringify(snapshot.decks));
-  window.location.assign('online/custom-duel.html');
+  window.location.assign('online/custom-duel.html?create=1');
 });
 let roomId = null;
 let channel = null;
