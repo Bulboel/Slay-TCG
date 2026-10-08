@@ -207,7 +207,8 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
 
 /* Board cards: size from cell width, not percentage height (which can collapse
    in CSS grid on mobile). Keep the full portrait and center it in each square. */
-#board .cell > .card{width:94%!important;height:98%!important;aspect-ratio:auto!important;max-width:94%!important;max-height:98%!important;min-width:0!important;min-height:0!important;justify-self:center;align-self:center;object-fit:fill}
+#board .cell > .card{width:auto!important;height:98%!important;aspect-ratio:2.5 / 3.5!important;max-width:98%!important;max-height:98%!important;min-width:0!important;min-height:0!important;justify-self:center;align-self:center;object-fit:contain}
+@media(max-width:700px){.side.player .hand .card{width:92px!important}.side.player .hand .card+.card{margin-left:-32px}}
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
