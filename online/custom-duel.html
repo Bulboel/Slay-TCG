@@ -40,7 +40,48 @@ body.duel-active #gamePanel .hand{flex-wrap:nowrap}
 body.duel-active #gamePanel .hand button{min-width:0;flex:0 1 19%}
 @media(max-width:700px){body.duel-active{padding:4px}body.duel-active #status{padding:3px;min-height:20px;font-size:12px}body.duel-active #gamePanel .label{font-size:11px;margin:0}body.duel-active #gamePanel .hand{gap:2px}body.duel-active #gamePanel .hand button{padding:1px}body.duel-active #onlineBoardWrap{width:min(100%,calc(100dvh - 220px),470px);padding:8px}body.duel-active #board{gap:3px;padding:4px}}
 #duelExit[hidden]{display:none!important}#duelExit{text-align:center;margin:3px auto 8px}#duelExitLink{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 15px;border:1px solid #d5b579;border-radius:10px;background:#2b352ee0;color:#f7e3b3;text-decoration:none;font-size:13px;font-weight:700}#duelExitLink:hover,#duelExitLink:focus-visible{background:#485842;outline:2px solid #f5d99f;outline-offset:2px}body.duel-active #duelExit{margin:1px auto 3px}@media(max-width:700px){#duelExitLink{min-height:30px;padding:3px 11px;font-size:12px}}
-</style></head><body><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><div id="onlineBoardWrap"><div id="board"></div></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></section><div id="onlineResult" hidden role="dialog" aria-modal="true" aria-label="Résultat du duel"><div class="result-content"><img id="onlineResultArt" alt="" src=""><p id="onlineResultText"></p><button id="closeResult">Voir le plateau</button></div></div><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
+/* Disposition de l'arène en trois colonnes, fidèle à la composition du mode original. */
+body.duel-active{background:radial-gradient(ellipse at 30% 35%,#fff0bb,#d8b47c 65%,#a47b47);color:#332616}
+body.duel-active main{max-width:1600px}
+body.duel-active #gamePanel{display:grid!important;grid-template-columns:minmax(140px,210px) minmax(400px,700px) minmax(140px,210px);align-items:start;justify-content:center;gap:18px;max-width:1250px;margin:0 auto}
+body.duel-active #gamePanel[hidden]{display:none!important}
+.online-side{display:flex;flex-direction:column;gap:7px;min-width:0}
+.online-player-head{display:flex;align-items:center;gap:8px;min-height:35px;font-size:11px;letter-spacing:.08em}
+.online-player-name{font-weight:700;color:#6e5738}
+.online-memory-orbs{display:flex;gap:5px;align-items:center}
+.online-arena{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
+#onlineScore{display:flex;align-items:center;gap:18px;border-radius:20px;background:#36251e;color:#eee0bc;padding:7px 22px;font-size:12px;white-space:nowrap}
+#onlineScore b{font-size:23px;color:#59b876}#onlineGuestScore{color:#ef6b79!important}
+#onlineMemoryZone{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:#7c6040}
+#onlineMemoryPile{font-size:11px;padding:5px 14px;background:#dfc895;border:1px solid #aa8e5a;color:#725e3f}
+#onlineHistory{background:linear-gradient(145deg,#f7e4b8,#d5b37b);border:2px solid #9c7341;border-radius:15px;padding:12px;color:#4b341d;min-height:145px;font:12px Georgia,serif}
+#onlineHistory strong{display:block;border-bottom:1px solid #9c7341;padding-bottom:7px}
+#onlineHistoryLog{padding-top:12px}
+body.duel-active #gamePanel .hand{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:center;gap:0}
+body.duel-active #gamePanel .hand button{width:124px;min-width:0;margin-bottom:-64px;position:relative;transition:transform .18s}
+body.duel-active #gamePanel .hand button:last-child{margin-bottom:0}
+body.duel-active #gamePanel .hand button:hover{transform:translateY(-8px);z-index:3}
+body.duel-active #onlineBoardWrap{order:initial;width:100%;max-width:700px;margin:0 auto}
+body.duel-active #gamePanel .own-hand,body.duel-active #gamePanel .opponent-hand,body.duel-active #gamePanel .own-label,body.duel-active #gamePanel .opponent-label{order:initial}
+@media(max-width:850px){
+body.duel-active #gamePanel{grid-template-columns:minmax(0,1fr);gap:8px}
+body.duel-active #gamePanel .online-arena{order:2}
+body.duel-active #gamePanel #hostSide{order:3}
+body.duel-active #gamePanel #guestSide{order:1}
+body.duel-active #gamePanel.guest-view #guestSide{order:3}
+body.duel-active #gamePanel.guest-view #hostSide{order:1}
+body.duel-active #gamePanel .hand{flex-direction:row;justify-content:center;overflow:visible}
+body.duel-active #gamePanel .hand button{width:19%;max-width:92px;margin:0 -2px 0 0}
+body.duel-active #gamePanel .online-side{align-items:center}
+body.duel-active #gamePanel #onlineHistory{display:none}
+body.duel-active #onlineBoardWrap{width:min(100%,calc(100dvh - 260px),500px);padding:10px}
+body.duel-active #onlineBoardWrap #board{gap:5px;padding:6px}
+}
+</style></head><body><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden>
+<div class="online-side" id="hostSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 1</span><span class="online-memory-orbs" aria-label="Souvenirs en cours d'intégration"></span></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></div>
+<div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><span>PIOCHE SOUVENIRS</span><button id="onlineMemoryPile" disabled title="La pioche en ligne sera activée après synchronisation des effets">Pioche souvenirs — bientôt</button></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
+<div class="online-side" id="guestSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 2</span><span class="online-memory-orbs" aria-label="Souvenirs en cours d'intégration"></span></div><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><aside id="onlineHistory"><strong>CHRONIQUE DU DUEL</strong><div id="onlineHistoryLog">Le duel commence…</div></aside></div>
+</section><div id="onlineResult" hidden role="dialog" aria-modal="true" aria-label="Résultat du duel"><div class="result-content"><img id="onlineResultArt" alt="" src=""><p id="onlineResultText"></p><button id="closeResult">Voir le plateau</button></div></div><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
 import {supabase,ensureOnlineIdentity,createOnlineRoom,joinOnlineRoom,getOnlineRoom} from './supabase-client.js';
 const $=id=>document.getElementById(id);
 const ruleNames={'basic-open':'Clair','basic-dark':'Obscur','same-open':'Identique clair','same-dark':'Identique obscur','plus-open':'Addition clair','plus-dark':'Addition obscur','elements-open':'Éléments actifs clair','elements-dark':'Éléments actifs obscur'};
@@ -80,6 +121,7 @@ const {data:deckRows,error:deckError}=await supabase.from('slay_custom_duel_deck
 $('deckInfo').textContent='Decks validés : '+(decks.host.length?'vert ✓':'vert en attente')+' · '+(decks.guest.length?'rouge ✓':'rouge en attente');
 const {data,error}=await supabase.from('slay_custom_duel_games').select('*').eq('room_id',roomId).maybeSingle();if(error){if(error.code==='42P01'){say('Exécute d’abord le script SQL de synchronisation dans Supabase.');return}throw error}game=data;document.body.classList.toggle('duel-active',!!game);$('duelExit').hidden=!game;if(game)updateDuelLayout();$('start').hidden=!!game||!room.guest_id||decks.host.length!==5||decks.guest.length!==5||!accepted; $('start').disabled=$('start').hidden;if(game)render();else if(room.guest_id&&decks.host.length===5&&decks.guest.length===5&&accepted)say('Les deux decks et les règles sont validés ! Démarre le duel.');else if(!accepted)say('En attente de l’acceptation des règles par l’invité.');else say('En attente des deux decks : chaque joueur doit cliquer sur « Valider mon deck ».');}
 function updateDuelLayout(){
+ document.getElementById('gamePanel').classList.toggle('guest-view',role==='guest');
  for(const player of ['host','guest']){
   const hand=$(player+'Hand'),label=hand.previousElementSibling,mine=player===role;
   hand.classList.toggle('own-hand',mine);hand.classList.toggle('opponent-hand',!mine);
@@ -87,9 +129,20 @@ function updateDuelLayout(){
   label.textContent=mine?'Ta main ('+(player==='host'?'vert':'rouge')+')':'Main adverse ('+(player==='host'?'vert':'rouge')+')';
  }
 }
+function renderOnlineScore(){
+ if(!game)return;
+ let host=0,guest=0;
+ for(const entry of game.board||[]){if(entry?.owner==='host')host++;if(entry?.owner==='guest')guest++;}
+ $('onlineHostScore').textContent=host;$('onlineGuestScore').textContent=guest;
+ $('onlineTurnLabel').textContent=game.winner!==null?'PARTIE TERMINÉE':'TOUR DU JOUEUR '+(game.turn==='host'?'1':'2');
+ const log=$('onlineHistoryLog');
+ log.textContent='Cartes posées : '+game.move_count+' / 9';
+}
+
 function render(){const stateKey=JSON.stringify({roomId,role,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected});
 if(onlineDrag)return;if(stateKey===lastRenderedState)return;
 lastRenderedState=stateKey;
+renderOnlineScore();
 $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
 $('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=!!entry||ended||game.turn!==role;btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by][entry.hand_index];const face=card(item[0],item[1],entry.owner,item[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>move(pos)}board.append(btn)});
 previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
