@@ -685,3 +685,8 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #board[data-theme="treasure"] .cell:empty::after{
  content:none!important;display:none!important;
 }
+
+/* Caleizis illustration is a complete card back: remove the legacy H/diamond overlays. */
+.card.card-back.back-caleizis-crying::before,
+.card.card-back.back-caleizis-crying::after{content:none!important;display:none!important}
+.card.card-back.back-caleizis-crying{background-size:100% 100%!important;border:0!important;box-shadow:0 5px 16px #0007!important}
