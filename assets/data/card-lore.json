@@ -6,1050 +6,1050 @@
       "name": "Araignée blanche",
       "number": "#041",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Cette race d'arachnides vit généralement dans des zones éloignés de la civilisation. On en recense principalement dans les zones arides ou polaires. Elles se nourrissent de liquide élémentaire provenant de source sauvage. "
     },
     {
       "id": "p02",
       "name": "Araignée solitaire",
       "number": "#042",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Arachnide proliférant dans de nombreuses zones d'Hackénia. Elles ont tendance à vite se rassembler ou envoyer des signaux sismiques à leurs congénères à proximité. Restez toujours sur vos gardes."
     },
     {
       "id": "p03",
       "name": "Bolduc Lesterson",
       "number": "#112",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Fier Nain venant de Roulador, c'est un grand entraîneur sportif d'une course à fromage, un événement très prisé, mais c'est aussi un druide de talent. Convoqué par les jumeaux pour une mission spéciale, il en profite pour chercher le fromage parfait qui dévalera les collines comme aucun autre fromage auparavant... Puis si il peut boire quelques pintes et bien manger en charmante compagnie, ça lui va aussi !"
     },
     {
       "id": "p04",
       "name": "Bolduc Lesterson",
       "number": "#005",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Le Nain druide de la compagnie des rêves."
     },
     {
       "id": "p05",
       "name": "Caleizis",
       "number": "#113",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Puissante enchanteresse et morphe qui cherche à nuire au groupe d'aventuriers. Beaucoup de rumeurs courent sur elle mais tout est trés flou, comme si les souvenirs de son passé disparaissait aux yeux du commun des mortels.\n"
     },
     {
       "id": "p07",
       "name": "Ébérien",
       "number": "#114",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Le fier magicien de l'équipe est un haut elfe venant du village de Filandrin. Il a passé sa vie a étudier la magie afin de trouver ce qui a causé la disparition de tous les habitants de son village natal en un jour. Les seuls indices qu'il a trouvé sont des morceaux célestes et démoniaques non reconnu. Il peut paraître hautain mais il fait avant tout le bien et les traits de feu (raté) de la compagnie..."
     },
     {
       "id": "p08",
       "name": "Ébérien",
       "number": "#004",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Étudiant de l'académie de magie de Vox."
     },
     {
       "id": "p09",
       "name": "Fioles élémentaires",
       "number": "#073",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Fabriqué à partir du verre Tèbre, invention d'un grand magicien il y a prés de 2000 ans. Elles sont confectionné avec la toile tissé des araignées blanches, pouvant ainsi renfermer les énergies élémentaires de son possesseur."
     },
     {
       "id": "p10",
       "name": "Frolgor",
       "number": "#013",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Guerrier et ami fidèle de Ven depuis l'enfance. Il n'approuve pas le comportement de ce dernier mais il s'y est fait silencieusement. Il a l'air d'avoir des sentiments pour Pennedra."
     },
     {
       "id": "p11",
       "name": "Gardienne du lac",
       "number": "#046",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Entité celeste invoqué par des présences inconnus au lac rose, protègent les nouveaux des personnes qui n'en seraient pas dignes..."
     },
     {
       "id": "p12",
       "name": "Grimgors",
       "number": "#116",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Paladin demi-orc voué à Tyr. Il a accepté la quête des jumeaux pour prêter main forte mais tente aussi de venger son maître décédé suite à son affrontements contre un démon, Orcus. Ce démon majeur s'immisce dans les rêves du demi-orc pour le provoquer encore et toujours, mais pourquoi ? Il ne le sait pas... Sûrement par pur sadisme et trés probablement dû au passé des aventuriers de la compagnie."
     },
     {
       "id": "p13",
       "name": "Grimgors",
       "number": "#003",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Protecteur de l'équipe, fonce tête baissée mais solide comme un caillou. #lovesurdrahul"
     },
     {
       "id": "p14",
       "name": "Hilam",
       "number": "#117",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Jumeau de la génération précédente, gourvernant actuellement Dassom avec Kayla. Il contrôle tous les éléments mais plus particulièrement le feu, la terre et le vent. Il est d'un calme serein et tente toujours de faire bonne figure peu importe la situation. On dit parfois qu'il ressemble un peu à Soryan mais en moins bourru. En temps que voyageur, il possède une résistance surnaturelle. Il n'est cependant pas immortel."
     },
     {
       "id": "p15",
       "name": "Hilam",
       "number": "#007",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Dirigeant de la cité de Dassom, jumeau de Kayla. Il a confié la mission de récuperer les nouveaux jumeaux aux aventuriers."
     },
     {
       "id": "p16",
       "name": "Horde de loups affamés",
       "number": "#048",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Loup putréfié qui rode dans le bois tendre. Il s'agit de loup morts de faim et ressuscité sous leur forme cadavérique et contagieuse."
     },
     {
       "id": "p17",
       "name": "Hydrelithe mineur",
       "number": "#055",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Surnommé \"les larmes de Dieu\", annonciateur de cataclysme ou mauvais présage. Fais d'obsidienne liquide aux propriétés magiques inconnues, elle n'obéisse qu'à deux choses, la destruction et l'absorption de la vie sur la planète. "
     },
     {
       "id": "p22",
       "name": "Jhimm Lunedor",
       "number": "#118",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Jhimm est un clerc discret mais efficace, voué à la divinité Lathandre. Toujours le premier levé afin de prier en tout quiétude, il reste toujours patient malgré les folies de ces camarades. Il a finalement reçu les excuses de Heaum en personne lors de son passage dans son temple à Forfalla. Les ancêtres voyageurs de Jhimm avaient tenté de protéger le temple d'un cataclysme, quitte à s'en prendre aux fidèles de Heaum. Heaum qui a été pris longtemps au piege par Caleïzis, empêchant d'ôter la malediction qui touchait Jhimm et ses ancêtres avant lui.\nSon maître semblait savoir certaines choses et surtout, il était en vie selon les dires de Heaum mais reste encore introuvable.."
     },
     {
       "id": "p23",
       "name": "Jhimm Lunedor",
       "number": "#002",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Clerc polyvalent perdu entre deux divinités."
     },
     {
       "id": "p24",
       "name": "Jordan",
       "number": "#119",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "En réalité, Jordan n'est pas un simple cheval nain. Sameron aurait tenté un rituel de protection divine sur lui afin de voir si cela pouvait contrer Caleïzis. Le rituel aurait stoppé la croissance du poulain qui pouvait porter que des personnes de petite taille (ou menu). Sa maman s'appelait Épona et lui racontait l'histoire d'un monde qu'elle avait connue auparavant...\nTant que son cœur sera pur, il est protégé d'une magie divine, lui accordant une immunité à toute magie existante dans le monde de Hacko. Il ne subit pas le feu, la lave, la foudre, l'empoisonnement mais il peut mourir de faim comme n'importe quel cheval (ou tout simplement être blessé physiquement)."
     },
     {
       "id": "p25",
       "name": "Jordan",
       "number": "#057",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Cheval nain du vieux fermier, prés de la petite cabane dans le bois tendre. C'est un gros glouton mais il semble ne pas prendre de poids."
     },
     {
       "id": "p26",
       "name": "Kala",
       "number": "#120",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Ancienne soldat et guerriere des armées elfiques, elle a quittée son poste pour vivre librement et ne plus jamais laisser se reproduire des actes de barbaries auquel elle a dû assister. Sous l'ordre d'un lieutenant sadique du nom de Yoris, elle ne pensait pas en entendre parler en arrivant à Dassom. C'est aprés avoir retrouvé Velmarys, un ancien camarade de classe de cette dernière, qu'elle apprit la nouvelle. Elle finira par vaincre Yoris avec l'aide de ses compagnons, perdant malheureusement son ami dans la bataille."
     },
     {
       "id": "p27",
       "name": "Kala",
       "number": "#001",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Guerriere et elfe des bois en quête de justice."
     },
     {
       "id": "p28",
       "name": "Kayla",
       "number": "#121",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Jumelle de Hilam et protectrice de Dassom, elle est naturelle et plutôt jovial. Elle contrôle parfaitement les éléments eau, glace et foudre meme si elle peut tous les invoquer. \nLorsqu'elle était enfant dans son monde, elle était la fille de président et ne représentait pas du tout la perfection qui s'imposait. Elle s'acharnait à vivre comme elle l'entendait quitte à être traité comme une paria. Vers ses 20 ans, elle s'est réveillé sur le continent d'Hackénia, elle aussi au lac rose et c'était Zackarie et Sameron qui était venu la chercher.\nElle apprécie particulièrement Kala, elle se retrouve un peu en elle par moments."
     },
     {
       "id": "p29",
       "name": "Kayla",
       "number": "#006",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Dirigeante et grande magicienne de la cité de Dassom."
     },
     {
       "id": "p30",
       "name": "Lama",
       "number": "#128",
       "rarity": "Parallèle",
-      "lore": ""
+      "lore": "Lama est un autre vrai joueur (tout comme Grimgors, Eberien, Kala, Bolduc et Jhimm) mais ils jouent dans une autre session de jeu de rôle, soit une temporalité parallèle à nos aventuriers.\nC'est un barde amical, un peu brute mais on s'attache facilement."
     },
     {
       "id": "p31",
       "name": "Les mineurs de Berdésa",
       "number": "#022",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Membre de la mine de Berdésa. "
     },
     {
       "id": "p32",
       "name": "Melinda",
       "number": "#029",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Magicienne vendeuse à Berdésa. Elle a l'air un peu louche, ses produits semblent un peu dépassé pour certains (ou alors elle tente de refourguer son matos pourri à des aventuriers de passage...)."
     },
     {
       "id": "p33",
       "name": "Messire Balai",
       "number": "#123",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Messire Balai est un parthénios tombé d'un portail dimensionnel alors que les aventuriers se rendaient au lac. Messire Balai est en fait la personnalité angélique d'Alastor qui a été transformé pour le punir d'actes infâmes. Il a erré longtemps, de toilettes en toilettes, avant de tomber dans le monde de Hacko.\nIl est trés distingué et se donne du mal pour être le meilleur compagnon d'Eberien, le seul qui l'ai vraiment accepté dés son arrivée."
     },
     {
       "id": "p34",
       "name": "Messire Balai",
       "number": "#009",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Fidèle serviteur et nettoyeur en série."
     },
     {
       "id": "p35",
       "name": "Mirahel",
       "number": "#129",
       "rarity": "Parallèle",
-      "lore": ""
+      "lore": "Mirahel est un autre vrai joueur (tout comme Grimgors, Eberien, Kala, Bolduc et Jhimm) mais ils jouent dans une autre session de jeu de rôle, soit une temporalité parallèle à nos aventuriers.\nC'est un dhampire au passé énigmatique."
     },
     {
       "id": "p36",
       "name": "Miroir de communication",
       "number": "#087",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Artefact légendaire prété aux aventuriers pour leur mission. Il est sculpté dans un bois blanc trés ancien, arbres qui poussent auprés du lac rose."
     },
     {
       "id": "p37",
       "name": "Soldats fantomatiques",
       "number": "#069",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Ancien aventuriers qui ont péri lors dans leur traversée de la grotte des jumeaux."
     },
     {
       "id": "p38",
       "name": "Source élémentaire",
       "number": "#110",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Essence pur de magie élémentaire, peut être mise dans une fiole en verre Tèbre."
     },
     {
       "id": "p40",
       "name": "Transporteur",
       "number": "#034",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Téléporteur officieux de Dassom. Il s'agit d'une magie drainant l'énergie vitale de son utilisateur, réduisant son espérance de vie."
     },
     {
       "id": "p42",
       "name": "Ven",
       "number": "#037",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Un magicien hautain qui a toujours vécu a Dassom. Il s'est entraîné principalement pour le tournoi des apprenti(e)s, le reste lui importe peu. Il finira par perdre lamentablement face à la compagnie des rêves lors de la derniere épreuve."
     },
     {
       "id": "p43",
       "name": "Vieux fermier",
       "number": "#038",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Fermier grincheux posté entre le village de berdésa et la grotte des jumeaux. Il possède un unique cheval nain qu'il appelle Blacky."
     },
     {
       "id": "p44",
       "name": "Violette",
       "number": "#130",
       "rarity": "Parallèle",
-      "lore": ""
+      "lore": "Violette est un autre vrai joueur (tout comme Grimgors, Eberien, Kala, Bolduc et Jhimm) mais elle joue dans une autre session de jeu de rôle, soit une temporalité parallèle à nos aventuriers.\nElle est amicale mais comme ses compères  beaucoup de mysteres l'entourent. C'est une haut-elfr magicienne."
     },
     {
       "id": "p47",
       "name": "La grotte des jumeaux",
       "number": "#101",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Entrée de la grotte donnant sur le lac."
     },
     {
       "id": "p48",
       "name": "Le bois tendre",
       "number": "#103",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "L'immense bois qui longe tout le nord de Dassom et même plus..."
     },
     {
       "id": "p49",
       "name": "Le lac rose",
       "number": "#104",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Lieu sacré d'apparitions surnaturelles. Beaucoup de jumeaux sont apparus dans cette zone mystique."
     },
     {
       "id": "p50",
       "name": "Le village de Berdésa",
       "number": "#108",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Petit havre de paix prés de Dassom."
     },
     {
       "id": "p54",
       "name": "Bosco",
       "number": "#010",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Jeune aarakocra du plan de l'air, il est tombé dans le village de voleur ou il a été élevé par une vieille naine affectueuse. Victimisé durant des années malgré la défense qu'apportait sa mère adoptive, il fuya son village le jour du décès de cette derniere. Il emmena avec lui un précieux collier en or ornements de perles précieuses, sûrement de très grande valeur mais Bosco ne le vendra jamais.\nIl est chanceux mais ne porte pas chance, il est espiègle et un peu direct, il s'attache trés vite dés qu'on lui fait confiance. C'est Maebril qui l'adopter officieusement, le prenant sous son aile depuis plusieurs années maintenant."
     },
     {
       "id": "p55",
       "name": "Bulbalina",
       "number": "#008",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "C'est une grande collectionneuse de canards et a pour objectif de creer un orchestre symphonique avec des canards de toute race et de toute région. Elle s'avérera un peu dangereuse dans sa folie, n'hésitant pas à vouloir s'emparer d'un canourson sauvage malgré la présence de deux énormes canons prêt à n'en faire qu'une bouchée.\nLors d'un contact avec Messire Balai, elle aura une vision prophétique qui semblerait se lier avec ce qui arrivait aux aventuriers. Aprés avoir donné un ultime coup de main avec Velmarys à Kierzan, elle repartira à Dassom."
     },
     {
       "id": "p56",
       "name": "Caleizis",
       "number": "#011",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Déborde d'une haine qui s'est attisé avec les années. C'est un ennemi extrêmement redoutable et semble posséder une aura étrange..."
     },
     {
       "id": "p57",
       "name": "Canourson sauvage",
       "number": "#044",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Espèce d'ours canard hybride vivant sur le continent d'Hackénia. Cet animal est un pêcheur hors pair, il n'est pas dangereux petit mais vigilance avec les parents."
     },
     {
       "id": "p58",
       "name": "Dassom",
       "number": "#096",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Grande cité et capitale du continent d'Hackénia. La population y est extrêmement variée et tout le monde est le bienvenue. La cité est protégée par un bouclier magique, sans compter le conseil des dix sages, les jumeaux Kayla et Hilam ainsi qu'une armée conséquente. Si vous cherchez quelque chose à Dassom, vous aurez de fortes chances de le trouver."
     },
     {
       "id": "p59",
       "name": "Drahul",
       "number": "#012",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Un petit élémentaire de pierre offert à Grimgors par la grande fée Pachié. Plus il partage du temps avec le demi-orc et plus le contact devient facile entre eux. Il évolue aussi avec le temps, permettant de rebondir sur plusieurs ennemis à la fois."
     },
     {
       "id": "p60",
       "name": "Hydrelithe supérieur",
       "number": "#056",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "L'hydrelithe supérieur possède des capacités d'absorption lui permettant de se transformer mais aussi surtout de devenir plus fort. On dit qu'un humain absorbé par un hydrelithe disparait à jamais dans le néant qui compose le plan des hydrelithes. Elles sont trés dangereuses et peuvent vite nuire à un groupe d'aventuriers juste à cause de cette absorption."
     },
     {
       "id": "p61",
       "name": "La bague de l’apprenti(e)",
       "number": "#075",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Artefact magique offert suite à la victoire de la compagnie du rêve lors du tournoi des apprenti(e)s. Elle est trés utile, surtout si vous l'utilisez dans ces pleines facultés."
     },
     {
       "id": "p62",
       "name": "La dague des Sans-chiffres",
       "number": "#076",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Objet ancien vénéré par la Guilde des sans-chiffres grâce à ses facultés exceptionnelles. Au moindre chiffre prononcé, le porteur subit comme des coups de couteaux invisibles dans ses côtes, en contrepartie cette arme tranche avec aisance tout ce qui se présente à elle. Selon les porteurs, certains disent avoir eu des visions, des rêves prophétiques de la lame."
     },
     {
       "id": "p63",
       "name": "La Fée Pachié",
       "number": "#018",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Grande fée du quartier du brumes. Dirigeante des créatures magiques qui rôdent dans Dassom."
     },
     {
       "id": "p64",
       "name": "La Fée Pachié",
       "number": "#122",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Probablement l'une des entités les plus puissantes de Dassom. Elle régie de ses propres règles dans son quartier étrange mais chaleureux. Elle se veut omnisciente mais agit parfois pour le bien de la cité malgré tout. Elle possède des capacités de divinations avancées, les rumeurs disent qu'elle serait extrêmement âgé mais personne n'ose lui demander au risque que son courroux s'abatte sur eux."
     },
     {
       "id": "p65",
       "name": "Larves capricieuses",
       "number": "#059",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Larves infectieuses qui passent sous la peau des aventuriers et les infecter avant de les contrôler. Tuer le ver alpha entraîne aussitôt leurs morts."
     },
     {
       "id": "p66",
       "name": "Le quartier des brumes féeriques",
       "number": "#105",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Lieu de vie et de magie de Dassom. Attention, les pixies sont malicieuses !"
     },
     {
       "id": "p67",
       "name": "Les Nahakins",
       "number": "#023",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Des érudits qui travaillent sur les prophéties et les textes d'Hacko. Ils ressentent naturellement les fluctuations dans le destin d'une personne, plus ou moins précisément selon le talent du nahakin. "
     },
     {
       "id": "p68",
       "name": "Les faux enfants",
       "number": "#060",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Démon mineur qui prennent l'apparence d'enfants pour mieux tromper leurs victimes. Ils émettent des cris stridents, tetanisant les aventuriers les moins aguerris."
     },
     {
       "id": "p69",
       "name": "Les jumeaux du Lac",
       "number": "#020",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Les nouveaux jumeaux de la mission. Ils sont la nouvelle generation de protecteur du continent d'Hackénia. Ils sont toujours endormis mais les rapprocher de leur parthénios devrait peut-être pouvoir les éveiller..."
     },
     {
       "id": "p70",
       "name": "Maebril",
       "number": "#025",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Tavernier(e) et chef(fe) de la guide du Griffon Doré. Iel est la meilleure connaissance possible à avoir sur Dassom. De par ses contacts et de tous les membres de sa guilde, iel possède des informations parfois capitales. Heureusement, iel s'entend très bien avec les jumeaux et est un allié précieux. Il a fabriqué son système de médaillon magique lui permettant de communiquer à distance avec une contrepartie loufoque (peu importe qui passe par le médaillon, le tissu, les plumes disparaissent).\nIel change constamment de sexe, on suppose qu'iel a un peu trop joué avec des rituels pour son médaillon."
     },
     {
       "id": "p71",
       "name": "Maman Canours",
       "number": "#063",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "La version adulte de l'hybride ours canard. Elle peut trés vite être menaçante."
     },
     {
       "id": "p72",
       "name": "Myconide infecté",
       "number": "#065",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Myconide habité par plusieurs larves infectieuses. Le pauvre humanoïde champignon est décédé mais les larves continuent de le controler comme s'ils leur appartenaient complètement."
     },
     {
       "id": "p73",
       "name": "Myconides",
       "number": "#066",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Peuple d'humanoides champignons vivant dans un quartier caché sous le quartier des brumes féeriques. Ils communiquent par la pensée."
     },
     {
       "id": "p74",
       "name": "Orcus",
       "number": "#067",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Démon majeur qui semble comploter quelque chose de mauvais..."
     },
     {
       "id": "p75",
       "name": "Orcus",
       "number": "#124",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Meurtrier du maître de Grimgors. Il prend un malin plaisir à faire souffrir Grimgors et n'a pas fini de le faire suer. En possession de sa baguette, il devient encore plus dangereux qu'il ne l'est déjà. Son plaisir de destruction se lie avec les désirs de Caleïzis et les deux s'assemblent pour anéantir Dassom et les dix sages."
     },
     {
       "id": "p76",
       "name": "Pixies malicieuses",
       "number": "#068",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Créature du quartier des brumes qui jettent systématiquement des charmes à tous les aventuriers qui osent mettre un pied dans leur repaire."
     },
     {
       "id": "p77",
       "name": "Sameron Bald",
       "number": "#032",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Sage de terrain, trés efficace et charismatique."
     },
     {
       "id": "p78",
       "name": "Sameron Bald",
       "number": "#125",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Sage de la cité de Dassom. C'est un agent de terrain, un peu homme a tout faire et adore scruter les petits nouveaux qui viennent visiter les lieux. Il est extrêmement curieux et a fait quelques recherches pour parfaire sa magie. C'est aussi barde à ses jours perdus, il tente désespérément d'officialiser un spectacle de pantins. Il fait partie des sages depuis la même époque que Zackarie, il y a un peu plus de 30 ans, avant que Kayla et Hilam arrivent sur le continent d'Hackénia."
     },
     {
       "id": "p79",
       "name": "Soryan Messel",
       "number": "#033",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Sage de guerre. Commandant des armées de Dassom."
     },
     {
       "id": "p80",
       "name": "Soryan Messel",
       "number": "#126",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Soryan parait très brute et antipathique mais il est tout autant intelligent. Il aime avoir raison et il a souvent raison d'ailleurs. Il s'est fait très vite une place importante parmi les sages, faisant figure de protecteur emblématique de Dassom. Il a passé sa vie à la défense de son territoire, créer de nouvelles protections, des choses toujours plus impressionnantes et inimaginables mais parfois dangereuse. L'une de ses fabrications fut mal manipulé et une dizaine de ses apprentis périrent dans l'explosion. Il lui fallut plusieurs années avant de s'en remettre mais n'accepta plus jamais d'apprenti(e)s par la suite."
     },
     {
       "id": "p81",
       "name": "Velmarys",
       "number": "#036",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Ancien camarade de classe de Kala, il voue une affection particulière auprès de cette derniere mais il ne trouvera jamais le courage de lui avouer réellement ses sentiments. Il resta quelques années de plus que Kala dans l'armée et finit par accepter la proposition d'une personne qui deviendra son noble officiel. Il a vécu plusieurs années à Dassom et a fait beaucoup de trajets dans le désert d'Alisk, un endroit réputé pour ses sources élémentaires abandonnées."
     },
     {
       "id": "p82",
       "name": "Ver géant",
       "number": "#070",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Créature immonde qui est apparu dans le quartier des myconides. Elle s'est créée un nid douillet et a commencé à se propager, infectant les pauvres myconides qui vivent sous terre."
     },
     {
       "id": "p83",
       "name": "Yoris",
       "number": "#039",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Commandant de l'armée Nord de Dassom et ancien commandant de Kala sur un autre continent. Tyrannique et sadique, il profite de son titre pour créer des massacres plus dérangeant les uns que les autres. Commençant à etre suspecté par les jumeaux, il sera rétrogradé en temps qu'assistant et protection rapprochée de Gliska avec une partie de l'armée Nord."
     },
     {
       "id": "p84",
       "name": "Zackarie Cybille",
       "number": "#040",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Sage de l'ombre, agit avec discrétion et rapidité. Elle contrôle de longues aiguilles qu'elle peut envoyer à la vitesse de l'éclair."
     },
     {
       "id": "p85",
       "name": "Zackarie Cybille",
       "number": "#127",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Magicienne roublarde depuis plus de 30 ans, elle a une attirance un peu surprenante pour les nains, on ne sait pas vraiment pourquoi. C'est une meneuse naturelle et ses prises de décisions sont souvent signe de victoires. Souvent, Soryan se dit que si Zack n'a pas donnée son avis, c'est qu'il y a de fortes chances que ça se passe mal.\nOrpheline, elle n'a aucune connaissance de ses ancetres ni de leur origine mais elle s'en fiche et dessine son destin à sa façon. Les nahakins ont montré plusieurs fois de la surprise en tentant de lire le futur de Zackarie, sans succès."
     },
     {
       "id": "p86",
       "name": "Dispute élémentaire",
       "number": "#072",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Alors que les aventuriers continuent leur périple vers Forfalla, ils tombent sur deux élémentaires qui se disputent. Ils veulent rejoindre Mirrhol et leur confrère habitant la-bas. Les aventuriers leur conseillent de faire demi-tour car des hydrelithes absorbeurs rôdent."
     },
     {
       "id": "p87",
       "name": "L’attaque à Kierzan",
       "number": "#085",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Des nécromanciens ont invoqués des démon mineur pour mettre le village forgeron à feu et à sang. Les aventuriers arriveront un peu tard mais réussiront à sauver quelques habitants dont des membres de la guilde des artisans cuisiniers qui avait écrit à Bolduc."
     },
     {
       "id": "p88",
       "name": "L’ogre des Collines noires",
       "number": "#062",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Ogre fortifié par la \"grâce\" d'Orcus. Il a fait de nombreuses victimes avant d'arriver dans les collines noires et faire un peu trop de bruit, alertant ainsi la guilde du Griffon Doré."
     },
     {
       "id": "p89",
       "name": "Golem de pierre",
       "number": "#047",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Un magicien débutant a invoqué ce golem de pierre dans le quartier marchand de Dassom. La créature est massive et donne des puissants coup de poings."
     },
     {
       "id": "p90",
       "name": "Le médaillon du colibri",
       "number": "#078",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Invention de Maebril. C'est un medaillon enchanté dissimulant un petit portail. Seul Maebril et Bosco peuvent passer au travers du medaillon. Les objets non portés peuvent aussi traverser."
     },
     {
       "id": "p91",
       "name": "Le petit roulé détraqué",
       "number": "#079",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Pâle copie du Roulé Céleste aux multiples propriétés. Il a été offert par la fée Pachié quand les aventuriers lui ont apporté la poudre de fée ancienne."
     },
     {
       "id": "p92",
       "name": "Le tournoi des apprentis",
       "number": "#084",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Grand tournoi visant à recruter de nouveaux apprentis accompagnant les sages. Tous les sages ont un jour été apprentis, sauf ceux avec beaucoup de talents..."
     },
     {
       "id": "p93",
       "name": "Licornes enragées",
       "number": "#061",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Licornes infecté par un liquide noirâtre inconnu. Elles peuvent à priori etre soigné mais cela n'augure rien de bon..."
     },
     {
       "id": "p94",
       "name": "Médaille de noblesse",
       "number": "#086",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Petite médaille appartenant à Velmarys. Il l'a confié à Kala le soir de leur discussion privée. Kala la garde précieusement. Elle représente le blason de son noble et ressemble de loin à une pièce d'argent classique."
     },
     {
       "id": "p95",
       "name": "Orven",
       "number": "#031",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Membre de la guilde du griffon doré. C'est aussi un paladin discret (une hérésie) qui œuvre pour le bien-être de sa communauté. Il a longtemps été traité comme un animal de compagnie pour des solar et décidera de se rebeller. Il perdit mais pour le punir, il fut exilé sur le continent d'Hackénia. Ce qui explique qu'il puisse parfois sembler ailleurs. Doté d'un flair surnaturel, il peut meme sentir d'ancienne magie."
     },
     {
       "id": "p96",
       "name": "Baffes gratuites",
       "number": "#071",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Durant la traversée des égouts sous Forfalla, Jhimm eut la vue troublée puis finit par faire un malaise. Ses amis aventuriers ne se firent pas prier pour tenter de le réveiller à leur façon toujours délicate."
     },
     {
       "id": "p97",
       "name": "Bobo",
       "number": "#043",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Chouette messagère de Velmarys. Elle a esquivé des gerbes de flammes en apportant son message au vu des brûlures sur ses plumes..."
     },
     {
       "id": "p98",
       "name": "Élémentaire emprisonné",
       "number": "#045",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Élémentaire enfermé prés de Mirrhol grâce à un monolithe de pierre. Il a longtemps attendu la désagrégation du rocher pour pouvoir sortir de sa grotte et retrouver sa famille. Au fil des années, sa tristesse attira des esprits qui s'aglomerèrent tout autour de Mirrhol, créant une brume éternelle sur le village."
     },
     {
       "id": "p99",
       "name": "Erevan",
       "number": "#131",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "Dieu malin et espiègle qui enfermera la compagnie des rêves dans une illusion énigmatique. La traversée fit revivre certains souvenirs chez les aventuriers et Kala changea meme sa voie, abandonnant son passé de guerriere pour devenir la barde qu'elle a toujours été."
     },
     {
       "id": "p100",
       "name": "Georges",
       "number": "#014",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Gardien de l'entrée du palais des sages. Il est trés amical et s'entend bien avec le groupe d'aventuriers. Il connaît très bien Dassom et les événements officiels qui s'y passent."
     },
     {
       "id": "p101",
       "name": "Gliska",
       "number": "#115",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Enfant d'un aarakocra Phoenix et d'une humaine, Gliska incarne le feu. Il a déjà connu la mort plusieurs fois et il en est toujours revenu. Il semble enfermé mentalement dans un monde qui n'est pas le nôtre et pourtant, c'est un sage exceptionnel. Parfois susceptible, il s'est malgré tout déjà battu contre d'autres sages de la cité étant plus jeune. C'est l'un des sages actuels de la cité les plus anciens avec Bemos et Terra."
     },
     {
       "id": "p102",
       "name": "Gliska",
       "number": "#015",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Sage assigné à la protection de Forfalla. C'est un druide avancé. Les rumeurs disent qu'il aurait plus de 500 ans."
     },
     {
       "id": "p103",
       "name": "Griselda",
       "number": "#016",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Vendeuse de vetements chaud à Forfalla, installé juste à coté de l'auberge. Ses prix sont un peu élevés mais ses habits sont de la meilleure qualité qui soit. Elle connaît très bien Forfalla et son histoire."
     },
     {
       "id": "p104",
       "name": "Heaum",
       "number": "#132",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "Heaum est une divinité intimement lié à Jhimm Lunedor. Il a erré longtemps dans d'autres plans avant d'arriver dans le monde de Hacko. Il avait maudit Jhimm et ses ancêtres pour avoir profané son temple et tué plusieurs de ses fidèles. Seulement, des années plus tard, le maître de Jhimm réussit à contacter Heaum et lui faire comprendre qu'on lui avait effacé certains morceaux importants de l'histoire. Il arrivera à se libérer du piege de Caleïzis suite au passage des aventuriers dans le temple de Heaum. Il est représenté par un immense soldat en armure de métal."
     },
     {
       "id": "p105",
       "name": "Hydrelithe majeur",
       "number": "#049",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe majeure de la terre. Il aurait absorbé une ancienne divinité, le rendant particulièrement puissant et imposant. Il est apparu lors du cataclysme des Voyageurs et personne n'en avait vu comme celui-là auparavant. \nIl pourrait détruire un village entier à la force d'un seul coup de poing."
     },
     {
       "id": "p106",
       "name": "Investigation",
       "number": "#074",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Afin de trouver une autre entrée vers le temple de Heaum, Eberien et Bolduc ont eu l'idée d'aller chercher l'info auprès des rats de la ville. Trés avare mais surtout avide de fromage, ils ont su récupérer les informations nécessaires mais surtout, l'emplacement exact des entrées des égouts."
     },
     {
       "id": "p107",
       "name": "Kayla",
       "number": "#133",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "Durant l'histoire de la compagnie des rêves. Kayla se sacrifiera pour sauver Dassom et les aventuriers. Ils avaient difficilement retenu les ennemis sur leurs flancs malgré leur force et leur résistance naturelle. C'était sans compter sur les hydrelithes qui n'étaient pas de simple absorbeur mais des mangeurs de dieux...\nElle finira par s'élever au rang de déesse par son sacrifice ultime, bénissant ainsi Kala, sa première protégée."
     },
     {
       "id": "p108",
       "name": "Krek et Krak",
       "number": "#017",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Égoutiers assigné aux nettoyages et au bon fonctionnement des égouts de Forfalla. Ils ont longtemps erré dans ses cavernes, inconscient du danger qui les entourait sans se rendre compte qu'une simple \"promesse\" les protégeait de ce mal. Tant qu'il n'agissent pas contre le temple, rien ne peut les atteindre. Mais à partir du moment qu'ils ont décidés d'assister les aventuriers à entrer dans la salle divine, le charme fut rompu."
     },
     {
       "id": "p109",
       "name": "La lyre enchantée",
       "number": "#077",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Instrument musical communiquant par des notes émises de ses cordes. Elle suit toujours sa maîtresse Bulbalina mais elle a tendance à facilement la perdre si elle s'éloigne trop vite et trop loin. Elle peut la détecter à une distance de 1 km environ. Elle semble avoir sa propre conscience mais Bulbalina n'en est pas la création, elle lui a seulement donnée le pouvoir de détecter toutes sortes de canards dans un large périmètre (encore inconnue)."
     },
     {
       "id": "p110",
       "name": "Lala",
       "number": "#019",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Lamie des égouts de Forfalla. Elles aiment prendre l'apparence de fille de joie et de s'amuser avec les curieux de passage. Elles ne peuvent pas s'en prendre aux égoutiers grâce à un charme inconnu mais ce dernier semble s'être brisé... "
     },
     {
       "id": "p111",
       "name": "Lathandre",
       "number": "#134",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "Divinité du renouveau qui a apporté la grâce à Jhimm lorsque Heaum l'ignorait, toujours persuadé du péché de ces ancêtres. Il a longtemps été exclu du monde de Hacko à cause de Caleïzis, cette derniere se déplaçant aisément entre les plans et les mondes proches du sien. Il la suspecte même d'avoir pris l'apparence d'un caillou durant des mois juste pour pouvoir s'approcher de son palais et l'y enfermer."
     },
     {
       "id": "p112",
       "name": "Le rituel de l’apprenti(e)",
       "number": "#081",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Récompense suprême du tournoi des apprenti(e)s. Il offre le choix à une ou deux personnes de pouvoir changer son énergie élémentaire. C'est ainsi que Grimgors remplaça son ancien élément par le pouvoir de l'eau et Eberien la glace. Le rituel n'est réalisable qu'aux solstices."
     },
     {
       "id": "p113",
       "name": "Les Sans-chiffres",
       "number": "#024",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Guilde de voleur assassins vénèrent le dieu Sans-chiffres, ce dernier aurait fabriqué une dague qui aura assouvi sa soif uniquement lorsqu'elle aura tué un nombre incalculable de personnes, creatures, etc. Les dernières rumeurs disent que la guilde était trés tumultueuse, probablement dû à l'arrivée imminente de leur Dieu. La branche de recherche de la guilde a supposé encore un certain nombres d'âmes à récupérer et qui se rapprocherait de la fin..."
     },
     {
       "id": "p114",
       "name": "Max Belfr",
       "number": "#027",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Parthénios de Sofia et aussi son petit ami. Il est apparu depuis un portail dimensionnel dans le temple de Heaum et n'a jamais réussi à en sortir de lui-meme. Une barrière invisible l'empêchait de passer les portes et il n'entendait aucun bruit exterieur. Seul le crépitement des flammes éternels dans la salle rituel venait briser le silence pesant. Il est resté enfermé ainsi, sans nourriture et buvant l'eau qui coulait des parois des murs, durant 10 jours avant que les aventuriers arrivent et traverse cette défense magique comme du beurre."
     },
     {
       "id": "p115",
       "name": "Max",
       "number": "#026",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Bizarrement, Max savait pour Messire Balai et il ne lui fut pas plus d'une seconde pour se rappeler de ce que lui avait dit l'ange de ses rêves. S'il veut sortir de ce donjon, il doit demander à Messire Balai de le posséder. Max ne comprenait pas pourquoi mais si c'était sa seule possibilité de sortie, il le ferait. Mais c'est Alastor qui profita de l'occasion  prenant le dessus sur Messire Balai mais surtout sur Max. Deux secondes aprés, la fusion des parthénios entraînait la création d'un immense trou noir au dessus de leur tete, comme un portail négatif qui pulsait régulièrement, grossissait avec le temps..."
     },
     {
       "id": "p116",
       "name": "Mimic levier",
       "number": "#064",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Avons-nous vraiment besoin de décrire ce monstre ? Je ne crois pas."
     },
     {
       "id": "p117",
       "name": "Mimie",
       "number": "#030",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "A l'approche des aventuriers, la lamie active un levier qui fait monter l'eau dans tout les égouts, réduisant les mouvements de leurs potentiels proies."
     },
     {
       "id": "p118",
       "name": "Monolithe de pierre",
       "number": "#109",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Monolithe cadenas empechant l'élémentaire de vent de fuir de sa grotte. Malheureusement, il a été abimé il y a peu de temps, suite à des secousses sur le continent."
     },
     {
       "id": "p119",
       "name": "Négociation compliquée",
       "number": "#088",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Prés de ses sous, Eberien ne rate jamais l'occasion de négocier les prix, meme aprés avoir déjà eu une ristourne... Grimgors a tendance a vouloir fuir ce genre de situations gênantes, un peu agacé par si peu de gêne."
     },
     {
       "id": "p120",
       "name": "Parchemins magiques",
       "number": "#089",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Le parchemin de communications avec les morts a été offert à Eberien par Caleïzis lors d'un rêve étrange. Il n'a jamais osé l'utiliser. Le deuxième parchemin est un sort de résurrection, nécessitant aussi de la poudre de diamant pour fonctionner. Celui-ci a été offert par Zackarie au groupe le lendemain de leur procés."
     },
     {
       "id": "p121",
       "name": "Poussière de fée ancienne",
       "number": "#090",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Ingrédient nécessaire à la fabrication du Roulé celeste. La grande fée semble fortement intéressée par cette poussière. Elle peut etre utilisée de bien des façons, à consommer avec modération, fort effets hallucinogènes, soporifiques voire mortelles..."
     },
     {
       "id": "p122",
       "name": "Protection divine",
       "number": "#091",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Les nouveaux jumeaux ont bénéficié d'un maléfice étrange. Il fallut un petit temps aux aventuriers pour comprendre qu'il fallait agir à l'opposé des éléments qui les emprisonnaient. "
     },
     {
       "id": "p123",
       "name": "Remède anti-ver",
       "number": "#092",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Poison qui réduit en bouillie en deux secondes le moindre ver qui touche le produit. Lancé dans de l'eau, il peut purger une surface gigantesque."
     },
     {
       "id": "p124",
       "name": "La Route maudite de Mirrhol",
       "number": "#102",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Le chemin qui mène à Mirrhol est embrumé depuis des centaines d'années. Cela s'est empiré avec le temps et les gens se sont presque fait à l'idée de vivre dans une brume eternelle (avec des esprits errants, accessoirement)."
     },
     {
       "id": "p125",
       "name": "Shauntéa",
       "number": "#135",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "L'incarnation de mère nature. Elle a proposée sa bénédiction à Bolduc qui l'accepta, un sourire béat aux lèvres. Shauntéa possède son propre libre arbitre et peut se balader entre les royaumes oubliées comme bon lui semble. Elle apparaît là où le monde est fragile, là où une âme pure a besoin d'une main bienveillante."
     },
     {
       "id": "p126",
       "name": "Situation gênante",
       "number": "#095",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Alors que le groupe se défendait contre un groupe d'araignées, Kala prit appui sur l'épaule de Bolduc pour viser les créatures. Ça plu énormément à Bolduc mais L'archère resta de marbre.."
     },
     {
       "id": "p127",
       "name": "Tyr",
       "number": "#136",
       "rarity": "Divine",
-      "lore": ""
+      "lore": "Entité divine vénéré par Grimgors. Le demi-orc a prété serment auprès de celui-ci. Il espère un jour avoir un message, une réponse de la part de son dieu mais à ce jour, il attend encore, continuant de guider ses prières à lui malgré tout. \nParmi les prophètes, plusieurs rapportent l'absence de celui-ci sur certaines branches depuis maintenant plusieurs années et trouvent cela inquiétant, comme si il avait été effacé de Hacko."
     },
     {
       "id": "p129",
       "name": "Hackénia",
       "number": "#098",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Ile principale de l'archipel. Elle constitue une grande partie du monde de Hacko meme si beaucoup de continents et de régions sont encore à découvrir."
     },
     {
       "id": "p130",
       "name": "Hydrelithe majeure d’eau",
       "number": "#054",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe vivant dans les océans, les mers et remontent parfois certaines rivières, envahit les lacs. Il aurait été à Port-dames mais Bemos, le sage attitré à la ville, aurait réussi à le repousser, essuyant quelques victimes au passage."
     },
     {
       "id": "p131",
       "name": "Hydrelithe majeure de feu",
       "number": "#050",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe présent au flanc d'Hilam lors du siège de Dassom. On ne sait pas exactement comment cela s'est passé mais tout porte a croire que l'hydrelithe leur a donné du fil à retordre. Zackarie aurait donné le coup final à l'hydrelithe alors qu'une lumière aveuglante provenait du flan des aventuriers..."
     },
     {
       "id": "p132",
       "name": "Hydrelithe majeure de foudre",
       "number": "#051",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe présent au flanc de Kayla lors du siège de Dassom. Le combat fut rude et les absorbeurs se ruaient sur les humains. La jumelle se débarrassa de la lave vivante mais elle sentait une menace, son être tout entier vibrait. Elle usa de toute son énergie pour éliminer rapidement une centaine d'absorbeurs et fonça en volant vers le flanc des aventuriers."
     },
     {
       "id": "p133",
       "name": "Hydrelithe majeure de glace",
       "number": "#052",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe majeur repertorié mais n'a pas été vu dernierement."
     },
     {
       "id": "p134",
       "name": "Hydrelithe majeure de vent",
       "number": "#053",
       "rarity": "Rare",
-      "lore": ""
+      "lore": "Hydrelithe repertorié mais n'a pas été vu récemment."
     },
     {
       "id": "p135",
       "name": "La cathédrale de Forfalla",
       "number": "#099",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Magnifique lieu de vie des érudits de la ville et de Gliska. Elle cache en fait le temple de Heaum, caché juste en dessous."
     },
     {
       "id": "p136",
       "name": "Le temple de Heaum",
       "number": "#107",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Temple voué à la divinité protectrice. Il a longtemps été impénétrable jusqu'à ce que les aventuriers arrivent. De l'eau coule le long des parois, le lieu a été gravé directement dans la roche. Il y a une aura plutôt apaisante même si une épreuve attendra ceux qui osent pénetrer le domaine."
     },
     {
       "id": "p137",
       "name": "La guilde des artisans cuisiniers",
       "number": "#100",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Guilde qui a écrit à Bolduc pour l'aider dans sa recherche de fromage parfait. Ils sont toujours trés souriant, heureux de vivre et se remettent des maux les plus graves juste en mangeant. La vie semble facile pour cette guilde."
     },
     {
       "id": "p138",
       "name": "La taverne du Griffon doré",
       "number": "#106",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Lieu de prédilection de Maebril. Les membres peuvent boire, manger et dormir leur guise. Un tableau de primes magique est affiché dans la salle principale. Ne soyez pas surpris si vous ne reconnaissez pas Maebril, iel vous reconnaîtra."
     },
     {
       "id": "p139",
       "name": "La transe de Bulba",
       "number": "#080",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Lorsque Bulbalina entra en contact avec Messire Balai, elle fut touchée et émue de prendre le balai brosse pour son ancienne brosse à cheveu. Touché par cette tendresse et pris d'une émotion forte, Messire balai a malgré lui fusionné son esprit avec celui de Bulba, lui donnant clairvoyance le temps d'un instant."
     },
     {
       "id": "p140",
       "name": "Le pèlerin",
       "number": "#028",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Vieux fou vénérant le dieu sans-chiffres. Lorsqu'il entend un nombre,  un numero, il disparaît durant quelques secondes. Ses mots sont étranges mais lui semble trés bien se comprendre. C'est ce qui compte non ?"
     },
     {
       "id": "p141",
       "name": "Le tableau de primes",
       "number": "#083",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Tableau enchanté affichant les primes selon votre grade de guilde. Voici la liste des differents grades possibles :\n\n1-colibri\n2-Busard\n3- Epervier\n4-Aiglon\n5-Faucon\n6-Griffon"
     },
     {
       "id": "p142",
       "name": "Les bébés élémentaires",
       "number": "#058",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Ses petites créatures adorables adorent fusionner avec le matériel des aventuriers de passage. Ils procurent alors des bonus élémentaires, une résistance naturelle au froid ou à la chaleur."
     },
     {
       "id": "p143",
       "name": "Les gardes de Lunargent",
       "number": "#021",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Unité spécialisé aux renforts de Forfalla."
     },
     {
       "id": "p144",
       "name": "Sauvetage de justesse",
       "number": "#093",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Alors que des voyous de petits chemins ont tenté de voler les aventuriers, ils se sont mis à suffoquer et sont tombés au sol. Ni une ni deux, Jhimm fit appel à son élément, leur procurant un nouveau souffle nécessaire à leur survie."
     },
     {
       "id": "p145",
       "name": "Velcan",
       "number": "#035",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Halfelin spécialiste dans l'identification d'objets magiques. Il est un peu blasé par ses collègues incapables et il se tape toujours le sale boulot où les tâches ingrates que les autres ne veulent pas. Malgré tout, il aime bien le quartier des brumes et se sent en sécurité prés de Pachié."
     },
     {
       "id": "p146",
       "name": "Forfalla",
       "number": "#097",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "C'est une cité sœur avec Lunargent qui est devenu la protection officielle de la ville avec les années. La ville a pris leur couleurs, sous sa couche de neige. LEs liens qui lient Lunargent et Forfalla ont toujours été forts."
     },
     {
       "id": "p147",
       "name": "Les énergies élémentaires",
       "number": "#082",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Billes élémentaires matérialisé par la puissance de son possesseur. Que vous utilisiez la magie ou non, tout le monde peut utiliser ses orbes à moins d'y mettre du sien. Il faut parfois des années avant de les maîtriser completement."
     },
     {
       "id": "p148",
       "name": "Réussite critique",
       "number": "#137",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Et si nos héros faisaient une partie de Donjons et dragons  qu'est-ce que ça donnerait ?..."
     },
     {
       "id": "p149",
       "name": "Salle du conseil",
       "number": "#111",
       "rarity": "Peu commune",
-      "lore": ""
+      "lore": "Grande salle du palais des sages à Dassom servant au procés, réunion officiel, banquet, etc. Les aventuriers l'ont découvert sous un mauvais jour mais la pièce est vraiment splendide. "
     },
     {
       "id": "p150",
       "name": "“Ses personnes hautaines franchement…”",
       "number": "#094",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Ven a osé provoqué une nouvelle fois le groupe, rivalisent avec le côté hautain d'Eberien. C'était sans compter sur la réflexion du magicien dés qui Ven a tourné le dos. Kala tenta de rester impassible mais la situation était beaucoup trop grotesque et se mit à rire, Bolduc lui ne se retient meme pas !"
     },
     {
       "id": "s06",
       "name": "Cible sphérique",
       "number": "#139",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "Kala :\"J'ai bien envie de viser les yeux quand même....\""
     },
     {
       "id": "s46",
       "name": "Cible sphérique",
       "number": "#138",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "Kala :\"J'ai bien envie de viser les yeux quand même....\""
     },
     {
       "id": "s18",
       "name": "Je suis coincé",
       "number": "#141",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "\"Grimgors, tu veux bien aider ? J'ai peur qu'Eberien me brûle mes vêtements...\""
     },
     {
       "id": "s19",
       "name": "Je suis coincé",
       "number": "#140",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "\"Grimgors, tu veux bien aider ? J'ai peur qu'Eberien me brûle mes vêtements...\""
     },
     {
       "id": "s20",
       "name": "Jet de caillou habile",
       "number": "#142",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "\"Rien ne vaut un bon gros caillou\""
     },
     {
       "id": "s21",
       "name": "Jet de caillou habile",
       "number": "#143",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "\"Rien ne vaut un bon gros caillou\""
     },
     {
       "id": "s39",
       "name": "Trait de feu raté",
       "number": "#146",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "\"Bon ok j'ai raté celui là mais j'ai réussi ceux de la semaine derniere !...\""
     },
     {
       "id": "s51",
       "name": "Trait de feu raté",
       "number": "#145",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "\"Bon ok j'ai raté celui là mais j'ai réussi ceux de la semaine derniere !...\""
     },
     {
       "id": "s41",
       "name": "Un repos mérité",
       "number": "#148",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "ZzzzzRrrrzzzzz...."
     },
     {
       "id": "s52",
       "name": "Un repos mérité",
       "number": "#147",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "ZzzzrrRrrRRRrrzzzz...."
     },
     {
       "id": "s45",
       "name": "Vous avez du fromage ?",
       "number": "#150",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "\"Vous êtes sûr qu'il y en a pas un au fond de votre placard ?\""
     },
     {
       "id": "s53",
       "name": "Vous avez du fromage ?",
       "number": "#149",
       "rarity": "Commune",
-      "lore": ""
+      "lore": "\"Vous êtes qu'il n'y en a pas un au fond de votre placard ?\""
     },
     {
       "id": "s128",
       "name": "On ne touche pas les araignées blanches !",
       "number": "#144",
       "rarity": "Alternative",
-      "lore": ""
+      "lore": "\"Si j'en vois un en frapper une, il finira en gruyère\""
     }
   ]
 }
