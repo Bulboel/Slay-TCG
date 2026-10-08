@@ -663,3 +663,8 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 @media(max-width:650px){
  #gameApp .score[data-ornament="treasure"] #pScore{width:30px;height:30px;flex-basis:30px;margin:-5px -4px;font-size:15px}
 }
+
+/* Dedicated collection categories: playable cards and Memories. */
+.collection-tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0 18px}
+.collection-tab{border:1px solid #b99247;border-radius:999px;padding:9px 20px;background:#17383b;color:#f8e4b1;font:inherit;font-weight:700;cursor:pointer}
+.collection-tab.active,.collection-tab[aria-pressed="true"]{background:linear-gradient(130deg,#f6d778,#b87a24);color:#27180d;box-shadow:0 0 12px #edbd5c66}
