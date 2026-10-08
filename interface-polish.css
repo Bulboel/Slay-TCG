@@ -627,4 +627,4 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .card.card-back.back-jordan-cool::before,.card.card-back.back-jordan-cool::after,#gameApp.jordan-preview #aiHand .card.card-back::before,#gameApp.jordan-preview #aiHand .card.card-back::after{content:none!important;display:none!important}
 
 /* Reward for defeating Caleizis: existing crying chibi artwork from the story. */
-.card.card-back.back-caleizis-crying{background:#1a1230 url('assets/story/caleizis-crying-chibi.webp') center/contain no-repeat!important;border:3px solid #d6a44f!important;box-shadow:inset 0 0 0 2px #472061,0 6px 15px #0008!important}
+.card.card-back.back-caleizis-crying{background:#1a1230 url('assets/Cale%C3%AFzis%20qui%20pleure.png') center/contain no-repeat!important;border:3px solid #d6a44f!important;box-shadow:inset 0 0 0 2px #472061,0 6px 15px #0008!important}
