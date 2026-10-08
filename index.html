@@ -781,7 +781,7 @@ window.triadeOnlineDeckPreview = () => {
     name: d.name,
     cards: d.cards.map(index => {
       const card = pool[index];
-      return { id: card.id, name: card.name, v: [...card.v], rarity: card.rarity, element: card.element };
+      return { id: card.id, name: card.name, v: [...card.v], rarity: card.rarity, element: card.element, image: card.image ? {...card.image} : null };
     })
   }));
   return { decks: list, activeDeckId };
