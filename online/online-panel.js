@@ -11,7 +11,13 @@ panel.id = 'slayOnlinePanel';
 panel.className = 'slay-online-panel';
 panel.innerHTML = `
   <h3>⚔ PVP en ligne <small>— laboratoire</small></h3>
-  <p>Crée une salle privée et invite un ami avec un code. Les decks et le plateau seront connectés dans une prochaine étape.</p>
+  <p>Crée une salle privée et invite un ami avec un code. Les salons fonctionnent. Tes decks sont visibles ci-dessous en aperçu local ; leur utilisation dans un duel synchronisé sera ajoutée après validation serveur.</p>
+  <div class="slay-online-decks">
+    <label for="triadeOnlineDeckSelect">Mon deck pour le futur PVP en ligne</label>
+    <select id="triadeOnlineDeckSelect" aria-label="Deck local à prévisualiser"></select>
+    <p id="triadeOnlineDeckCards"></p>
+    <button type="button" class="menu-btn secondary" id="triadeOnlineRefreshDecks">Actualiser mes decks</button>
+  </div>
   <div class="slay-online-controls">
     <button type="button" class="menu-btn" id="slayOnlineCreate">Créer un duel en ligne</button>
     <label for="slayOnlineCode">Code d'invitation (6 caractères)</label>
@@ -32,6 +38,9 @@ style.textContent = `
 .slay-online-panel h3{margin:0 0 8px;font:700 1.45rem Georgia,serif;color:#4d3016}
 .slay-online-panel h3 small{font:500 .8rem system-ui}
 .slay-online-controls{display:grid;gap:10px}
+.slay-online-decks{display:grid;gap:9px;margin:12px 0 18px;padding:12px;border:1px solid #ad8b57;border-radius:10px;background:#fff7df;color:#4d3016}
+.slay-online-decks select{width:100%;padding:9px;border-radius:8px;background:#fffdf7;color:#3d2a17}
+.slay-online-decks p{margin:2px 0;line-height:1.5;font-size:.92rem}
 .slay-online-controls label{font-weight:700;color:#523718}
 .slay-online-controls input{width:100%;padding:12px;border-radius:9px;border:1px solid #8b6736;background:#fff9e9;color:#332211;font:700 1rem system-ui;text-transform:uppercase;letter-spacing:.18em}
 .slay-online-panel .menu-btn{width:100%;min-height:45px}
@@ -41,6 +50,33 @@ style.textContent = `
 document.head.append(style);
 
 const el = id => document.getElementById(id);
+function refreshDeckPreview() {
+  const select = el('triadeOnlineDeckSelect');
+  const output = el('triadeOnlineDeckCards');
+  const previous = select.value;
+  const snapshot = window.triadeOnlineDeckPreview?.();
+  const decks = snapshot?.decks || [];
+  select.replaceChildren();
+  for (const deck of decks) {
+    const option = document.createElement('option');
+    option.value = deck.id;
+    option.textContent = deck.name;
+    select.append(option);
+  }
+  if (decks.length === 0) {
+    output.textContent = 'Aucun deck complet et valide trouvé. Prépare un deck de cinq cartes dans « Mes decks ».';
+    select.disabled = true;
+    return;
+  }
+  select.disabled = false;
+  select.value = decks.some(d => d.id === previous) ? previous :
+    decks.some(d => d.id === snapshot.activeDeckId) ? snapshot.activeDeckId : decks[0].id;
+  const deck = decks.find(d => d.id === select.value);
+  output.textContent = deck.cards.map(c => c.name + ' (' + c.v.join(' / ') + ')').join(' · ');
+}
+el('triadeOnlineDeckSelect').addEventListener('change', refreshDeckPreview);
+el('triadeOnlineRefreshDecks').addEventListener('click', refreshDeckPreview);
+refreshDeckPreview();
 let roomId = null;
 let channel = null;
 let poller = null;
