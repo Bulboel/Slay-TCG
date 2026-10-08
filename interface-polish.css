@@ -635,9 +635,9 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  border:0!important;box-shadow:0 4px 15px #6d380d88!important;
 }
 .card.card-back.back-treasure-gold::before,.card.card-back.back-treasure-gold::after{content:none!important;display:none!important}
-.board-theme-preview.treasure{background:#3b200e url('assets/Grille%203%C3%973%20orn%C3%A9e%20en%20or%20et%20ambre.png') center/100% 100% no-repeat!important}
+.board-theme-preview.treasure{background:#3b200e url('assets/dos%20de%20plateau%20dor%C3%A9.png') center/100% 100% no-repeat!important}
 #board[data-theme="treasure"]{
- background:#4a260d url('assets/Grille%203%C3%973%20orn%C3%A9e%20en%20or%20et%20ambre.png') center/100% 100% no-repeat!important;
+ background:#4a260d url('assets/dos%20de%20plateau%20dor%C3%A9.png') center/100% 100% no-repeat!important;
 }
 #board[data-theme="treasure"] .cell{
  background:transparent!important;border-color:transparent!important;
@@ -721,4 +721,27 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #board[data-theme="treasure"] .cell.drop-target{
  transform:none!important;background:#ffe4a31c!important;
  box-shadow:inset 0 0 0 2px #ffe89b99!important;
+}
+
+/* The replacement treasure image is a background, not a pre-aligned 3x3 grid.
+   Restore the standard gameplay geometry and card sizing. */
+#board[data-theme="treasure"]{
+ padding:12px!important;
+ gap:11px!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ grid-template-rows:repeat(3,minmax(0,1fr))!important;
+}
+#board[data-theme="treasure"] .cell{
+ padding:0!important;
+ border:2px solid #76572e99!important;
+ border-radius:15px!important;
+ display:grid!important;
+ place-items:center!important;
+}
+#board[data-theme="treasure"] .cell .card{
+ width:auto!important;
+ height:94%!important;
+ max-width:none!important;
+ max-height:none!important;
+ margin:0!important;
 }
