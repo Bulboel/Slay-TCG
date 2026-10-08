@@ -368,7 +368,7 @@ function startLakePart(){
  {speaker:'Grimgors',location:'Le temple des jumeaux',cast:['grimgors','caleizis'],text:'Assez. Comment sais-tu tout cela ?'},
  {speaker:'Voix off',location:'Le temple des jumeaux',cast:['kala','jhimm','grimgors'],mood:'surprised',text:'Ils tentent de réagir, mais quelque chose dans l’air les paralyse tous. Impossible de faire un pas. La puissance de Caleizis dépasse clairement la leur.'},
  {speaker:'Caleizis',location:'Le temple des jumeaux',cast:['caleizis'],text:'Eh bien ? Plus personne n’a rien à dire ?',choices:[
-  {label:'Provoquer Caleizis — lancer le duel',onChoose:()=>chooseLakeReaction('duel')},
+  {label:'Provoquer Caleizis — duel Éléments actifs (Clair)',onChoose:()=>chooseLakeReaction('duel')},
   {label:'Garder le silence',secondary:true,onChoose:()=>chooseLakeReaction('silence')}
  ]}
  ].map(beat=>({mood:'neutral',...beat})),null,resume);
@@ -382,14 +382,14 @@ function chooseLakeReaction(path){
 function startLakeGame(){
  if(story.part7!=='complete')return;
  if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
- applyRulePreset('basic-open');currentMode='story-caleizis';gameType='ai';
+ applyRulePreset('elements-open');currentMode='story-caleizis';gameType='ai';
  const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
  board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:['p56','p56','p56','p05','p05'].map(id=>cloneCard(catalogById(id)))};
  selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
  story.lakePath='duel';story.lakeEncounterResolved=false;story.part8='started';story.stage='part8-match';story.lakeWon=false;story.lakeStep=0;saveStory();
  $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
  $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Caleizis';$('#rulesBtn').style.display='none';
- msg('Le défi de Caleizis','Vous avez choisi de provoquer Caleizis.');render();saveStoryMatch();
+ msg('Le défi de Caleizis — Éléments actifs','La règle « Éléments actifs » (Clair) est en vigueur ! Les interactions entre éléments peuvent modifier les valeurs des cartes.');render();saveStoryMatch();
 }
 
 
