@@ -781,18 +781,18 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  grid-template-rows:repeat(3,minmax(0,1fr))!important;
 }
 #gameApp #board[data-theme="treasure"] .cell{
- padding:3.5%!important;
+ padding:0!important;
  border:0!important;
  border-radius:0!important;
  background:transparent!important;
 }
 #gameApp #board[data-theme="treasure"] .cell > .card{
- width:70%!important;
+ width:71.4%!important;
  height:auto!important;
  block-size:auto!important;
  aspect-ratio:5/7!important;
- max-width:96%!important;
- max-height:96%!important;
+ max-width:100%!important;
+ max-height:100%!important;
  justify-self:center;
  align-self:center;
 }
