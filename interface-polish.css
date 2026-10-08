@@ -886,3 +886,23 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  }
  #gameApp #board{background-size:100% 100%!important}
 }
+
+/* Restore readable hand cards on phones: overlap rather than shrink to fifths. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp #playerHand{
+  width:100%!important;max-width:100%!important;
+  padding-inline:5px!important;box-sizing:border-box!important;
+  display:flex!important;justify-content:center!important;
+  overflow:visible!important;
+ }
+ #gameApp #playerHand .card{
+  width:clamp(100px,27vw,132px)!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:auto!important;aspect-ratio:5/7!important;
+  flex:0 0 auto!important;
+ }
+ #gameApp #playerHand .card+.card{
+  margin-left:calc((min(100vw - 14px, 100vw) - 5 * clamp(100px,27vw,132px))/4)!important;
+ }
+}
