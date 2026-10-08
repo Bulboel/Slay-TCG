@@ -256,7 +256,7 @@ lastRenderedState=stateKey;
 renderOnlineScore();
 renderOnlineMemories();
 $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
-$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=ended||game.turn!==role||(game.memory_pending?!memoryBoardTargetAllowed(entry,pos):!!entry);btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦'}btn.onclick=()=>onlineBoardClick(pos);board.append(btn)});
+$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=ended||((game.memory_reaction==='pending'&&game.memory_reveal&&['fire','rock'].includes(game.memory_reveal.id))?!memoryBoardTargetAllowed(entry,pos):(game.turn!==role||(game.memory_pending?!memoryBoardTargetAllowed(entry,pos):!!entry)));btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦'}btn.onclick=()=>onlineBoardClick(pos);board.append(btn)});
 previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
 for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();decks[player].forEach((item,i)=>{if(game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role||(!!game.memory_pending&&!(game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'));if(hiddenOpponent&&player!==role){const back=document.createElement('div');back.className='card '+player+' concealed';back.textContent='⚔';btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{if(game.memory_pending&&game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'){onlineMemoryRpc('slay_custom_memory_reunion',{p_hand_index:i});return}selected=i;render()};if(player===role&&!btn.disabled)bindOnlineDrag(btn,i);hand.append(btn)})}}
 
@@ -264,7 +264,9 @@ for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceCh
 const ONLINE_MEMORY_NAMES={rest:'Un repos mérité',cheese:'Vous avez du fromage ?',stuck:'Je suis coincé',fire:'Trait de feu raté',rock:'Jet de caillou habile',master:'LE MAÎTRE DU JEU',target:'Cible sphérique',spider:'On ne tue pas les araignées blanches !',reunion:'Retrouvailles'};
 function memoryBoardTargetAllowed(entry,pos){
  const rev=game?.memory_reveal;
- if(!rev||rev.owner!==role||game.memory_reaction==='pending')return false;
+ if(!rev)return false;
+ if(['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending')return game.memory_joker_choices?.[role]===undefined&&entry?.owner===role;
+ if(rev.owner!==role||game.memory_reaction==='pending')return false;
  if(['fire','rock'].includes(rev.id))return entry?.owner===role;
  if(rev.id==='target')return onlineTargetSource===null?entry?.owner===(role==='host'?'guest':'host'):!entry;
  return false;
@@ -272,6 +274,7 @@ function memoryBoardTargetAllowed(entry,pos){
 let onlineTargetSource=null;
 function onlineBoardClick(pos){
  const rev=game?.memory_reveal;
+ if(rev&&['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending'&&game.memory_joker_choices?.[role]===undefined&&game.board[pos]?.owner===role){onlineMemoryRpc('slay_custom_memory_joker_choose_stats',{p_position:pos});return}
  if(game?.memory_pending&&rev?.owner===role&&game.memory_reaction!=='pending'){
   if(['fire','rock'].includes(rev.id)){onlineMemoryRpc('slay_custom_resolve_memory',{p_position:pos});return}
   if(rev.id==='target'){
@@ -287,6 +290,7 @@ function renderOnlineMemories(){
  const ownPending=phase&&rev?.owner===role;
  const isMine=rev?.owner===role,reactor=rev&&rev.owner!==role;
  const canReact=reactor&&game.memory_reaction==='pending'&&!!game.memory_joker?.[role];
+ const statChoice=!!rev&&['fire','rock'].includes(rev.id)&&game.memory_reaction==='pending'&&(rev.owner===role||canReact)&&game.memory_joker_choices?.[role]===undefined;
  const draws=game.memory_draws||{};
  for(const player of ['host','guest']){
   const zone=$(player+'Side').querySelector('.online-memory-orbs');
@@ -307,7 +311,8 @@ function renderOnlineMemories(){
  $('onlineJokerCopy').hidden=!canReact||!['rest','cheese','stuck'].includes(rev?.id);
  const hint=$('onlineMemoryHint');
  if(!enabled){hint.textContent='Souvenirs : activation en attente des tests multijoueurs';return}
- if(canReact){hint.textContent='Réaction au Souvenir adverse : '+(ONLINE_MEMORY_NAMES[rev.id]||rev.id);return}
+ if(canReact){hint.textContent='Réaction au Souvenir adverse : '+(ONLINE_MEMORY_NAMES[rev.id]||rev.id)+(statChoice?' — clique sur une de tes cartes pour copier son effet':'');return}
+ if(statChoice){hint.textContent='Le Joker adverse copie le Souvenir : choisis une de tes cartes sur le plateau.';return}
  if(rev){hint.textContent=(ONLINE_MEMORY_NAMES[rev.id]||rev.id)+' — '+(isMine?(game.memory_reaction==='pending'?'En attente du Joker adverse':(['fire','rock','target'].includes(rev.id)?'Clique sur une carte du plateau pour choisir la cible':rev.id==='spider'?'Résous le Souvenir avec le bouton ci-dessous':rev.id==='reunion'?'Choisis une carte de ta main à échanger':'Souvenir révélé')):'Résolution adverse en cours');return}
  hint.textContent=phase?'À toi de jouer : pioche un Souvenir ou termine ton tour.':'Cristaux restants : '+Number(draws[role]||0);
 }
