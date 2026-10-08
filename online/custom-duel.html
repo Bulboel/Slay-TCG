@@ -180,7 +180,7 @@ lastRenderedState=stateKey;
 renderOnlineScore();
 renderOnlineMemories();
 $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
-$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=!!entry||ended||game.turn!==role||(!!game.memory_pending&&!memoryBoardTargetAllowed(entry,pos));btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>onlineBoardClick(pos)}board.append(btn)});
+$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=ended||game.turn!==role||(game.memory_pending?!memoryBoardTargetAllowed(entry,pos):!!entry);btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by]?.[entry.hand_index];const snapshot=entry.card;const face=snapshot?.v&&Array.isArray(snapshot.v)?card(snapshot.name||item?.[0]||'Carte',snapshot.v,entry.owner,snapshot.meta||item?.[2]):card(item?.[0]||'Carte',item?.[1]||[1,1,1,1],entry.owner,item?.[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦'}btn.onclick=()=>onlineBoardClick(pos);board.append(btn)});
 previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
 for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();decks[player].forEach((item,i)=>{if(game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role||(!!game.memory_pending&&!(game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'));if(hiddenOpponent&&player!==role){const back=document.createElement('div');back.className='card '+player+' concealed';back.textContent='⚔';btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{if(game.memory_pending&&game.memory_reveal?.id==='reunion'&&game.memory_reveal?.owner===role&&game.memory_reaction!=='pending'){onlineMemoryRpc('slay_custom_memory_reunion',{p_hand_index:i});return}selected=i;render()};if(player===role&&!btn.disabled)bindOnlineDrag(btn,i);hand.append(btn)})}}
 
@@ -190,7 +190,7 @@ function memoryBoardTargetAllowed(entry,pos){
  const rev=game?.memory_reveal;
  if(!rev||rev.owner!==role||game.memory_reaction==='pending')return false;
  if(['fire','rock'].includes(rev.id))return entry?.owner===role;
- if(rev.id==='target')return true;
+ if(rev.id==='target')return onlineTargetSource===null?entry?.owner===(role==='host'?'guest':'host'):!entry;
  return false;
 }
 let onlineTargetSource=null;
@@ -199,8 +199,8 @@ function onlineBoardClick(pos){
  if(game?.memory_pending&&rev?.owner===role&&game.memory_reaction!=='pending'){
   if(['fire','rock'].includes(rev.id)){onlineMemoryRpc('slay_custom_resolve_memory',{p_position:pos});return}
   if(rev.id==='target'){
-   if(onlineTargetSource===null){if(game.board[pos]?.owner!== (role==='host'?'guest':'host')){say('Choisis une carte adverse à déplacer.');return}onlineTargetSource=pos;say('Choisis maintenant une case vide.');return}
-   const from=onlineTargetSource;onlineTargetSource=null;
+   if(onlineTargetSource===null){if(game.board[pos]?.owner!== (role==='host'?'guest':'host')){say('Choisis une carte adverse à déplacer.');return}onlineTargetSource=pos;lastRenderedState=null;render();say('Choisis maintenant une case vide.');return}
+   const from=onlineTargetSource;onlineTargetSource=null;lastRenderedState=null;
    onlineMemoryRpc('slay_custom_memory_target',{p_from:from,p_to:pos});return;
   }
  }
