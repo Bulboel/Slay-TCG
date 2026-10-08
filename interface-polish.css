@@ -829,3 +829,47 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
   grid-template-rows:repeat(3,minmax(0,1fr))!important;
  }
 }
+
+/* Compact horizontal memory draw: keep it below the square board, never underneath. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp main{
+  grid-template-rows:32px max-content 58px 0 max-content!important;
+  row-gap:3px!important;
+  align-content:start!important;
+ }
+ #gameApp .board-wrap{grid-row:2!important;margin-bottom:0!important}
+ #gameApp .memory-zone{
+  grid-row:3!important;
+  height:58px!important;
+  min-height:58px!important;
+  max-height:58px!important;
+  margin:0!important;
+  padding:3px 8px!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow:visible!important;
+ }
+ #gameApp .memory-title{flex:0 0 auto!important}
+ #gameApp .memory-pile{
+  width:75px!important;
+  min-width:75px!important;
+  height:48px!important;
+  flex:0 0 75px!important;
+  overflow:visible!important;
+ }
+ #gameApp .memory-pile .card{
+  width:48px!important;
+  height:34px!important;
+  aspect-ratio:7/5!important;
+  object-fit:contain!important;
+  transform:rotate(90deg) scale(.72)!important;
+  transform-origin:center!important;
+ }
+ #gameApp .memory-draw-arrow{width:30px!important;flex:0 0 30px!important}
+ #gameApp .memory-pass{flex:0 1 115px!important;min-width:0!important;padding:4px!important}
+ #gameApp .side.player{grid-row:5!important;min-height:0!important}
+}
