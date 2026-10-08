@@ -395,7 +395,7 @@ function startLakeGame(){
 
 function endLakeGame(counts){
  try{localStorage.removeItem('hackenia-story-match')}catch{}
- if(counts.p>counts.a){story.lakeWon=true;story.lakeEncounterResolved=true;story.stage='part8-epilogue';story.lakeStep=0;saveStory();setTimeout(showLakeEpilogue,1200)}
+ if(counts.p>counts.a){if(awardCaleizisVictory())msg('Défi accompli !','Dos de carte « Caleizis en larmes » débloqué dans les Options !');story.lakeWon=true;story.lakeEncounterResolved=true;story.stage='part8-epilogue';story.lakeStep=0;saveStory();setTimeout(showLakeEpilogue,1200)}
  else{story.part8='retry';story.stage='part8-retry';story.lakeWon=false;story.lakeEncounterResolved=false;story.lakeStep=0;story.lakePath=null;saveStory();setTimeout(()=>runStorySequence([{speaker:'Voix off',location:'Le temple des jumeaux',cast:['caleizis'],text:'Caleizis a pris le dessus. Il faut reprendre la partie 8 depuis le début.',finalLabel:'Recommencer la partie 8'}],restartLakePart),1200)}
 }
 function showLakeEpilogue(){
