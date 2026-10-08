@@ -152,20 +152,20 @@ function startRescuePart(){
   {speaker:'Jhimm',location:'Le Bois Tendre',cast:['jhimm','kala'],mood:'surprised',text:'Quelqu’un a peut-être besoin de nous ! Vite, allons voir !'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:['bolduc','grimgors','eberien'],text:'Ni une ni deux, les aventuriers courent vers le lieu de la chute. En approchant, ils entendent une voix : « Au secours ! À l’aide ! »'},
   {speaker:'Voix off',location:'Le Bois Tendre',cast:['wolves'],text:'Les appels viennent de derrière un arbre. Une pauvre victime y est encerclée par une horde de loups affamés.'},
-  {speaker:'Grimgors',location:'Le Bois Tendre',cast:['grimgors','jhimm','bolduc'],text:'Tenez bon ! Nous allons éloigner ces loups !',finalLabel:'Affronter les loups'}
+  {speaker:'Grimgors',location:'Le Bois Tendre',cast:['grimgors','jhimm','bolduc'],text:'Tenez bon ! Nous allons éloigner ces loups ! Attention : ce duel se joue avec la règle « Addition » (Clair). Si les valeurs de deux côtés adjacents forment la même somme, les cartes concernées peuvent être capturées !',finalLabel:'Affronter les loups'}
  ],startRescueGame,resume);
 }
 function startRescueGame(){
  if(story.part5!=='complete')return;
  if(activeDeck().cards.length===5&&!validDeck(activeDeck())){renderDeckBuilder();openPanel('#deckScreen');return}
- applyRulePreset('basic-open');currentMode='story-wolves';gameType='ai';
+ applyRulePreset('plus-open');currentMode='story-wolves';gameType='ai';
  const chosen=validDeck(activeDeck())?deckCardsWithFoil(activeDeck()):['p27','p23','p04','p08','p13'].map(catalogById);
  board=Array(9).fill(null);hands={p:chosen.map(playerCard),a:Array.from({length:5},()=>cloneCard(catalogById('p16')))};
  selected=null;turn='p';locked=false;passing=false;matchRewarded=false;matchInProgress=true;resetMemories();
  story.part6='started';story.stage='part6-match';story.rescueWon=false;story.rescueStep=0;saveStory();
  $('#storyScene').classList.add('hidden');$('#menuScreen').classList.add('hidden');document.querySelectorAll('.panel-screen').forEach(x=>x.classList.add('hidden'));
  $('#gameApp').classList.remove('hidden');$('#leftLabel').textContent='Les aventuriers';$('#rightLabel').textContent='Horde de loups affamés';$('#rulesBtn').style.display='none';
- msg('Au secours !','Remportez le duel pour sauver la personne encerclée.');render();saveStoryMatch();
+ msg('Attention : règle Addition !','Pour affronter les loups, la règle « Addition » (Clair) est active. Deux sommes adjacentes égales peuvent déclencher des captures. Sauvez la personne encerclée !');render();saveStoryMatch();
 }
 function endRescueGame(counts){
  try{localStorage.removeItem('hackenia-story-match')}catch{}
