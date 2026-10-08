@@ -930,6 +930,12 @@ $('#cardZoomClose').onclick=closeCardZoom;
 $('#cardZoom').onclick=e=>{if(e.target.id==='cardZoom'&&Date.now()>duelTouchZoomGuardUntil)closeCardZoom()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCardZoom()});
 $('#storyBtn').onclick=showStoryMenu;$('#chapter1Btn').onclick=startChapter1;$('#chapter1Part2Btn').onclick=startForestPart;$('#chapter1Part3Btn').onclick=startCabinPart;$('#chapter1Part4Btn').onclick=startMinePart;$('#chapter1Part5Btn').onclick=startFinalMinePart;$('#chapter1Part6Btn').onclick=startRescuePart;$('#chapter1Part6bisBtn').onclick=startNewFacesPart;$('#chapter1Part7Btn').onclick=startCavePart;$('#chapter1Part8Btn').onclick=startLakePart;$('#chapter1Part9Btn').onclick=startFinalePart;$('#chapter2Btn').onclick=previewChapter2;$('#storyNextBtn').onclick=nextStoryBeat;$('#storyExitBtn').onclick=()=>{$('#storyScene').classList.add('hidden');showStoryMenu()};$('#newBtn').onclick=()=>currentMode==='story'?startStoryGame():currentMode==='story-forest'?startForestGame():currentMode==='story-lake-finale'?startFinaleGame():currentMode==='story-caleizis'?restartLakePart():currentMode==='story-ven'?startNewFacesGame():currentMode==='story-ghosts'?startCaveGame():currentMode==='story-wolves'?startRescueGame():currentMode==='story-mine-finale'?startFinalMineGame():currentMode==='story-mine'?startMineGame():newGame(currentMode);
+/* Shareable Jordan preview: launches one Obscur quick match without unlocking the reward. */
+if(new URLSearchParams(location.search).get('jordan-test')==='1'){
+  $('#gameApp').classList.add('jordan-preview');
+  applyRulePreset('basic-dark');
+  newGame('quick');
+}
 if(document.modelContext?.registerTool){
   try{document.modelContext.registerTool({name:'start_new_game',title:'Commencer une nouvelle partie',description:'Réinitialise le plateau et distribue de nouvelles cartes.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(){newGame();return{status:'started',firstPlayer:turn==='p'?'player':'ai'}}})}catch(error){console.warn('WebMCP indisponible',error)}
 }
