@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Triade d'Hackénia — Test salons PVP</title>
+<title>Triade of Hackenia — Test salons PVP</title>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#71532c,#171d27 70%);color:#f9ebc5;font-family:system-ui,sans-serif;display:grid;place-items:center;padding:18px}
 main{width:min(100%,540px);padding:28px;border:2px solid #b99653;border-radius:20px;background:#202a34;box-shadow:0 16px 60px #0008}h1{text-align:center;font-family:Georgia,serif;color:#f6d48a}p{line-height:1.5;color:#dfd1b6}.actions{display:grid;gap:12px}button,input{font:inherit;border-radius:10px;padding:13px}button{cursor:pointer;background:linear-gradient(#e7c77e,#a87c36);color:#221809;border:1px solid #f4db9a;font-weight:800}button:disabled{opacity:.55;cursor:wait}input{width:100%;background:#101820;color:white;border:1px solid #ac8e59;text-transform:uppercase;letter-spacing:.15em}section{padding:14px 0;border-top:1px solid #88724d}#status{min-height:45px;white-space:pre-wrap}code{overflow-wrap:anywhere;color:#f7d47c}small{color:#d1c3aa}
 </style></head><body><main>
-<h1>⚔ Triade d'Hackénia</h1><p>Laboratoire PVP en ligne — test des salons privés. Aucune carte n'est encore jouée dans cette version.</p>
+<h1>⚔ Triade of Hackenia</h1><p>Laboratoire PVP en ligne — test des salons privés. Aucune carte n'est encore jouée dans cette version.</p>
 <div class="actions"><button id="create">Créer un duel privé</button></div>
 <section><label for="code">Rejoindre avec un code à 6 caractères</label><div class="actions"><input id="code" maxlength="6" placeholder="ABC123" autocomplete="off"><button id="join">Rejoindre le duel</button></div></section>
 <section id="room" hidden><h2>Votre salle</h2><p>Code d'invitation : <strong id="roomCode"></strong></p><p id="players"></p><button id="copy">Copier le code</button></section>
