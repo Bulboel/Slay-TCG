@@ -40,7 +40,7 @@ style.textContent = `
 .slay-online-panel{margin:24px 0;padding:18px;border:2px solid #9c753c;border-radius:16px;background:#fff5d18c;text-align:left}
 .slay-online-panel h3{margin:0 0 8px;font:700 1.45rem Georgia,serif;color:#4d3016}
 .slay-online-panel h3 small{font:500 .8rem system-ui}
-.slay-online-controls{display:grid;gap:10px}
+.slay-online-controls{display:none!important;gap:10px}
 .slay-online-decks{display:grid;gap:9px;margin:12px 0 18px;padding:12px;border:1px solid #ad8b57;border-radius:10px;background:#fff7df;color:#4d3016}
 .slay-online-decks select{width:100%;padding:9px;border-radius:8px;background:#fffdf7;color:#3d2a17}
 .slay-online-decks p{margin:2px 0;line-height:1.5;font-size:.92rem}
