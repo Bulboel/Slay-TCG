@@ -10,23 +10,20 @@ function checkChallenges(quickWin=false){
  if(changed){saveEconomy();if(saveSlotActive)syncProgressSave()}
  return earned;
 }
-const grandTriadeModes=['quick','deck','story','pvp'];
 const grandTriadeRules=['basic-open','basic-dark','same-open','same-dark','plus-open','plus-dark','elements-open','elements-dark'];
 function grandTriadeProgress(){
- const state=challengeState(),progress=state.grandTriadeProgress||{};
- const modes=Array.isArray(progress.modes)?progress.modes:[],rules=Array.isArray(progress.rules)?progress.rules:[];
- return {modes:grandTriadeModes.filter(m=>modes.includes(m)),rules:grandTriadeRules.filter(r=>rules.includes(r))};
+ const state=challengeState(),progress=state.grandTriadeProgressV2||{};
+ return {quick:!!progress.quick,story:!!progress.story,rules:grandTriadeRules.filter(r=>Array.isArray(progress.rules)&&progress.rules.includes(r))};
 }
 function recordGrandTriadeWin(mode,rule){
  const state=challengeState();if(state.grandTriadeWin)return false;
- const progress=grandTriadeProgress();
- const group=mode==='quick'||mode==='deck'||mode==='pvp'?mode:mode==='story'||mode.startsWith('story-')?'story':null;
- let changed=false;
- if(group&&!progress.modes.includes(group)){progress.modes.push(group);changed=true}
- if(grandTriadeRules.includes(rule)&&!progress.rules.includes(rule)){progress.rules.push(rule);changed=true}
+ const progress=grandTriadeProgress();let changed=false;
+ if(mode==='quick'&&!progress.quick){progress.quick=true;changed=true}
+ if((mode==='story'||mode.startsWith('story-'))&&!progress.story){progress.story=true;changed=true}
+ if(mode==='deck'&&grandTriadeRules.includes(rule)&&!progress.rules.includes(rule)){progress.rules.push(rule);changed=true}
  if(!changed)return false;
- state.grandTriadeProgress=progress;
- const completed=progress.modes.length===grandTriadeModes.length&&progress.rules.length===grandTriadeRules.length;
+ state.grandTriadeProgressV2=progress;
+ const completed=progress.quick&&progress.story&&progress.rules.length===grandTriadeRules.length;
  if(completed)state.grandTriadeWin={completedAt:Date.now()};
  saveEconomy();if(typeof saveSlotActive!=='undefined'&&saveSlotActive)syncProgressSave();
  renderChallenges();return completed;
@@ -45,7 +42,7 @@ function renderEarnedBacks(){
 function renderChallenges(){
  const state=challengeState(),count=collectedSetCards();
  const grandProgress=grandTriadeProgress();
- const challenges=[{id:'grandTriadeWin',title:'Grand maître de la Triade : remporter un match dans chaque mode (Partie rapide, Jouer avec un deck, Histoire, PVP local) et avec les 8 règles, tous modes confondus',reward:'Plateau de jeu « Le Cercle des Six Éléments »',progress:grandProgress.modes.length+grandProgress.rules.length,total:grandTriadeModes.length+grandTriadeRules.length},{id:'additionWin',title:'Remporter un match avec la règle « Addition » (Clair ou Obscur), quel que soit le mode',reward:'Plateau de jeu « Les Petits Chevaux de Jordan »',progress:state.additionWin?1:0,total:1},{id:'identicalWin',title:'Remporter un match avec la règle « Identique » (Clair ou Obscur)',reward:'Plateau de jeu « Sceau des Arcanes »',progress:state.identicalWin?1:0,total:1},{id:'quickWin',title:'Gagnez une partie rapide',reward:'50 pièces d’or',progress:state.quickWin?1:0,total:1},{id:'collection100',title:'Possédez 100 cartes différentes du set « Un nouveau départ »',reward:'Six dos de cartes élémentaires',progress:Math.min(count,100),total:100}];
+ const challenges=[{id:'grandTriadeWin',title:'Grand maître de la Triade : gagner une fois en Partie rapide, une fois en Histoire et gagner avec les 8 règles du mode Jouer (Clair et Obscur pour chaque variante)',reward:'Plateau de jeu « Le Cercle des Six Éléments »',progress:Number(grandProgress.quick)+Number(grandProgress.story)+grandProgress.rules.length,total:10},{id:'additionWin',title:'Remporter un match avec la règle « Addition » (Clair ou Obscur), quel que soit le mode',reward:'Plateau de jeu « Les Petits Chevaux de Jordan »',progress:state.additionWin?1:0,total:1},{id:'identicalWin',title:'Remporter un match avec la règle « Identique » (Clair ou Obscur)',reward:'Plateau de jeu « Sceau des Arcanes »',progress:state.identicalWin?1:0,total:1},{id:'quickWin',title:'Gagnez une partie rapide',reward:'50 pièces d’or',progress:state.quickWin?1:0,total:1},{id:'collection100',title:'Possédez 100 cartes différentes du set « Un nouveau départ »',reward:'Six dos de cartes élémentaires',progress:Math.min(count,100),total:100}];
  for(const [selector,archived] of [['#challengeActive',false],['#challengeArchive',true]]){
   const holder=document.querySelector(selector);holder.replaceChildren();
   for(const challenge of challenges.filter(c=>!!state[c.id]===archived)){
@@ -54,7 +51,7 @@ function renderChallenges(){
    const reward=document.createElement('p');reward.textContent='Récompense : '+challenge.reward;
    if(challenge.id==='grandTriadeWin'){
     const p=grandTriadeProgress(),detail=document.createElement('p');
-    detail.textContent='Modes : '+p.modes.length+'/4 · Règles : '+p.rules.length+'/8';article.append(detail);
+    detail.textContent='Partie rapide : '+(p.quick?'✓':'—')+' · Histoire : '+(p.story?'✓':'—')+' · Règles Jouer : '+p.rules.length+'/8';article.append(detail);
    }
    const status=document.createElement('small');status.textContent=archived?'✓ Accompli • récompense reçue':challenge.progress+' / '+challenge.total;
    article.append(title,reward,status);if(!archived){const progress=document.createElement('progress');progress.value=challenge.progress;progress.max=challenge.total;progress.setAttribute('aria-label',challenge.title);article.append(progress)}holder.append(article);
