@@ -20,6 +20,7 @@
 #board .cell.just-captured .card{--capture:#f4cc72;animation:captureGlow 1.12s ease both}.card.rarity-rare{box-shadow:0 0 0 2px #c69b46,0 0 13px #f1ca6280}.card.rarity-divine,.card.rarity-parallel{box-shadow:0 0 0 2px #b7d6f5,0 0 15px #b9a4fa;animation:onlineDivine 3s ease-in-out infinite alternate}.card.rarity-alternative{box-shadow:0 0 0 2px #cdb6e9,0 0 12px #b891f7a0}@keyframes onlineDivine{from{filter:drop-shadow(0 0 2px #83e6e9)}to{filter:drop-shadow(0 0 9px #dcb5ff)}}@media(prefers-reduced-motion:reduce){.card.rarity-divine,.card.rarity-parallel{animation:none}}
 @media(max-width:700px){#onlineBoardWrap{padding:10px;width:min(100%,470px)}#board{gap:4px;padding:5px}}
 #onlineResult[hidden]{display:none!important}#onlineResult{position:fixed;inset:0;z-index:1000;background:#0d101ce8;display:grid;place-items:center;padding:15px;backdrop-filter:blur(9px)}.result-content{text-align:center;max-width:min(94vw,600px);animation:resultEnter .65s ease-out}.result-content img{display:block;max-width:100%;max-height:68vh;object-fit:contain;margin:auto;filter:drop-shadow(0 0 25px #dfb9688a)}.result-content p{font:700 clamp(25px,5vw,42px) Georgia,serif;color:#fbe3a1;text-shadow:0 0 14px #f6ce7b}.result-content button{min-width:190px}@keyframes resultEnter{from{opacity:0;transform:translateY(25px) scale(.86)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.result-content{animation:none}}
+.online-drag-preview{position:fixed!important;z-index:9999;pointer-events:none!important;width:clamp(95px,16vw,160px)!important;transform:translate(-50%,-50%) scale(1.12)!important;box-shadow:0 18px 38px #000c,0 0 22px #e8c36a88!important;touch-action:none}#board .cell.drop-target{border-color:#f7e09a!important;background:#e2cc98!important;box-shadow:inset 0 0 30px #fff3b75c,0 0 22px #f8c75b!important}#gamePanel .hand button{touch-action:none}#gamePanel .hand button:focus-visible{outline:3px solid #ffe3a0;outline-offset:3px}
 </style></head><body><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><section id="gamePanel" hidden><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><div id="onlineBoardWrap"><div id="board"></div></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></section><div id="onlineResult" hidden role="dialog" aria-modal="true" aria-label="Résultat du duel"><div class="result-content"><img id="onlineResultArt" alt="" src=""><p id="onlineResultText"></p><button id="closeResult">Voir le plateau</button></div></div><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
 import {supabase,ensureOnlineIdentity,createOnlineRoom,joinOnlineRoom,getOnlineRoom} from './supabase-client.js';
 const $=id=>document.getElementById(id);
@@ -63,9 +64,56 @@ function render(){const stateKey=JSON.stringify({roomId,role,board:game.board,tu
 if(stateKey===lastRenderedState)return;
 lastRenderedState=stateKey;
 $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
-$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.disabled=!!entry||ended||game.turn!==role;btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by][entry.hand_index];const face=card(item[0],item[1],entry.owner,item[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>move(pos)}board.append(btn)});
+$('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=!!entry||ended||game.turn!==role;btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by][entry.hand_index];const face=card(item[0],item[1],entry.owner,item[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>move(pos)}board.append(btn)});
 previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
-for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();decks[player].forEach((item,i)=>{if(game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role;if(hiddenOpponent&&player!==role){const back=document.createElement('div');back.className='card '+player+' concealed';back.textContent='⚔';btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{selected=i;render()};hand.append(btn)})}}
+for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();decks[player].forEach((item,i)=>{if(game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role;if(hiddenOpponent&&player!==role){const back=document.createElement('div');back.className='card '+player+' concealed';back.textContent='⚔';btn.append(back)}else btn.append(card(item[0],item[1],player,item[2]));btn.onclick=()=>{selected=i;render()};if(player===role&&!btn.disabled)bindOnlineDrag(btn,i);hand.append(btn)})}}
+
+// Déplacement tactile/souris : aperçu agrandi et dépôt sur une case libre.
+// Le serveur reste seul responsable de la validation du coup.
+let onlineDrag=null;
+function clearOnlineDrag(){
+ if(!onlineDrag)return;
+ onlineDrag.preview?.remove();
+ document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
+ onlineDrag=null;
+}
+function bindOnlineDrag(button,handIndex){
+ button.addEventListener('pointerdown',e=>{
+  if(e.button!==0||button.disabled||game?.turn!==role)return;
+  const startX=e.clientX,startY=e.clientY;
+  onlineDrag={pointerId:e.pointerId,handIndex,startX,startY,preview:null};
+  button.setPointerCapture?.(e.pointerId);
+ });
+ button.addEventListener('pointermove',e=>{
+  const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+  if(!d.preview&&Math.hypot(e.clientX-d.startX,e.clientY-d.startY)<10)return;
+  if(!d.preview){
+   selected=handIndex;
+   d.preview=button.querySelector('.card').cloneNode(true);
+   d.preview.classList.add('online-drag-preview');
+   document.body.append(d.preview);
+  }
+  d.preview.style.left=e.clientX+'px';d.preview.style.top=e.clientY+'px';
+  document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
+  const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('#board .cell');
+  if(target&&!target.disabled)target.classList.add('drop-target');
+ });
+ button.addEventListener('pointerup',e=>{
+  const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+  const dragged=!!d.preview;
+  const target=dragged?document.elementFromPoint(e.clientX,e.clientY)?.closest('#board .cell'):null;
+  clearOnlineDrag();
+  if(dragged){
+   button.dataset.suppressClick='1';
+   setTimeout(()=>delete button.dataset.suppressClick,100);
+   if(target&&!target.disabled)move(Number(target.dataset.position));
+   else render();
+  }
+ });
+ button.addEventListener('pointercancel',clearOnlineDrag);
+ button.addEventListener('click',e=>{if(button.dataset.suppressClick==='1'){e.preventDefault();e.stopImmediatePropagation()}},true);
+}
+
 async function move(pos){if(selected===null){say('Choisis une carte avant de sélectionner une case.');return}if(working)return;working=true;try{const {error}=await supabase.rpc('slay_custom_move',{p_room:roomId,p_hand_index:selected,p_position:pos});if(error)throw error;selected=null;await load()}catch(e){say('Coup refusé : '+e.message)}finally{working=false}}
 async function action(fn){if(working)return;working=true;persistentError=null;try{await fn()}catch(e){const msg=e.message||String(e);persistentError='Erreur : '+msg+(msg.toLowerCase().includes('expir')||msg.toLowerCase().includes('introuvable')?' — Créez une nouvelle salle depuis cet écran sur les deux appareils.':'');$('status').textContent=persistentError}finally{working=false}}
 $('create').onclick=()=>action(async()=>{const result=await createOnlineRoom();roomId=result.room_id;await load();say('Salle créée ! Partage le code avec ton ami.')});
