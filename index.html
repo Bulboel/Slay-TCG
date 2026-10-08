@@ -986,8 +986,8 @@ if(['1','2','3'].includes(testParams.get('full-test-save'))){
    collection.foils=Object.fromEntries(catalog.map(c=>[c.id,20]));
    // Verify unlocks after importing the profile, including on older local saves.
    const testChallenges=challengeState();
-   for(const id of ['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete'])testChallenges[id] ||= {completedAt:Date.now()};
-   settings.back='treasure-gold';settings.boardTheme='treasure';settings.scoreOrnament='treasure';
+   for(const id of ['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete','onlineFiveWins'])testChallenges[id] ||= {completedAt:Date.now()};
+   settings.back='treasure-gold';settings.boardTheme='treasure';settings.scoreOrnament='rainbow';
    applySettings();renderChallenges();renderCollection();
    persistWorkingProgress();writeSaveSlot(null);
    $('#startupScreen').classList.add('hidden');
