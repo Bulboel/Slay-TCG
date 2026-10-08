@@ -873,3 +873,16 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #gameApp .memory-pass{flex:0 1 115px!important;min-width:0!important;padding:4px!important}
  #gameApp .side.player{grid-row:5!important;min-height:0!important}
 }
+
+/* Final pixel trim: enlarge the entire square board uniformly, never its artwork alone. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp main{padding-left:2px!important;padding-right:2px!important;box-sizing:border-box!important}
+ #gameApp .board-wrap{
+  width:calc(100vw - 4px)!important;
+  height:calc(100vw - 4px)!important;
+  min-height:calc(100vw - 4px)!important;
+  max-width:100%!important;
+  margin-inline:auto!important;
+ }
+ #gameApp #board{background-size:100% 100%!important}
+}
