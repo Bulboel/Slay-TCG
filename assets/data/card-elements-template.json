@@ -6,56 +6,56 @@
       "name": "Araignée blanche",
       "number": "#041",
       "rarity": "Peu commune",
-      "element": "water"
+      "element": "multi"
     },
     {
       "id": "p02",
       "name": "Araignée solitaire",
       "number": "#042",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p03",
       "name": "Bolduc Lesterson",
       "number": "#112",
       "rarity": "Alternative",
-      "element": "earth"
+      "element": "fire"
     },
     {
       "id": "p04",
       "name": "Bolduc Lesterson",
       "number": "#005",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "fire"
     },
     {
       "id": "p05",
       "name": "Caleizis",
       "number": "#113",
       "rarity": "Alternative",
-      "element": "lightning"
+      "element": "multi"
     },
     {
       "id": "p07",
       "name": "Ébérien",
       "number": "#114",
       "rarity": "Alternative",
-      "element": "fire"
+      "element": "ice"
     },
     {
       "id": "p08",
       "name": "Ébérien",
       "number": "#004",
       "rarity": "Commune",
-      "element": "fire"
+      "element": "earth"
     },
     {
       "id": "p09",
       "name": "Fioles élémentaires",
       "number": "#073",
       "rarity": "Commune",
-      "element": "lightning"
+      "element": "multi"
     },
     {
       "id": "p10",
@@ -69,14 +69,14 @@
       "name": "Gardienne du lac",
       "number": "#046",
       "rarity": "Peu commune",
-      "element": "water"
+      "element": "multi"
     },
     {
       "id": "p12",
       "name": "Grimgors",
       "number": "#116",
       "rarity": "Alternative",
-      "element": "wind"
+      "element": "water"
     },
     {
       "id": "p13",
@@ -90,28 +90,28 @@
       "name": "Hilam",
       "number": "#117",
       "rarity": "Alternative",
-      "element": "water"
+      "element": "multi"
     },
     {
       "id": "p15",
       "name": "Hilam",
       "number": "#007",
       "rarity": "Rare",
-      "element": "water"
+      "element": "multi"
     },
     {
       "id": "p16",
       "name": "Horde de loups affamés",
       "number": "#048",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p17",
       "name": "Hydrelithe mineur",
       "number": "#055",
       "rarity": "Peu commune",
-      "element": "water"
+      "element": "neutral"
     },
     {
       "id": "p22",
@@ -132,14 +132,14 @@
       "name": "Jordan",
       "number": "#119",
       "rarity": "Alternative",
-      "element": "earth"
+      "element": "multi"
     },
     {
       "id": "p25",
       "name": "Jordan",
       "number": "#057",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "multi"
     },
     {
       "id": "p26",
@@ -160,14 +160,14 @@
       "name": "Kayla",
       "number": "#121",
       "rarity": "Alternative",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p29",
       "name": "Kayla",
       "number": "#006",
       "rarity": "Rare",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p30",
@@ -181,28 +181,28 @@
       "name": "Les mineurs de Berdésa",
       "number": "#022",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p32",
       "name": "Melinda",
       "number": "#029",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "water"
     },
     {
       "id": "p33",
       "name": "Messire Balai",
       "number": "#123",
       "rarity": "Alternative",
-      "element": "lightning"
+      "element": "multi"
     },
     {
       "id": "p34",
       "name": "Messire Balai",
       "number": "#009",
       "rarity": "Rare",
-      "element": "lightning"
+      "element": "multi"
     },
     {
       "id": "p35",
@@ -216,14 +216,14 @@
       "name": "Miroir de communication",
       "number": "#087",
       "rarity": "Commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p37",
       "name": "Soldats fantomatiques",
       "number": "#069",
       "rarity": "Commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p38",
@@ -237,7 +237,7 @@
       "name": "Transporteur",
       "number": "#034",
       "rarity": "Commune",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p42",
@@ -251,77 +251,77 @@
       "name": "Vieux fermier",
       "number": "#038",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "wind"
     },
     {
       "id": "p44",
       "name": "Violette",
       "number": "#130",
       "rarity": "Parallèle",
-      "element": "lightning"
+      "element": "ice"
     },
     {
       "id": "p47",
       "name": "La grotte des jumeaux",
       "number": "#101",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p48",
       "name": "Le bois tendre",
       "number": "#103",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p49",
       "name": "Le lac rose",
       "number": "#104",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p50",
       "name": "Le village de Berdésa",
       "number": "#108",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p54",
       "name": "Bosco",
       "number": "#010",
       "rarity": "Peu commune",
-      "element": "fire"
+      "element": "wind"
     },
     {
       "id": "p55",
       "name": "Bulbalina",
       "number": "#008",
       "rarity": "Peu commune",
-      "element": "water"
+      "element": "wind"
     },
     {
       "id": "p56",
       "name": "Caleizis",
       "number": "#011",
       "rarity": "Rare",
-      "element": "lightning"
+      "element": "multi"
     },
     {
       "id": "p57",
       "name": "Canourson sauvage",
       "number": "#044",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p58",
       "name": "Dassom",
       "number": "#096",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p59",
@@ -335,70 +335,70 @@
       "name": "Hydrelithe supérieur",
       "number": "#056",
       "rarity": "Peu commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p61",
       "name": "La bague de l’apprenti(e)",
       "number": "#075",
       "rarity": "Commune",
-      "element": "ice"
+      "element": "multi"
     },
     {
       "id": "p62",
       "name": "La dague des Sans-chiffres",
       "number": "#076",
       "rarity": "Peu commune",
-      "element": "fire"
+      "element": "neutral"
     },
     {
       "id": "p63",
       "name": "La Fée Pachié",
       "number": "#018",
       "rarity": "Rare",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p64",
       "name": "La Fée Pachié",
       "number": "#122",
       "rarity": "Alternative",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p65",
       "name": "Larves capricieuses",
       "number": "#059",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p66",
       "name": "Le quartier des brumes féeriques",
       "number": "#105",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p67",
       "name": "Les Nahakins",
       "number": "#023",
       "rarity": "Peu commune",
-      "element": "water"
+      "element": "multi"
     },
     {
       "id": "p68",
       "name": "Les faux enfants",
       "number": "#060",
       "rarity": "Peu commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p69",
       "name": "Les jumeaux du Lac",
       "number": "#020",
       "rarity": "Rare",
-      "element": "lightning"
+      "element": "neutral"
     },
     {
       "id": "p70",
@@ -412,21 +412,21 @@
       "name": "Maman Canours",
       "number": "#063",
       "rarity": "Peu commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p72",
       "name": "Myconide infecté",
       "number": "#065",
       "rarity": "Peu commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p73",
       "name": "Myconides",
       "number": "#066",
       "rarity": "Commune",
-      "element": "earth"
+      "element": "neutral"
     },
     {
       "id": "p74",
@@ -440,14 +440,14 @@
       "name": "Orcus",
       "number": "#124",
       "rarity": "Alternative",
-      "element": "fire"
+      "element": "multi"
     },
     {
       "id": "p76",
       "name": "Pixies malicieuses",
       "number": "#068",
       "rarity": "Commune",
-      "element": "wind"
+      "element": "multi"
     },
     {
       "id": "p77",
@@ -489,7 +489,7 @@
       "name": "Ver géant",
       "number": "#070",
       "rarity": "Peu commune",
-      "element": "ice"
+      "element": "neutral"
     },
     {
       "id": "p83",
@@ -531,14 +531,14 @@
       "name": "L’ogre des Collines noires",
       "number": "#062",
       "rarity": "Peu commune",
-      "element": "redSpiral"
+      "element": "neutral"
     },
     {
       "id": "p89",
       "name": "Golem de pierre",
       "number": "#047",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "earth"
     },
     {
       "id": "p90",
@@ -580,7 +580,7 @@
       "name": "Orven",
       "number": "#031",
       "rarity": "Peu commune",
-      "element": "neutral"
+      "element": "fire"
     },
     {
       "id": "p96",
@@ -601,56 +601,56 @@
       "name": "Élémentaire emprisonné",
       "number": "#045",
       "rarity": "Peu commune",
-      "element": "neutral"
+      "element": "wind"
     },
     {
       "id": "p99",
       "name": "Erevan",
       "number": "#131",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p100",
       "name": "Georges",
       "number": "#014",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "earth"
     },
     {
       "id": "p101",
       "name": "Gliska",
       "number": "#115",
       "rarity": "Alternative",
-      "element": "neutral"
+      "element": "fire"
     },
     {
       "id": "p102",
       "name": "Gliska",
       "number": "#015",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "fire"
     },
     {
       "id": "p103",
       "name": "Griselda",
       "number": "#016",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "lightning"
     },
     {
       "id": "p104",
       "name": "Heaum",
       "number": "#132",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p105",
       "name": "Hydrelithe majeur",
       "number": "#049",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "earth"
     },
     {
       "id": "p106",
@@ -664,7 +664,7 @@
       "name": "Kayla",
       "number": "#133",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p108",
@@ -692,14 +692,14 @@
       "name": "Lathandre",
       "number": "#134",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p112",
       "name": "Le rituel de l’apprenti(e)",
       "number": "#081",
       "rarity": "Peu commune",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p113",
@@ -713,7 +713,7 @@
       "name": "Max Belfr",
       "number": "#027",
       "rarity": "Peu commune",
-      "element": "neutral"
+      "element": "ice"
     },
     {
       "id": "p115",
@@ -762,7 +762,7 @@
       "name": "Poussière de fée ancienne",
       "number": "#090",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p122",
@@ -790,7 +790,7 @@
       "name": "Shauntéa",
       "number": "#135",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p126",
@@ -804,7 +804,7 @@
       "name": "Tyr",
       "number": "#136",
       "rarity": "Divine",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p129",
@@ -818,35 +818,35 @@
       "name": "Hydrelithe majeure d’eau",
       "number": "#054",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "water"
     },
     {
       "id": "p131",
       "name": "Hydrelithe majeure de feu",
       "number": "#050",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "fire"
     },
     {
       "id": "p132",
       "name": "Hydrelithe majeure de foudre",
       "number": "#051",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "lightning"
     },
     {
       "id": "p133",
       "name": "Hydrelithe majeure de glace",
       "number": "#052",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "ice"
     },
     {
       "id": "p134",
       "name": "Hydrelithe majeure de vent",
       "number": "#053",
       "rarity": "Rare",
-      "element": "neutral"
+      "element": "wind"
     },
     {
       "id": "p135",
@@ -902,7 +902,7 @@
       "name": "Les bébés élémentaires",
       "number": "#058",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p143",
@@ -923,7 +923,7 @@
       "name": "Velcan",
       "number": "#035",
       "rarity": "Commune",
-      "element": "neutral"
+      "element": "wind"
     },
     {
       "id": "p146",
@@ -937,14 +937,14 @@
       "name": "Les énergies élémentaires",
       "number": "#082",
       "rarity": "Peu commune",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p148",
       "name": "Réussite critique",
       "number": "#137",
       "rarity": "Alternative",
-      "element": "neutral"
+      "element": "multi"
     },
     {
       "id": "p149",
