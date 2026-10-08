@@ -10,6 +10,7 @@ function checkChallenges(quickWin=false){
  if(changed){saveEconomy();if(saveSlotActive)syncProgressSave()}
  return earned;
 }
+function unlockAdditionBoard(){const state=challengeState();if(state.additionWin)return false;state.additionWin={completedAt:Date.now()};saveEconomy();if(typeof saveSlotActive!=='undefined'&&saveSlotActive)syncProgressSave();renderChallenges();return true}
 function unlockIdenticalBoard(){const state=challengeState();if(state.identicalWin)return false;state.identicalWin={completedAt:Date.now()};saveEconomy();if(typeof saveSlotActive!=='undefined'&&saveSlotActive)syncProgressSave();renderChallenges();return true}
 function backUnlocked(id){if(typeof id!=='string')return false;return ['official','sun','mist'].includes(id)||(id.startsWith('element-')&&elementalBacks[id.slice(8)]&&!!challengeState().collection100)}
 function renderEarnedBacks(){
@@ -22,7 +23,7 @@ function renderEarnedBacks(){
 }
 function renderChallenges(){
  const state=challengeState(),count=collectedSetCards();
- const challenges=[{id:'identicalWin',title:'Remporter un match avec la règle « Identique » (Clair ou Obscur)',reward:'Plateau de jeu « Sceau des Arcanes »',progress:state.identicalWin?1:0,total:1},{id:'quickWin',title:'Gagnez une partie rapide',reward:'50 pièces d’or',progress:state.quickWin?1:0,total:1},{id:'collection100',title:'Possédez 100 cartes différentes du set « Un nouveau départ »',reward:'Six dos de cartes élémentaires',progress:Math.min(count,100),total:100}];
+ const challenges=[{id:'additionWin',title:'Remporter un match avec la règle « Addition » (Clair ou Obscur), quel que soit le mode',reward:'Plateau de jeu « Les Petits Chevaux de Jordan »',progress:state.additionWin?1:0,total:1},{id:'identicalWin',title:'Remporter un match avec la règle « Identique » (Clair ou Obscur)',reward:'Plateau de jeu « Sceau des Arcanes »',progress:state.identicalWin?1:0,total:1},{id:'quickWin',title:'Gagnez une partie rapide',reward:'50 pièces d’or',progress:state.quickWin?1:0,total:1},{id:'collection100',title:'Possédez 100 cartes différentes du set « Un nouveau départ »',reward:'Six dos de cartes élémentaires',progress:Math.min(count,100),total:100}];
  for(const [selector,archived] of [['#challengeActive',false],['#challengeArchive',true]]){
   const holder=document.querySelector(selector);holder.replaceChildren();
   for(const challenge of challenges.filter(c=>!!state[c.id]===archived)){
