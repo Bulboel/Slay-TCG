@@ -5,9 +5,9 @@ function assignCardNumbers(cards) {
   for (const card of cards) card.number = saved[card.id] || next++;
 }
 function cardNumber(card) { return '#' + String(card.number || catalogById(card.id)?.number || 0).padStart(3,'0'); }
-function sortedCards(cards, mode = 'number') {
-  if (mode === 'name-desc') return sortedCards(cards,'name').reverse();
-  if (mode === 'rarity-desc') return sortedCards(cards,'rarity').reverse();
+function legacySortedCards(cards, mode = 'number') {
+  if (mode === 'name-desc') return legacySortedCards(cards,'name').reverse();
+  if (mode === 'rarity-desc') return legacySortedCards(cards,'rarity').reverse();
   return [...cards].sort((a,b) => {
     if (mode === 'quantity') { const q = ownedCopies(b.id) - ownedCopies(a.id); if (q) return q; }
     if (mode === 'rarity') { const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]; if (r) return r; }
@@ -31,14 +31,6 @@ function decorateMemoryArtwork(card) {
   const holder = $('#memoryArtwork'); holder.innerHTML = collectible ? cardDecoration(collectible) : '';
 }
 function initCollectionPolish() {
-  for (const [panel,id,renderFn] of [['#collectionScreen','collectionSort',renderCollection],['#deckScreen','deckSort',renderDeckBuilder]]) {
-    const label = document.createElement('label'); label.className='catalog-sort';label.textContent='Trier les cartes : ';
-    const select=document.createElement('select');select.id=id;select.setAttribute('aria-label','Ordre des cartes');
-    for (const [value,text] of [['number','Ordre officiel du set'],['name','Nom (A → Z)'],['name-desc','Nom (Z → A)'],['rarity','Rareté (croissante)'],['rarity-desc','Rareté (décroissante)'],['quantity','Quantité (plus possédées)']]) { const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option); }
-    const saved=readSaved('hackenia-'+id,'number');select.value=['number','name','name-desc','rarity','rarity-desc','quantity'].includes(saved)?saved:'number';
-    select.onchange=()=>{try{localStorage.setItem('hackenia-'+id,JSON.stringify(select.value))}catch{}renderFn()};label.append(select);
-    $(panel+' .panel-card').insertBefore(label,$(panel==='#collectionScreen'?'#collectionGrid':'#deckGrid'));
-  }
   const note=document.createElement('p');note.className='mastery-note';note.textContent='10 exemplaires de la même illustration : halo doré. 20 : halo diamant scintillant. Les exemplaires foil comptent aussi. Retrouvez ces halos dans la collection et en vue agrandie ; ils ne changent pas les stats.';$('#collectionGrid').before(note);
   document.querySelector('.sigil').innerHTML='<img src="assets/icons/hackenia-192.png" alt="H d’Hackénia">';
   renderCollection();renderDeckBuilder();
