@@ -285,6 +285,50 @@ body.duel-active #gamePanel .online-memory-orbs .memory-orb svg{width:100%!impor
 body.duel-active #gamePanel .online-memory-orbs .memory-orb.empty{opacity:.35!important;filter:grayscale(1)}
 body.duel-active #gamePanel .online-memory-orbs .memory-element{width:24px;height:24px;display:grid;place-items:center;border:1px solid #fff9;border-radius:50%;color:white;background:var(--element-color,#45b85d);box-shadow:0 0 12px var(--element-color,#45b85d)}
 @media(max-width:850px){body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:21px!important;height:30px!important}}
+
+/* Main's ORIGINAL faceted SVG and elemental SVG, in its dark framed HUD.
+   Dedicated selectors deliberately bypass all legacy .memory-orb overrides. */
+body.duel-active #gamePanel .online-player-head{gap:9px}
+body.duel-active #gamePanel .online-memory-orbs.memory-orbs{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ gap:8px!important;padding:6px 9px!important;margin-left:4px!important;
+ border:2px solid #c9ad79!important;border-radius:8px!important;
+ background:linear-gradient(135deg,#153f42,#0c3035 60%,#124b47)!important;
+ box-shadow:inset 0 0 0 2px #062b2b,inset 0 0 12px #0008,0 2px 8px #0005!important;
+ width:max-content!important;min-width:0!important;min-height:48px!important;
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal{
+ position:relative!important;display:inline-flex!important;flex:none!important;
+ width:28px!important;height:39px!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;overflow:visible!important;opacity:1!important;
+ transform:none!important;transition:filter .25s,opacity .25s!important;
+ filter:drop-shadow(0 0 3px #bbfff6) drop-shadow(0 0 6px #6effdd);
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal::before,
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal::after{content:none!important;display:none!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal svg{width:100%!important;height:100%!important;display:block!important;overflow:visible!important;animation:officialCrystalBreathe 2.6s ease-in-out infinite!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal:nth-of-type(3) svg{animation-delay:-1.3s!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal .crystal-glint{transform-origin:8px 12px;animation:officialCrystalSparkle 2.6s ease-in-out infinite!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty{opacity:.27!important;filter:grayscale(1)!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty svg,
+body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal.empty .crystal-glint{animation:none!important}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-element{
+ width:37px!important;height:37px!important;display:grid!important;place-items:center!important;
+ flex:none!important;color:#c2f8d3!important;background:linear-gradient(145deg,#0c5b4a,#063f3b)!important;
+ border:2px solid #c9ad79!important;border-radius:8px!important;
+ box-shadow:inset 0 0 0 2px #0c342e,0 0 8px #8effc350!important;
+}
+body.duel-active #gamePanel .online-memory-orbs .official-memory-element svg{width:29px!important;height:29px!important;display:block!important;filter:drop-shadow(0 0 2px #c7ffe6)}
+@keyframes officialCrystalBreathe{0%,100%{filter:brightness(1) drop-shadow(0 0 1px #9cfff1);transform:scale(1)}50%{filter:brightness(1.4) drop-shadow(0 0 6px #b9fff1);transform:scale(1.065)}}
+@keyframes officialCrystalSparkle{0%,65%,100%{opacity:.25;transform:scale(.65)}30%{opacity:1;transform:scale(1.4)}}
+@media(max-width:850px){
+ body.duel-active #gamePanel .online-memory-orbs.memory-orbs{gap:5px!important;padding:4px 6px!important;min-height:39px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal{width:23px!important;height:33px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-element{width:32px!important;height:32px!important}
+ body.duel-active #gamePanel .online-memory-orbs .official-memory-element svg{width:25px!important;height:25px!important}
+}
+@media(prefers-reduced-motion:reduce){body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal svg,body.duel-active #gamePanel .online-memory-orbs .official-memory-crystal .crystal-glint{animation:none!important}}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Choisis ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden>
 <div class="online-side" id="hostSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 1</span><span class="online-memory-orbs memory-orbs" aria-label="Deux cristaux de Souvenirs inactifs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></div>
 <div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><div class="memory-title"><span>Pioche</span> <strong>souvenirs</strong></div><button class="memory-pile" id="onlineMemoryPile" disabled title="Piocher un Souvenir" aria-label="Piocher un Souvenir"><span class="memory-draw-arrow" aria-hidden="true"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#b99b54" stroke-width="6" stroke-linecap="round"/><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#2b7652" stroke-width="3" stroke-linecap="round"/><path d="M38 7L57 16L38 25L42 16Z" fill="#327a55" stroke="#d6b96e" stroke-width="2" stroke-linejoin="round"/><path d="M4 10L8 16L4 22L0 16Z" fill="#548b5b" stroke="#c7aa64" stroke-width="1"/></svg></span><span class="card card-back back-official"></span></button><div id="onlineMemoryHint" role="status" aria-live="polite"></div><div id="onlineMemoryRevealCard" hidden><span class="memory-kicker">SOUVENIR RÉVÉLÉ</span><strong id="onlineMemoryRevealName"></strong><span id="onlineMemoryRevealOwner"></span></div><div id="onlineMemoryOverlay" class="memory-reveal" hidden><button type="button" id="onlineMemoryOverlayCard" class="memory-reveal-card"><span class="memory-kicker">SOUVENIR</span><span id="onlineMemoryArtwork" class="memory-artwork" hidden role="img"></span><span class="memory-icon" id="onlineMemoryIconWrap"><span id="onlineMemoryIcon">✦</span></span><h2 id="onlineMemoryTitle"></h2><p id="onlineMemoryDescription"></p><span class="memory-owner" id="onlineMemoryOwner"></span><span class="memory-continue" id="onlineMemoryContinue">TOUCHER POUR CONTINUER</span></button></div><div id="onlineMemoryActions" hidden><button id="onlineMemorySkip">Terminer sans piocher</button><button id="onlineMemoryResolve" hidden>Résoudre le Souvenir</button><button id="onlineJokerKeep" hidden>Conserver mon Joker</button><button id="onlineJokerCancel" hidden>Annuler avec mon Joker</button><button id="onlineJokerCopy" hidden>Dupliquer avec mon Joker</button></div></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
@@ -473,7 +517,7 @@ function renderOnlineMemories(){
   const count=enabled?Number(draws[player]||0):0;
   zone.innerHTML='';
   zone.style.setProperty('--crystal-color',player==='host'?'#56d6a2':'#f16e78');zone.style.setProperty('--element-color',player==='host'?'#45b85d':'#d95050');
-  zone.innerHTML=memoryCrystalMarkup(count>0)+'<span class="memory-element" title="Affinité élémentaire">'+elementIconMarkup(player==='host'?'wind':'multi')+'</span>'+memoryCrystalMarkup(count>1);
+  zone.innerHTML=memoryCrystalMarkup(count>0).replace('class="memory-orb ','class="official-memory-crystal ')+'<span class="official-memory-element" title="Affinité élémentaire">'+elementIconMarkup(player==='host'?'wind':'multi')+'</span>'+memoryCrystalMarkup(count>1).replace('class="memory-orb ','class="official-memory-crystal ');
   zone.setAttribute('aria-label',count+' cristaux Souvenirs disponibles');
  }
  const pile=$('onlineMemoryPile');
