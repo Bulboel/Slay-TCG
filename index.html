@@ -204,6 +204,10 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
  #gameApp .history-log{min-height:164px;overflow-y:auto;overflow-x:hidden}
  #gameApp .memory-zone{min-height:56px}
 }
+
+/* Board cards: size from cell width, not percentage height (which can collapse
+   in CSS grid on mobile). Keep the full portrait and center it in each square. */
+#board .cell > .card{width:76%!important;height:auto!important;aspect-ratio:2.5 / 3.5!important;max-width:100%!important;max-height:96%!important;min-width:0!important;min-height:0!important;justify-self:center;align-self:center}
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
