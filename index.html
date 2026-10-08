@@ -137,6 +137,13 @@
 #board[data-theme="arcane"] .cell:nth-child(-n + 3){--arcane-y:0%}
 #board[data-theme="arcane"] .cell:nth-child(n + 4):nth-child(-n + 6){--arcane-y:50%}
 #board[data-theme="arcane"] .cell:nth-child(n + 7){--arcane-y:100%}
+
+/* Keep hand artwork crisp even while cards are temporarily unavailable. */
+@media(min-width:901px){
+  .side.player .hand .card.disabled,
+  .side.ai .hand .card.disabled{opacity:1!important;filter:none!important}
+  .side.player .hand .card.disabled{cursor:not-allowed}
+}
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
