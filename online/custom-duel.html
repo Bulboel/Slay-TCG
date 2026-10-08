@@ -1,0 +1,56 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Triade of Hackenia — Decks personnels</title><style>
+*{box-sizing:border-box}body{background:radial-gradient(circle at top,#61482d,#162330 70%);color:#f4e1b5;font:16px system-ui;margin:0;padding:14px}main{max-width:650px;margin:auto}h1{text-align:center;font-family:Georgia,serif}p{line-height:1.5}button,input{font:inherit;border-radius:8px;padding:10px}button{background:#e3c486;color:#251b11;border:1px solid #f5d99f;cursor:pointer}button:disabled{opacity:.45}input{width:130px;text-transform:uppercase}header,.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}#roomInfo,#status{text-align:center;padding:10px;min-height:35px}#board{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;background:#c3a16c;border:5px solid #7d5a32;border-radius:14px;padding:8px;aspect-ratio:1;margin:12px auto;max-width:480px}.cell{background:#ebd5a4;display:grid;place-items:center;border:2px solid #8a6d43;padding:2px;min-width:0}.card{background:#203c3d;color:white;border:3px solid #6ac782;border-radius:9px;position:relative;aspect-ratio:3/4;width:100%;display:grid;place-items:center;font-weight:700;font-size:clamp(10px,2vw,14px)}.guest{border-color:#ef8383;background:#4d2c38}.card span{position:absolute}.t{top:2px}.r{right:5px}.b{bottom:2px}.l{left:5px}.card strong{font-size:clamp(9px,2vw,13px)}.hand{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}.hand button{width:18%;padding:2px;min-width:55px;background:transparent;border:2px solid transparent}.hand button.active{border-color:#ffdd77}.hand .card{width:100%}.label{text-align:center;font-weight:700;margin:14px 0 6px}.note{font-size:.85rem;color:#d2c19e}#roomPanel{border:1px solid #a88953;border-radius:12px;padding:12px}.card{overflow:hidden;isolation:isolate;box-shadow:0 5px 12px #0008;transition:transform .22s ease,border-color .2s ease}
+.card::before{content:'';position:absolute;inset:0;z-index:-1;background-image:var(--card-art);background-size:300% 300%;background-position:var(--card-pos);background-repeat:no-repeat;filter:saturate(1.07)}
+.card::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0008 0%,transparent 30%,transparent 55%,#000b 100%)}
+.card span{z-index:2;text-shadow:0 1px 4px #000,0 0 3px #000;font-size:clamp(11px,2.5vw,19px)}
+.card strong{z-index:2;position:absolute;bottom:20%;max-width:94%;padding:3px;background:#101720a6;border-radius:4px;text-align:center;text-shadow:0 1px 4px #000}
+.hand button:not(:disabled):hover .card{transform:translateY(-6px) scale(1.04)}
+.hand button.active .card{box-shadow:0 0 0 3px #ffdc6c,0 0 18px #ffdd78}
+.cell .card.just-placed{animation:triade-arrive .3s ease-out both}
+@media (max-width:900px){.cell .card,.cell .card.just-placed{animation:none!important;transition:none!important}}
+@keyframes triade-arrive{from{opacity:.5;transform:scale(.82) rotate(-3deg)}to{opacity:1;transform:scale(1)}}
+#gamePanel[hidden]{display:none}</style></head><body><main><h1>⚔ Triade of Hackenia — Decks personnels</h1><p class="note">Laboratoire à deux appareils. Decks de démonstration fixes, règles classiques uniquement. Ouvre cette page depuis le menu PVP du jeu sur chaque appareil. Decks personnels expérimentaux, règles classiques uniquement.</p><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><section id="gamePanel" hidden><div class="label">Main du joueur rouge</div><div class="hand" id="guestHand"></div><div id="board"></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></section><p class="note"><a style="color:#efd18e" href="../index.html">Retour au jeu</a></p></main><script type="module">
+import {supabase,ensureOnlineIdentity,createOnlineRoom,joinOnlineRoom,getOnlineRoom} from './supabase-client.js';
+const $=id=>document.getElementById(id);
+const artwork = {
+  'Kala':27,'Bolduc':4,'Jhimm':23,'Grimgors':13,'Araignée':2,
+  'Hilam':15,'Kayla':29,'Gardienne':11,'Frolgor':10,'Ven':42
+};
+const localDecks=JSON.parse(localStorage.getItem('triade-online-deck-snapshot')||'[]');
+const decks={host:[],guest:[]};
+const deckSelect=$('myDeck');
+for(const deck of localDecks){const option=document.createElement('option');option.value=deck.id;option.textContent=deck.name;deckSelect.append(option)}
+$('deckInfo').textContent=localDecks.length?'Sélectionne ton deck puis crée ou rejoins un salon.':'Aucun deck transféré. Retourne au menu PVP du jeu et utilise « Jouer avec mes decks ».';
+function selectedLocalDeck(){return localDecks.find(d=>d.id===deckSelect.value)}
+function setDecks(rows){for(const player of ['host','guest']){const row=rows.find(d=>d.player_id===room[player+'_id']);decks[player]=row?row.cards.map(c=>[c.name,c.v,c]):[]}}
+
+let roomId=null,role=null,game=null,room=null,selected=null,working=false;
+let previousBoard=null, previousRoomId=null, lastRenderedState=null;
+function say(message){$('status').textContent=message}
+function card(name,v,owner){const d=document.createElement('div');d.className='card '+owner;d.innerHTML='<span class="t">'+v[0]+'</span><span class="r">'+v[1]+'</span><span class="b">'+v[2]+'</span><span class="l">'+v[3]+'</span><strong></strong>';d.querySelector('strong').textContent=name;
+const n=artwork[name];
+if(n){const sheet=Math.floor((n-1)/9)+1,x=(n-1)%3,y=Math.floor(((n-1)%9)/3);
+d.style.setProperty('--card-art',"url('../assets/cards/s"+sheet+".webp')");
+d.style.setProperty('--card-pos',(x*50)+'% '+(y*50)+'%');}
+return d}
+async function load(){if(!roomId)return;room=await getOnlineRoom(roomId);const user=await ensureOnlineIdentity();role=room.host_id===user.id?'host':'guest';$('roomInfo').textContent='Salle '+room.room_code+' — '+(room.guest_id?'2 joueurs connectés':'en attente du second joueur');$('copy').hidden=false;$('start').hidden=!room.guest_id;
+const {data:deckRows,error:deckError}=await supabase.from('slay_custom_duel_decks').select('player_id,cards').eq('room_id',roomId);if(deckError)throw deckError;setDecks(deckRows||[]);
+$('deckInfo').textContent='Decks validés : '+(decks.host.length?'vert ✓':'vert en attente')+' · '+(decks.guest.length?'rouge ✓':'rouge en attente');
+const {data,error}=await supabase.from('slay_custom_duel_games').select('*').eq('room_id',roomId).maybeSingle();if(error){if(error.code==='42P01'){say('Exécute d’abord le script SQL de synchronisation dans Supabase.');return}throw error}game=data;$('start').hidden=!room.guest_id||decks.host.length!==5||decks.guest.length!==5;if(game)render();}
+function render(){const stateKey=JSON.stringify({roomId,role,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected});
+if(stateKey===lastRenderedState)return;
+lastRenderedState=stateKey;
+$('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
+const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.disabled=!!entry||ended||game.turn!==role;btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by][entry.hand_index];const face=card(item[0],item[1],entry.owner);if(oldBoard&&oldBoard[pos]===null)face.classList.add('just-placed');btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>move(pos)}board.append(btn)});
+previousBoard=game.board.map(entry=>entry?JSON.stringify(entry):null);previousRoomId=roomId;
+for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceChildren();decks[player].forEach((item,i)=>{if(game.board.some(x=>x?.played_by===player&&x?.hand_index===i))return;const btn=document.createElement('button');btn.className=selected===i&&role===player?'active':'';btn.disabled=player!==role||ended||game.turn!==role;btn.append(card(item[0],item[1],player));btn.onclick=()=>{selected=i;render()};hand.append(btn)})}}
+async function move(pos){if(selected===null){say('Choisis une carte avant de sélectionner une case.');return}if(working)return;working=true;try{const {error}=await supabase.rpc('slay_custom_move',{p_room:roomId,p_hand_index:selected,p_position:pos});if(error)throw error;selected=null;await load()}catch(e){say('Coup refusé : '+e.message)}finally{working=false}}
+async function action(fn){if(working)return;working=true;try{await fn()}catch(e){say('Erreur : '+e.message)}finally{working=false}}
+$('create').onclick=()=>action(async()=>{const result=await createOnlineRoom();roomId=result.room_id;await load();say('Salle créée ! Partage le code avec ton ami.')});
+$('join').onclick=()=>action(async()=>{roomId=await joinOnlineRoom($('code').value);await load();say('Salon rejoint !')});
+$('start').onclick=()=>action(async()=>{const {error}=await supabase.rpc('slay_custom_start',{p_room:roomId});if(error)throw error;await load()});
+$('submitDeck').onclick=()=>action(async()=>{if(!roomId)throw Error('Crée ou rejoins un salon avant de valider ton deck');const deck=selectedLocalDeck();if(!deck)throw Error('Aucun deck sélectionné');const {error}=await supabase.rpc('slay_custom_submit_deck',{p_room:roomId,p_cards:deck.cards});if(error)throw error;await load();say('Deck enregistré pour ce duel !')});
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(room.room_code);say('Code '+room.room_code+' copié !')}catch{say('Code à copier : '+room.room_code)}};
+$('code').oninput=()=>{$('code').value=$('code').value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)};
+setInterval(()=>{if(roomId&&!working)load().catch(e=>say('Synchronisation : '+e.message))},2500);
+</script></body></html>
