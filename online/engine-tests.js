@@ -16,6 +16,33 @@ test('Capture verticale : haut contre bas',()=>{let s=createMatchState(host,gues
 test('La fonction ne modifie pas son état d’entrée',()=>{const s=createMatchState(host,guest);applyMove(s,'host',0,0);check(s.board[0]===null&&s.hands.host.length===5,'État original modifié')});
 test('9 coups : partie terminée et score calculé',()=>{let s=createMatchState(host,guest);for(let i=0;i<9;i++)s=applyMove(s,s.turn,0,i).state;check(s.finished&&s.moves===9&&s.turn===null,'Fin incorrecte');check(['host','guest','draw'].includes(s.winner),'Vainqueur incorrect');rejects(()=>applyMove(s,'host',0,0))});
 test('Decks et règles invalides refusés',()=>{rejects(()=>createMatchState(host.slice(1),guest));rejects(()=>createMatchState(host,guest,'plus-open'));rejects(()=>createMatchState([...host.slice(0,4),c('bad',[11,1,1,1])],guest))});
+
+test('Capture vers la gauche : gauche contre droite',()=>{
+  let s=createMatchState(host,guest);
+  s=applyMove(s,'host',0,2).state;
+  s=applyMove(s,'guest',0,1).state;
+  s=applyMove(s,'host',0,0).state;
+  check(s.board[1].owner==='host','La carte de droite doit être capturée');
+});
+test('Capture vers le bas : bas contre haut',()=>{
+  let s=createMatchState(host,guest);
+  s=applyMove(s,'host',0,0).state;
+  s=applyMove(s,'guest',0,4).state;
+  s=applyMove(s,'host',0,1).state;
+  check(s.board[4].owner==='host','La carte du bas doit être capturée');
+});
+test('Aucune capture si les valeurs sont égales',()=>{
+  const equal=Array.from({length:5},(_,i)=>c('eq'+i,[5,5,5,5]));
+  let s=createMatchState(equal,equal);
+  s=applyMove(s,'host',0,0).state;
+  s=applyMove(s,'guest',0,1).state;
+  check(s.board[0].owner==='host','Une égalité ne doit pas capturer');
+});
+test('Un index de carte hors limites est refusé',()=>{
+  const s=createMatchState(host,guest);
+  rejects(()=>applyMove(s,'host',5,0));
+  rejects(()=>applyMove(s,'host',-1,0));
+});
 const output=document.getElementById('results');
 if(output){output.replaceChildren();for(const t of tests){const li=document.createElement('li');li.textContent=(t.ok?'✓ ':'✗ ')+t.name+(t.error?' — '+t.error:'');li.style.color=t.ok?'#b7efb3':'#ffadad';output.append(li)}document.getElementById('summary').textContent=tests.filter(t=>t.ok).length+' / '+tests.length+' tests réussis';}
 export {tests};
