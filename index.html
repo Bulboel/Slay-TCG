@@ -155,7 +155,7 @@
   <div class="panel-card">
     <div class="collection-head"><h2>Collection</h2><span class="collection-counter" id="collectionCounter">7 / 12 cartes</span></div>
     <p>Le registre des cartes découvertes au fil de l’aventure. Les variantes alternatives sont conservées avec leur carte.</p>
-    <div class="catalog-sort-tools"><label>Rechercher <input id="collectionSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="collectionSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option></select></label></div><div class="collection-grid" id="collectionGrid"></div>
+    <div class="catalog-sort-tools"><label>Rechercher <input id="collectionSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="collectionSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option><option value="element-desc">Élément Z → A</option><option value="quantity">Quantité possédée (décroissante)</option></select></label></div><div class="collection-grid" id="collectionGrid"></div>
     <div class="panel-actions"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="collectionDecksBtn">Construire un deck</button></div>
   </div>
 </section>
@@ -177,7 +177,7 @@
     <p>Créez plusieurs decks de cinq cartes. Ils sont enregistrés automatiquement sur cet appareil.</p>
     <div class="deck-tools"><select id="deckSelect" aria-label="Deck actif"></select><input id="deckName" maxlength="28" aria-label="Nom du deck"><button class="small-btn" id="newDeckBtn">Nouveau</button><button class="small-btn danger" id="deleteDeckBtn">Supprimer</button></div>
     <div class="deck-count" id="deckCount">0 / 5 cartes</div>
-    <div class="catalog-sort-tools"><label>Rechercher <input id="deckSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="deckSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option></select></label></div><div class="deck-grid" id="deckGrid"></div>
+    <div class="catalog-sort-tools"><label>Rechercher <input id="deckSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="deckSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option><option value="element-desc">Élément Z → A</option><option value="quantity">Quantité possédée (décroissante)</option></select></label></div><div class="deck-grid" id="deckGrid"></div>
     <div class="panel-actions"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="deckPlayBtn">Jouer avec ce deck</button></div>
   </div>
 </section>
@@ -708,10 +708,11 @@ function sortedCards(items,sort='number',query=''){
  const text=String(query||'').trim().toLocaleLowerCase('fr');
  const filtered=items.filter(c=>!text||[c.name,c.number||'',rarityLabels[c.rarity]||c.rarity,elements[c.element]?.name||'Sans élément'].join(' ').toLocaleLowerCase('fr').includes(text));
  const descending=sort.endsWith('-desc'),field=sort.replace(/-desc$/,'');
- const number=c=>Number(String(c.number||'').replace(/[^0-9]/g,''))||Number(String(c.id||'').replace(/[^0-9]/g,''))||0;
+ const number=c=>Number(String(c.number??'').replace(/[^0-9]/g,''))||Number(String(c.id||'').replace(/[^0-9]/g,''))||0;
  return filtered.sort((a,b)=>{
   let diff=0;
-  if(field==='name')diff=a.name.localeCompare(b.name,'fr');
+  if(field==='quantity')diff=(typeof ownedCopies==='function'?ownedCopies(b.id)-ownedCopies(a.id):0);
+  else if(field==='name')diff=a.name.localeCompare(b.name,'fr');
   else if(field==='rarity')diff=(raritySortOrder[a.rarity]??99)-(raritySortOrder[b.rarity]??99);
   else if(field==='element')diff=(elements[a.element]?.name||'').localeCompare(elements[b.element]?.name||'','fr');
   else diff=number(a)-number(b);
