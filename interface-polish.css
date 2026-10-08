@@ -787,7 +787,7 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  background:transparent!important;
 }
 #gameApp #board[data-theme="treasure"] .cell > .card{
- width:71.4%!important;
+ width:75%!important;
  height:auto!important;
  block-size:auto!important;
  aspect-ratio:5/7!important;
