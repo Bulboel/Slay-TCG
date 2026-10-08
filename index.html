@@ -792,11 +792,11 @@ function renderCollection(){
    const owned=count>0,item=document.createElement('article');
    item.dataset.cardId=card.id;item.dataset.finish=finish;
    item.className=`collection-item collection-finish-${finish} ${owned?'':'locked'}`;
-   const label=finish==='foil'?'✦ Foil':'Normale';
+   const label=finish==='foil'?'✦ Foil':'';
    item.innerHTML=owned?
-    `${previewMarkup({...card,foil:finish==='foil'})}<span class="collection-ownership"><span class="collection-copy-count">×${count}</span><span class="collection-finish-label">${label}</span></span><span class="rarity-badge ${rarity}">${rarityLabels[rarity]}</span><span class="collection-kind">${card.name}</span>`:
-    `<span class="card card-back back-${settings.back}"></span><span class="locked-name">Carte à découvrir</span><span class="rarity-badge ${rarity}">${rarityLabels[rarity]}</span><span class="collection-finish-label">${label}</span>`;
-   if(owned){item.tabIndex=0;item.setAttribute('aria-label',`${card.name}, ${label}, ${count} exemplaire(s)`);const zoom=()=>openCardZoom({...card,foil:finish==='foil'});item.onclick=zoom;item.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();zoom()}}}
+    `${previewMarkup({...card,foil:finish==='foil',mastery:masteryTier(count)})}<span class="collection-ownership"><span class="collection-copy-count">×${count}</span>${label?`<span class="collection-finish-label">${label}</span>`:''}</span><span class="rarity-badge ${rarity}">${rarityLabels[rarity]}</span><span class="collection-kind">${card.name}</span>`:
+    `<span class="card card-back back-${settings.back}"></span><span class="locked-name">Carte à découvrir</span><span class="rarity-badge ${rarity}">${rarityLabels[rarity]}</span>${label?`<span class="collection-finish-label">${label}</span>`:''}`;
+   if(owned){item.tabIndex=0;item.setAttribute('aria-label',`${card.name}, ${label}, ${count} exemplaire(s)`);const zoom=()=>openCardZoom({...card,foil:finish==='foil',mastery:masteryTier(count)});item.onclick=zoom;item.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();zoom()}}}
    grid.append(item);
   }
  }
