@@ -18,6 +18,7 @@ panel.innerHTML = `
     <p id="triadeOnlineDeckCards"></p>
     <button type="button" class="menu-btn secondary" id="triadeOnlineRefreshDecks">Actualiser mes decks</button>
   </div>
+  <button type="button" class="menu-btn" id="triadeOnlineCustomDuel">⚔ Jouer avec mes decks (test)</button>
   <div class="slay-online-controls">
     <button type="button" class="menu-btn" id="slayOnlineCreate">Créer un duel en ligne</button>
     <label for="slayOnlineCode">Code d'invitation (6 caractères)</label>
@@ -81,6 +82,15 @@ function refreshDeckPreview() {
 el('triadeOnlineDeckSelect').addEventListener('change', refreshDeckPreview);
 el('triadeOnlineRefreshDecks').addEventListener('click', refreshDeckPreview);
 refreshDeckPreview();
+el('triadeOnlineCustomDuel').addEventListener('click', () => {
+  const snapshot = window.triadeOnlineDeckPreview?.();
+  if (!snapshot?.decks?.length) {
+    status('Prépare d’abord un deck valide dans « Mes decks ».');
+    return;
+  }
+  localStorage.setItem('triade-online-deck-snapshot', JSON.stringify(snapshot.decks));
+  window.open('online/custom-duel.html', '_blank', 'noopener');
+});
 let roomId = null;
 let channel = null;
 let poller = null;
