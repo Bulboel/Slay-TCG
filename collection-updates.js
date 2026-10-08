@@ -82,7 +82,7 @@ function generateBooster(cards, state, rng = Math.random, setId = BOOSTER_SET) {
     for(const card of fourthDivines){ticket-=card.divineWeight||1;if(ticket<0){divine=card;break}}
     pulls.push(divine);
   } else {
-    pulls.push(pick(fourth < .05 ? rares : fourth < .30 ? rares : uncommons));
+    pulls.push(pick(fourth < .30 ? rares : uncommons));
   }
   const foil = rng(), parallels = of('parallel');
   const needsParallel = pityProgress(state,setId).opened >= 199 && !parallels.some(c => state.counts[c.id] > 0);
