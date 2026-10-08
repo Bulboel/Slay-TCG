@@ -31,7 +31,7 @@ function decorateMemoryArtwork(card) {
   const holder = $('#memoryArtwork'); holder.innerHTML = collectible ? cardDecoration(collectible) : '';
 }
 function initCollectionPolish() {
-  const note=document.createElement('p');note.className='mastery-note';note.textContent='10 exemplaires de la même illustration : halo doré. 20 : halo diamant scintillant. Les exemplaires foil comptent aussi. Retrouvez ces halos dans la collection et en vue agrandie ; ils ne changent pas les stats.';$('#collectionGrid').before(note);
+  const note=document.createElement('p');note.className='mastery-note';note.textContent='10 exemplaires de la même illustration : halo doré. 20 : halo diamant scintillant. Les exemplaires normaux et foil ont chacun leur propre compteur pour débloquer ces halos. Retrouvez ces halos dans la collection et en vue agrandie ; ils ne changent pas les stats.';$('#collectionGrid').before(note);
   document.querySelector('.sigil').innerHTML='<img src="assets/icons/hackenia-192.png" alt="H d’Hackénia">';
   renderCollection();renderDeckBuilder();
   initTutorial();
