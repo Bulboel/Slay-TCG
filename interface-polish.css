@@ -803,3 +803,12 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #gameApp #playerHand .card{box-sizing:border-box!important;width:min(92px,calc((100vw - 18px)/5))!important;max-width:calc((100vw - 18px)/5)!important;height:auto!important;aspect-ratio:5/7!important;flex:0 0 auto!important}
  #gameApp #playerHand .card+.card{margin-left:0!important}
 }
+
+/* Mobile: board artwork is square and must never be stretched to a short grid row. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp main{grid-template-rows:32px auto 32px 0 auto!important;align-content:start!important}
+ #gameApp .board-wrap{width:min(calc(100vw - 16px),100%)!important;height:auto!important;aspect-ratio:1/1!important;box-sizing:border-box!important;min-height:0!important}
+ #gameApp #board{width:100%!important;height:100%!important;aspect-ratio:1/1!important;box-sizing:border-box!important;min-height:0!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;background-size:100% 100%!important}
+ #gameApp #playerHand{width:100%!important;max-width:100%!important;box-sizing:border-box!important;overflow:visible!important}
+ #gameApp #playerHand .card{width:min(92px,calc((100vw - 20px)/5))!important;max-width:calc((100vw - 20px)/5)!important;height:auto!important;aspect-ratio:5/7!important}
+}
