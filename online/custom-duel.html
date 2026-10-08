@@ -112,6 +112,65 @@ body.duel-active #onlineBoardWrap{border-radius:34px}
 #onlineMemoryPile.available{animation:memoryPulse 1.6s ease-in-out infinite}
 @keyframes memoryPulse{50%{filter:drop-shadow(0 0 16px #5ba27a)}}
 body.duel-active .online-player-head .memory-orbs{display:inline-flex;gap:7px}
+
+/* Arena layout v2: follow CURRENT main (2026-10) rather than legacy mockup. */
+body.duel-active{background:linear-gradient(180deg,#e6d4a5,#f3e3b6);color:#382718}
+body.duel-active #gamePanel{grid-template-columns:minmax(140px,200px) minmax(0,700px) minmax(140px,200px);gap:14px;align-items:start}
+body.duel-active #onlineBoardWrap{background:linear-gradient(135deg,#c7a861,#8c5e27);padding:9px;border:3px solid #9a7b39;border-radius:19px;box-shadow:0 7px 24px #2e231a66}
+body.duel-active #onlineBoardWrap:before,body.duel-active #onlineBoardWrap:after{content:none}
+body.duel-active #board{background:linear-gradient(150deg,#123c36,#0d5a4c 55%,#174b40);border:2px solid #bda15e;border-radius:12px;gap:4px;padding:5px;box-shadow:inset 0 0 16px #001c1b88}
+body.duel-active #board .cell{border:2px solid #719a87;border-radius:9px;background:linear-gradient(140deg,#17483f,#236c5c 60%,#155044);box-shadow:inset 0 0 20px #102f2d55;color:#9ebca1}
+body.duel-active #board .cell:not(:disabled):hover{background:#2c7968;border-color:#b3d4b0}
+body.duel-active #board .cell:empty:after{content:'✦';color:#9ab88d99}
+body.duel-active #onlineScore{background:#4d3427;color:#f6ebcb;border:2px solid #bfa16a;border-radius:20px;padding:5px 17px}
+body.duel-active #onlineMemoryZone{width:100%;padding:9px 10px;border:1px solid #d0b575;border-radius:13px;background:linear-gradient(135deg,#fff3cd,#d9bc80);min-height:100px}
+body.duel-active #onlineMemoryPile{flex:none}
+body.duel-active #onlineMemoryPile .card-back{background:#071d2d url('../assets/card-back-official.webp') center/cover no-repeat;border:2px solid #d7b661;box-shadow:0 6px 14px #0007}
+body.duel-active .online-side .hand button{width:118px;margin-bottom:-58px}
+body.duel-active #onlineHistory{background:linear-gradient(145deg,#f4e2b7,#cda96c);border:2px solid #8c693b}
+@media(min-width:851px){
+ body.duel-active #gamePanel{max-width:1220px}
+ body.duel-active .online-arena{gap:10px}
+ body.duel-active #onlineMemoryZone{order:3}
+ body.duel-active #onlineBoardWrap{order:2}
+ body.duel-active #onlineScore{order:1}
+}
+@media(max-width:850px){
+ body.duel-active{padding:0;margin:0}
+ body.duel-active #onlineOriginalHeader{position:sticky;top:0;z-index:50;margin:0;background:#0e3434}
+ body.duel-active main{width:100%;max-width:100%;padding:0 3px}
+ body.duel-active #duelExit{display:none}
+ body.duel-active #status{position:relative;margin:2px auto;font-size:11px;padding:2px;min-height:16px}
+ body.duel-active #gamePanel,body.duel-active #gamePanel.guest-view{display:flex!important;flex-direction:column;align-items:stretch;gap:3px;width:100%;max-width:100%}
+ body.duel-active #gamePanel[hidden]{display:none!important}
+ body.duel-active #gamePanel #hostSide,body.duel-active #gamePanel #guestSide{display:contents}
+ body.duel-active #gamePanel .online-arena{display:contents}
+ body.duel-active #onlineScore{order:1;align-self:center;padding:3px 13px;min-height:30px;margin:0}
+ body.duel-active #onlineBoardWrap{order:2!important;width:100%;max-width:100%;padding:3px;margin:0!important;border-radius:12px;transform:none}
+ body.duel-active #board{width:100%;aspect-ratio:1;gap:2px;padding:3px}
+ body.duel-active #board .cell{border-radius:6px;border-width:1px}
+ body.duel-active #onlineMemoryZone{order:3!important;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;min-height:75px;width:100%;margin:2px 0;padding:5px;border-radius:10px}
+ body.duel-active #onlineMemoryZone .memory-title{flex:0 0 30%;text-align:center;font-size:11px}
+ body.duel-active #onlineMemoryPile{width:100px;height:64px;transform:scale(.78);margin:-8px}
+ body.duel-active #onlineMemoryHint{flex:1 1 100%;min-height:0;font-size:10px}
+ body.duel-active .online-player-head{order:4!important;justify-content:center;min-height:24px;gap:5px;font-size:11px}
+ body.duel-active #hostSide .online-player-head{order:4!important}
+ body.duel-active #guestSide .online-player-head{order:0!important}
+ body.duel-active #gamePanel .hand{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;justify-content:space-evenly;align-items:flex-start;width:100%;gap:0;padding:0 2px}
+ body.duel-active #gamePanel .hand button{width:20%;max-width:20%;min-width:0;margin:0!important;padding:1px}
+ body.duel-active #gamePanel .hand button .card{width:100%;height:auto;aspect-ratio:2.5/3.5;border-radius:5px;border-width:2px}
+ body.duel-active #hostHand,body.duel-active #guestHand{order:5!important}
+ body.duel-active #hostSide .label,body.duel-active #guestSide .label{display:none}
+ body.duel-active #onlineHistory{order:7;display:none}
+ body.duel-active #gamePanel .online-player-head .online-player-name{font-size:10px}
+ body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:15px;height:15px}
+ body.duel-active #gamePanel .opponent-hand{display:none!important}
+ body.duel-active #gamePanel .opponent-label{display:none!important}
+ body.duel-active #gamePanel .opponent-hand + *{display:none}
+ body.duel-active #gamePanel .own-hand{display:flex!important;order:6!important}
+ body.duel-active #gamePanel .own-label{order:5!important}
+ body.duel-active #gamePanel .online-player-head:has(+ .label + .own-hand){order:5!important}
+}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><div class="sigil">H</div><div><h1>TRIADE D'HACKÉNIA</h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Triade d’Hackénia — Duel en ligne</h1><p class="note">Choisis ton deck personnel et affronte ton adversaire. Règles choisies par le créateur et acceptées par l'invité.</p><section id="rulePanel" hidden><h2>Règles du duel</h2><p id="ruleSummary" class="note"></p><div id="hostRules" hidden><label for="ruleSelect">Choix du créateur</label><select id="ruleSelect"><option value="basic-open">Clair</option><option value="basic-dark">Obscur</option><option value="same-open">Identique clair</option><option value="same-dark">Identique obscur</option><option value="plus-open">Addition clair</option><option value="plus-dark">Addition obscur</option><option value="elements-open">Éléments actifs clair</option><option value="elements-dark">Éléments actifs obscur</option></select><button id="proposeRule">Proposer ces règles</button></div><button id="acceptRule" hidden>✓ Accepter les règles proposées</button><p class="note">Le créateur choisit. L'invité doit accepter la proposition. Tout changement annule l'accord précédent.</p></section><section id="deckPanel"><div class="label">Mon deck personnel</div><select id="myDeck" style="width:100%;padding:10px;margin-bottom:8px"></select><button id="submitDeck">Valider mon deck pour ce salon</button><p id="deckInfo" class="note"></p></section><section id="roomPanel"><div class="actions"><button id="create">Créer une salle</button><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code</button><button id="start" hidden>Démarrer le duel</button></div></section><div id="status" role="status"></div><nav id="duelExit" hidden aria-label="Navigation du duel"><a href="../index.html" id="duelExitLink">← Retour au jeu</a></nav><section id="gamePanel" hidden>
 <div class="online-side" id="hostSide"><div class="online-player-head"><span class="online-player-name">JOUEUR 1</span><span class="online-memory-orbs memory-orbs" aria-label="Deux cristaux de Souvenirs inactifs"><span class="memory-orb empty"></span><span class="memory-orb empty"></span></span></div><div class="label">Main du joueur vert</div><div class="hand" id="hostHand"></div></div>
 <div class="online-arena"><div id="onlineScore"><b id="onlineHostScore">0</b><span id="onlineTurnLabel">TOUR DU JOUEUR 1</span><b id="onlineGuestScore">0</b></div><div id="onlineMemoryZone"><div class="memory-title"><span>Pioche</span> <strong>souvenirs</strong></div><button class="memory-pile" id="onlineMemoryPile" disabled title="Les Souvenirs seront activés après validation des mécaniques" aria-label="Pioche Souvenirs bientôt disponible"><span class="memory-draw-arrow" aria-hidden="true"><svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#b99b54" stroke-width="6" stroke-linecap="round"/><path d="M7 16C16 7 26 25 40 16" fill="none" stroke="#2b7652" stroke-width="3" stroke-linecap="round"/><path d="M38 7L57 16L38 25L42 16Z" fill="#327a55" stroke="#d6b96e" stroke-width="2" stroke-linejoin="round"/><path d="M4 10L8 16L4 22L0 16Z" fill="#548b5b" stroke="#c7aa64" stroke-width="1"/></svg></span><span class="card card-back back-official"></span></button><div id="onlineMemoryHint" role="status" aria-live="polite"></div><div id="onlineMemoryActions" hidden><button id="onlineMemorySkip">Terminer sans piocher</button><button id="onlineMemoryResolve" hidden>Résoudre le Souvenir</button><button id="onlineJokerKeep" hidden>Conserver mon Joker</button><button id="onlineJokerCancel" hidden>Annuler avec mon Joker</button><button id="onlineJokerCopy" hidden>Dupliquer avec mon Joker</button></div></div><div id="onlineBoardWrap"><div id="board"></div></div></div>
