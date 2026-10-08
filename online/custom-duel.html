@@ -61,7 +61,7 @@ const {data:deckRows,error:deckError}=await supabase.from('slay_custom_duel_deck
 $('deckInfo').textContent='Decks validés : '+(decks.host.length?'vert ✓':'vert en attente')+' · '+(decks.guest.length?'rouge ✓':'rouge en attente');
 const {data,error}=await supabase.from('slay_custom_duel_games').select('*').eq('room_id',roomId).maybeSingle();if(error){if(error.code==='42P01'){say('Exécute d’abord le script SQL de synchronisation dans Supabase.');return}throw error}game=data;$('start').hidden=!!game||!room.guest_id||decks.host.length!==5||decks.guest.length!==5||!accepted; $('start').disabled=$('start').hidden;if(game)render();else if(room.guest_id&&decks.host.length===5&&decks.guest.length===5&&accepted)say('Les deux decks et les règles sont validés ! Démarre le duel.');else if(!accepted)say('En attente de l’acceptation des règles par l’invité.');else say('En attente des deux decks : chaque joueur doit cliquer sur « Valider mon deck ».');}
 function render(){const stateKey=JSON.stringify({roomId,role,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected});
-if(stateKey===lastRenderedState)return;
+if(onlineDrag)return;if(stateKey===lastRenderedState)return;
 lastRenderedState=stateKey;
 $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==null||game.move_count===9;if(ended&&!resultShownFor.has(roomId)){resultShownFor.add(roomId);if(game.winner!=='draw')showResult(game.winner===role)}const hiddenOpponent=(room.custom_rule||'basic-open').endsWith('-dark');say(ended?(game.winner==='draw'?'Égalité !':(game.winner===role?'Victoire !':'Défaite !')):(game.turn===role?'À toi de jouer !':'Tour de ton adversaire…'));
 $('status').classList.toggle('game-result',ended);const board=$('board');const oldBoard=previousRoomId===roomId?previousBoard:null;board.replaceChildren();game.board.forEach((entry,pos)=>{const btn=document.createElement('button');btn.className='cell';btn.dataset.position=pos;btn.disabled=!!entry||ended||game.turn!==role;btn.setAttribute('aria-label','Case '+(pos+1));if(entry){const item=decks[entry.played_by][entry.hand_index];const face=card(item[0],item[1],entry.owner,item[2]);if(oldBoard&&oldBoard[pos]===null){btn.classList.add('placed')}else if(oldBoard&&oldBoard[pos]){try{const prior=JSON.parse(oldBoard[pos]);if(prior.owner!==entry.owner)btn.classList.add('captured')}catch{}}btn.append(face)}else{btn.textContent='✦';btn.onclick=()=>move(pos)}board.append(btn)});
@@ -71,48 +71,53 @@ for(const player of ['host','guest']){const hand=$(player+'Hand');hand.replaceCh
 // Déplacement tactile/souris : aperçu agrandi et dépôt sur une case libre.
 // Le serveur reste seul responsable de la validation du coup.
 let onlineDrag=null;
+let suppressOnlineClickUntil=0;
 function clearOnlineDrag(){
- if(!onlineDrag)return;
- onlineDrag.preview?.remove();
+ const d=onlineDrag;
+ if(!d)return;
+ d.preview?.remove();
  document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
  onlineDrag=null;
+}
+function onlineDragTarget(x,y){
+ const el=document.elementFromPoint(x,y)?.closest('#board .cell');
+ return el&&!el.disabled?el:null;
 }
 function bindOnlineDrag(button,handIndex){
  button.addEventListener('pointerdown',e=>{
   if(e.button!==0||button.disabled||game?.turn!==role)return;
-  const startX=e.clientX,startY=e.clientY;
-  onlineDrag={pointerId:e.pointerId,handIndex,startX,startY,preview:null};
-  button.setPointerCapture?.(e.pointerId);
- });
- button.addEventListener('pointermove',e=>{
-  const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
-  if(!d.preview&&Math.hypot(e.clientX-d.startX,e.clientY-d.startY)<10)return;
-  if(!d.preview){
-   selected=handIndex;
-   d.preview=button.querySelector('.card').cloneNode(true);
-   d.preview.classList.add('online-drag-preview');
-   document.body.append(d.preview);
-  }
-  d.preview.style.left=e.clientX+'px';d.preview.style.top=e.clientY+'px';
-  document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
-  const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('#board .cell');
-  if(target&&!target.disabled)target.classList.add('drop-target');
- });
- button.addEventListener('pointerup',e=>{
-  const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
-  const dragged=!!d.preview;
-  const target=dragged?document.elementFromPoint(e.clientX,e.clientY)?.closest('#board .cell'):null;
   clearOnlineDrag();
-  if(dragged){
-   button.dataset.suppressClick='1';
-   setTimeout(()=>delete button.dataset.suppressClick,100);
-   if(target&&!target.disabled)move(Number(target.dataset.position));
-   else render();
-  }
+  onlineDrag={pointerId:e.pointerId,handIndex,startX:e.clientX,startY:e.clientY,preview:null,source:button};
  });
- button.addEventListener('pointercancel',clearOnlineDrag);
- button.addEventListener('click',e=>{if(button.dataset.suppressClick==='1'){e.preventDefault();e.stopImmediatePropagation()}},true);
+ button.addEventListener('click',e=>{
+  if(Date.now()<suppressOnlineClickUntil){e.preventDefault();e.stopImmediatePropagation()}
+ },true);
 }
+document.addEventListener('pointermove',e=>{
+ const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+ if(!d.preview&&Math.hypot(e.clientX-d.startX,e.clientY-d.startY)<10)return;
+ if(!d.preview){
+  selected=d.handIndex;
+  d.preview=d.source.querySelector('.card').cloneNode(true);
+  d.preview.classList.add('online-drag-preview');
+  document.body.append(d.preview);
+ }
+ d.preview.style.left=e.clientX+'px';d.preview.style.top=e.clientY+'px';
+ document.querySelectorAll('#board .cell.drop-target').forEach(el=>el.classList.remove('drop-target'));
+ onlineDragTarget(e.clientX,e.clientY)?.classList.add('drop-target');
+});
+document.addEventListener('pointerup',e=>{
+ const d=onlineDrag;if(!d||d.pointerId!==e.pointerId)return;
+ const dragged=!!d.preview;
+ const target=dragged?onlineDragTarget(e.clientX,e.clientY):null;
+ clearOnlineDrag();
+ if(dragged){
+  suppressOnlineClickUntil=Date.now()+350;
+  if(target)move(Number(target.dataset.position));
+  else render();
+ }
+});
+document.addEventListener('pointercancel',e=>{if(onlineDrag?.pointerId===e.pointerId)clearOnlineDrag()});
 
 async function move(pos){if(selected===null){say('Choisis une carte avant de sélectionner une case.');return}if(working)return;working=true;try{const {error}=await supabase.rpc('slay_custom_move',{p_room:roomId,p_hand_index:selected,p_position:pos});if(error)throw error;selected=null;await load()}catch(e){say('Coup refusé : '+e.message)}finally{working=false}}
 async function action(fn){if(working)return;working=true;persistentError=null;try{await fn()}catch(e){const msg=e.message||String(e);persistentError='Erreur : '+msg+(msg.toLowerCase().includes('expir')||msg.toLowerCase().includes('introuvable')?' — Créez une nouvelle salle depuis cet écran sur les deux appareils.':'');$('status').textContent=persistentError}finally{working=false}}
@@ -126,5 +131,5 @@ $('closeResult').onclick=()=>{$('onlineResult').hidden=true};
 $('copy').onclick=async()=>{try{await navigator.clipboard.writeText(room.room_code);say('Code '+room.room_code+' copié !')}catch{say('Code à copier : '+room.room_code)}};
 $('code').oninput=()=>{$('code').value=$('code').value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)};
 if(new URLSearchParams(location.search).get('create')==='1'){$('create').click();}
-setInterval(()=>{if(roomId&&!working)load().catch(e=>say('Synchronisation : '+e.message))},2500);
+setInterval(()=>{if(roomId&&!working&&!onlineDrag)load().catch(e=>say('Synchronisation : '+e.message))},2500);
 </script></body></html>
