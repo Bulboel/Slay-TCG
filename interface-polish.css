@@ -745,3 +745,15 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  max-height:none!important;
  margin:0!important;
 }
+
+/* Prism ornament unlocked by five online victories. */
+.score-ornament-preview.rainbow{background:url('assets/hexagone_arc_en_ciel_anime.svg') center/contain no-repeat}
+#gameApp .score[data-ornament="rainbow"] #pScore{
+ position:relative;isolation:isolate;display:inline-grid;place-items:center;
+ width:42px;height:42px;flex:0 0 42px;margin:-12px -7px;
+ background:url('assets/hexagone_arc_en_ciel_anime.svg') center/contain no-repeat!important;
+ text-shadow:0 1px 3px #000;color:#fff6ff;overflow:visible;
+}
+@media(max-width:650px){
+ #gameApp .score[data-ornament="rainbow"] #pScore{width:30px;height:30px;flex-basis:30px;margin:-5px -4px;font-size:15px}
+}
