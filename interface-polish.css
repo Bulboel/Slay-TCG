@@ -622,4 +622,6 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .grand-triade-checklist li.done .challenge-task-mark{color:#8ff0a7}
 
 /* Exclusive Jordan reward card back. */
-.card.card-back.back-jordan-cool{background:#102b42 url('assets/backs/jordan-cool.svg') center/100% 100% no-repeat!important}
+/* Jordan's reward art; test preview uses the same back on the hidden AI hand only. */
+.card.card-back.back-jordan-cool,#gameApp.jordan-preview #aiHand .card.card-back{background:#102b42 url('assets/jordan%20sp%C3%A9cial.png') center/100% 100% no-repeat!important;border:0!important;box-shadow:0 8px 18px #0006!important}
+.card.card-back.back-jordan-cool::before,.card.card-back.back-jordan-cool::after,#gameApp.jordan-preview #aiHand .card.card-back::before,#gameApp.jordan-preview #aiHand .card.card-back::after{content:none!important;display:none!important}
