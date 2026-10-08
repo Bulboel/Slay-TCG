@@ -258,7 +258,7 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
   <div class="panel-card">
     <div class="collection-head"><h2>Collection</h2><span class="collection-counter" id="collectionCounter">7 / 12 cartes</span></div>
     <p>Le registre des cartes découvertes au fil de l’aventure. Les variantes alternatives sont conservées avec leur carte.</p>
-    <div class="catalog-sort-tools"><label>Rechercher <input id="collectionSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="collectionSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option><option value="element-desc">Élément Z → A</option><option value="quantity">Quantité possédée (décroissante)</option></select></label></div><details class="element-wheel-toggle"><summary>Afficher la roue des éléments <span class="wheel-toggle-hint">Aide-mémoire</span></summary><figure class="element-wheel-art"><img src="assets/roue-elements-hackenia.png" alt="Roue des éléments : Eau domine Feu, Feu domine Glace, Glace domine Vent, Vent domine Terre, Terre domine Foudre, Foudre domine Eau. Le symbole Multiélément figure au centre." loading="lazy" decoding="async"></figure></details><div class="collection-grid" id="collectionGrid"></div>
+    <div class="catalog-sort-tools"><label>Rechercher <input id="collectionSearch" type="search" placeholder="Nom, numéro, rareté ou élément"></label><label>Trier <select id="collectionSort"><option value="number">Numéro croissant</option><option value="number-desc">Numéro décroissant</option><option value="name">Nom A → Z</option><option value="name-desc">Nom Z → A</option><option value="rarity">Rareté croissante</option><option value="rarity-desc">Rareté décroissante</option><option value="element">Élément A → Z</option><option value="element-desc">Élément Z → A</option><option value="quantity">Quantité possédée (décroissante)</option></select></label></div><details class="element-wheel-toggle"><summary>Afficher la roue des éléments <span class="wheel-toggle-hint">Aide-mémoire</span></summary><figure class="element-wheel-art"><img src="assets/roue-elements-hackenia.png" alt="Roue des éléments : Eau domine Feu, Feu domine Glace, Glace domine Vent, Vent domine Terre, Terre domine Foudre, Foudre domine Eau. Le symbole Multiélément figure au centre." loading="lazy" decoding="async"></figure></details><div class="collection-tabs" role="group" aria-label="Catégories de la collection"><button type="button" class="collection-tab active" data-collection-tab="cards" aria-pressed="true">Cartes du set</button><button type="button" class="collection-tab" data-collection-tab="memories" aria-pressed="false">Souvenirs</button></div><div class="collection-grid" id="collectionGrid"></div>
     <div class="panel-actions"><button class="menu-btn secondary" data-close-panel>Retour</button><button class="menu-btn" id="collectionDecksBtn">Construire un deck</button></div>
   </div>
 </section>
@@ -377,7 +377,7 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
 <script src="assets/data/card-numbers.js"></script>
 <script src="collection-polish.js?v=20261006-finale9"></script>
 <script src="booster-presentation.js"></script>
-<script src="game-upgrades.js?v=20261008-treasure-fix2"></script>
+<script src="game-upgrades.js?v=20261008-memories-treasure-fix3"></script>
 <script src="duel-touch.js?v=20261006-finale9"></script>
 <script src="tutorial-duel.js"></script>
 <script src="collection-updates.js?v=20261006-results1"></script>
@@ -858,10 +858,12 @@ function sortedCards(items,sort='number',query=''){
  });
 }
 function ownedCopies(id){return collection.counts[id]||0}
+document.querySelectorAll('[data-collection-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-collection-tab]').forEach(b=>{const active=b===btn;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});renderCollection()}));
 function renderCollection(){
  const grid=$('#collectionGrid');grid.innerHTML='';
  const sort=$('#collectionSort')?.value||'number',query=$('#collectionSearch')?.value||'';
- const cards=sortedCards(catalog,sort,query);
+ const selectedCollectionTab=document.querySelector('.collection-tab.active')?.dataset.collectionTab||'cards';
+ const cards=sortedCards(catalog.filter(c=>selectedCollectionTab==='memories'?c.kind==='memory':c.kind!=='memory'),sort,query);
  for(const card of cards){
   const copies=ownedCopies(card.id),foils=Math.min(copies,Math.max(0,collection.foils?.[card.id]||0)),normal=Math.max(0,copies-foils),rarity=card.rarity;
   // Two collectible finishes share the original card ID and official set number.
@@ -880,8 +882,9 @@ function renderCollection(){
    grid.append(item);
   }
  }
- const discovered=catalog.filter(card=>ownedCopies(card.id)>0).length,total=Object.values(collection.counts).reduce((sum,n)=>sum+n,0);
- $('#collectionCounter').textContent=`${discovered} / ${catalog.length} illustrations • ${total} cartes`;
+ const category=catalog.filter(c=>selectedCollectionTab==='memories'?c.kind==='memory':c.kind!=='memory');
+ const discovered=category.filter(card=>ownedCopies(card.id)>0).length,total=category.reduce((sum,c)=>sum+ownedCopies(c.id),0);
+ $('#collectionCounter').textContent=`${discovered} / ${category.length} illustrations • ${total} ${selectedCollectionTab==='memories'?'Souvenirs':'cartes'}`;
  renderMemorySkinOptions();
 }
 function renderMemorySkinOptions(){
@@ -959,7 +962,7 @@ function buildCompleteTestSlot(){
  return {
   version:3,label:'Sauvegarde ultime — tous les défis',updatedAt:now,
   profile:{
-   collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,20])),foils:Object.fromEntries(catalog.map(c=>[c.id,20])),starterBoosters:0},
+   collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,40])),foils:Object.fromEntries(catalog.map(c=>[c.id,20])),starterBoosters:0},
    decks:decks.map(d=>({id:d.id,name:d.name,cards:[...d.cards]})),
    activeDeckId,
    story:{...story},
@@ -969,7 +972,7 @@ function buildCompleteTestSlot(){
  };
 }
 const testParams=new URLSearchParams(location.search);
-if(testParams.get('full-test-save')==='1'||testParams.get('full-test-save')==='2'){
+if(['1','2','3'].includes(testParams.get('full-test-save'))){
  const slot=buildCompleteTestSlot();
  if(confirm('Installer une sauvegarde de TEST complète (20 exemplaires de chaque carte, défis terminés, or illimité) ? Votre sauvegarde actuelle sera téléchargée en sauvegarde de sécurité avant remplacement.')){
   try{
@@ -978,12 +981,15 @@ if(testParams.get('full-test-save')==='1'||testParams.get('full-test-save')==='2
    localStorage.setItem(SAVE_KEY,JSON.stringify(slot));
    saveSlotActive=true;
    loadProfile(slot.profile);
+   // Reapply all collection finishes after legacy progress recovery.
+   collection.counts=Object.fromEntries(catalog.map(c=>[c.id,40]));
+   collection.foils=Object.fromEntries(catalog.map(c=>[c.id,20]));
    // Verify unlocks after importing the profile, including on older local saves.
    const testChallenges=challengeState();
    for(const id of ['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete'])testChallenges[id] ||= {completedAt:Date.now()};
    settings.back='treasure-gold';settings.boardTheme='treasure';settings.scoreOrnament='treasure';
-   applySettings();renderChallenges();
-   writeSaveSlot(null);
+   applySettings();renderChallenges();renderCollection();
+   persistWorkingProgress();writeSaveSlot(null);
    $('#startupScreen').classList.add('hidden');
    $('#gameApp').classList.remove('jordan-preview');
    applyRulePreset('basic-dark');
