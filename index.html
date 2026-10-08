@@ -196,6 +196,14 @@
 #board[data-theme="elements-wheel"] .cell:nth-child(-n + 3){--wheel-y:0%}
 #board[data-theme="elements-wheel"] .cell:nth-child(n + 4):nth-child(-n + 6){--wheel-y:50%}
 #board[data-theme="elements-wheel"] .cell:nth-child(n + 7){--wheel-y:100%}
+
+/* Prevent the entire duel from shifting horizontally as the history and
+   turn controls grow/shrink when a card is played. Reserve scrollbar width. */
+html{scrollbar-gutter:stable;overflow-y:scroll}
+@media(min-width:901px){
+ #gameApp .history-log{min-height:164px;overflow-y:auto;overflow-x:hidden}
+ #gameApp .memory-zone{min-height:56px}
+}
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
