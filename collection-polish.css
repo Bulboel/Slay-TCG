@@ -67,3 +67,19 @@
 @keyframes angelRing{0%{opacity:0;transform:scale(.1)}25%{opacity:.7}65%,100%{opacity:0;transform:scale(1.8)}}
 @keyframes angelSpark{0%{opacity:0;transform:translate(0,20px) scale(.2)}30%{opacity:1}100%{opacity:0;transform:translate(var(--spark-x),calc(var(--spark-y) - 140px)) scale(.3)}}
 @media(prefers-reduced-motion:reduce){.booster-angel-stage{display:none}}
+
+
+/* Desktop souvenir draw: match the compact emerald-and-gold mobile treatment. */
+@media(min-width:901px){
+ #gameApp .memory-zone{display:flex;flex-direction:row;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;min-height:56px;padding:7px 12px;border:1px solid #b89a5e;border-radius:16px;background:linear-gradient(125deg,#f7e9c6,#e4c891);box-shadow:inset 0 1px 8px #fff7df}
+ #gameApp .memory-title{display:none}
+ #gameApp #memoryPile{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:164px;height:39px;min-height:39px;padding:8px 13px;border:1px solid #8eaf98;border-radius:9px;background:linear-gradient(155deg,#32685c,#153f40);color:#fff2c8;font:700 12px Georgia,serif;letter-spacing:.015em;box-shadow:0 3px 8px #17352b55,inset 0 1px 0 #ffffff35;perspective:none;transform:none;animation:none}
+ #gameApp #memoryPile .card,#gameApp #memoryPile .memory-draw-arrow,#gameApp #memoryPile::before{display:none!important}
+ #gameApp #memoryPile::after{content:'✦  Pioche souvenirs';position:static;display:inline;transform:none;border:0;background:none;box-shadow:none;opacity:1;color:inherit;font:inherit;white-space:nowrap}
+ #gameApp #memoryPile.available{filter:none;animation:none}
+ #gameApp #memoryPile.available:hover{background:linear-gradient(155deg,#408675,#20574e);box-shadow:0 4px 13px #1a554777,inset 0 1px 0 #ffffff55}
+ #gameApp #memoryPile:not(.available){filter:grayscale(.3);opacity:.7;cursor:default}
+ #gameApp #memoryPassBtn{flex:0 0 auto;min-height:39px;margin:0;padding:7px 13px;border:1px solid #937041;border-radius:9px;background:linear-gradient(#fff1cd,#e6c88e);color:#4c3019;font:700 11px Georgia,serif;box-shadow:0 3px 0 #967042}
+ #gameApp #memoryPassBtn:hover{background:linear-gradient(#fff7dc,#f0d6a5)}
+ #gameApp .memory-hint{flex:0 1 100%;max-width:none;text-align:center;font-size:11px}
+}
