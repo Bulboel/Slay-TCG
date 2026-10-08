@@ -209,14 +209,13 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
    in CSS grid on mobile). Keep the full portrait and center it in each square. */
 #board .cell > .card{width:auto!important;height:98%!important;aspect-ratio:2.5 / 3.5!important;max-width:98%!important;max-height:98%!important;min-width:0!important;min-height:0!important;justify-self:center;align-self:center;object-fit:contain}
 @media(max-width:700px){.side.player .hand .card{width:92px!important}.side.player .hand .card+.card{margin-left:-32px}}
-/* Small mobile board enlargement without stretching card artwork. */
-@media(max-width:700px){.app main{padding-left:2px;padding-right:2px}.arena .board-wrap{width:calc(100vw - 8px);padding:5px;max-width:100%}.arena .board{width:100%;gap:4px;padding:5px}}
+/* Board artwork and playable grid retain their native square proportions. */
 
 </style>
 <link rel="stylesheet" href="collection-updates.css">
 <link rel="stylesheet" href="collection-polish.css">
 <link rel="stylesheet" href="presentation.css">
-<link rel="stylesheet" href="interface-polish.css?v=20261009-mobile-rollback2">
+<link rel="stylesheet" href="interface-polish.css?v=20261009-square-board3">
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
