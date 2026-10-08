@@ -102,6 +102,12 @@
 .board-theme-preview.arcane,#board[data-theme="arcane"] .cell{background-image:radial-gradient(circle at 50% 50%,transparent 0 18%,#e4c98555 19% 20%,transparent 21% 28%,#e4c98555 29% 30%,transparent 31%),repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 43deg,#e4c98555 44deg 45deg),radial-gradient(circle at 50% 50%,#294a53,#102a37 80%)!important;background-position:center!important;background-size:cover!important}
 #board[data-theme="arcane"] .cell{border-color:#c4a46c!important;box-shadow:inset 0 0 16px #0008,0 0 8px #bd9b5b33}
 @media(max-width:420px){.board-theme-options{gap:8px}.board-theme-choice{padding:8px}}
+
+.site-visitor-counter{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:18px auto 5px;padding:11px 15px;max-width:390px;border:1px solid #a17b3b;border-radius:13px;background:linear-gradient(115deg,#fff3d2bd,#c9a366a8);color:#523718;font:700 .88rem Georgia,serif;box-shadow:inset 0 1px 2px #fff8}
+.site-visitor-counter .visitor-symbol{color:#926321;font-size:1.35rem}
+.site-visitor-counter strong{font-size:1.3rem;color:#47301a;font-variant-numeric:tabular-nums}
+.site-visitor-counter small{flex-basis:100%;font:500 .67rem system-ui;color:#785c3c}
+@media(max-width:480px){.site-visitor-counter{margin-top:13px;padding:9px 11px;font-size:.8rem}}
 </style>
   <style>
     .cell .card:not(.card-back){border-width:5px;border-color:color-mix(in srgb,var(--player),white 18%);box-shadow:0 0 0 3px #17351f,0 0 18px 7px color-mix(in srgb,var(--player),transparent 32%),0 10px 22px #0008;cursor:zoom-in}
@@ -176,6 +182,7 @@
       <button class="menu-btn secondary menu-utility" id="menuSaveBtn">Sauvegarder</button>
       <button class="menu-btn secondary menu-utility" id="optionsBtn">Options</button>
     </div>
+    <div class="site-visitor-counter" aria-live="polite" title="Nombre de visites enregistrées depuis l’activation du compteur"><span class="visitor-symbol" aria-hidden="true">✧</span><span>Voyageurs de passage</span><strong id="siteVisitorCount">—</strong><small id="siteVisitorStatus">Compteur en préparation</small></div>
     <div class="menu-footer" aria-hidden="true">✧ &nbsp; CHAQUE CARTE A SON HISTOIRE &nbsp; ✧</div>
   </div>
 </section>
@@ -877,6 +884,34 @@ window.triadeOnlineDeckPreview = () => {
   }));
   return { decks: list, activeDeckId };
 };
+</script>
+
+<script>
+/* Anonymous shared visit counter; no fingerprinting or personal data.
+   Counts one visit per browser tab session, not unique human beings. */
+(async function initSiteVisitorCounter(){
+  const number=document.getElementById('siteVisitorCount');
+  const status=document.getElementById('siteVisitorStatus');
+  if(!number||!status)return;
+  const key='triade-visit-counted-v1';
+  const url='https://uewpcnyewfyicsszqrjj.supabase.co/rest/v1/rpc/triade_site_visit_count';
+  const apikey='sb_publishable_8L3GgKLt_CAqcV5Hb1oO5A_ECIbTu6B';
+  let alreadyCounted=false;
+  try{alreadyCounted=sessionStorage.getItem(key)==='1'}catch{}
+  try{
+    const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','apikey':apikey},body:JSON.stringify({p_increment:!alreadyCounted}),cache:'no-store'});
+    if(!response.ok)throw new Error('Le compteur n’est pas encore activé');
+    const count=await response.json();
+    if(!Number.isSafeInteger(Number(count))||Number(count)<0)throw new Error('Réponse invalide');
+    number.textContent=Number(count).toLocaleString('fr-FR');
+    status.textContent='Visites enregistrées depuis l’activation du compteur';
+    if(!alreadyCounted){try{sessionStorage.setItem(key,'1')}catch{}}
+  }catch(error){
+    number.textContent='—';
+    status.textContent='Statistiques temporairement indisponibles';
+    console.info('Compteur de visites :',error.message);
+  }
+})();
 </script>
 <script type="module" src="online/online-panel.js"></script>
 </body>
