@@ -11,7 +11,7 @@ panel.id = 'slayOnlinePanel';
 panel.className = 'slay-online-panel';
 panel.innerHTML = `
   <h3>⚔ PVP en ligne <small>— laboratoire</small></h3>
-  <p>Crée une salle privée et invite un ami avec un code. Les salons fonctionnent. Sélectionne un deck personnel et ouvre le duel synchronisé. Chaque joueur devra valider son deck avant de lancer la partie.</p>
+  <p>Sur chaque appareil, sélectionne un deck puis ouvre « Jouer avec mes decks (test) ». Créez et rejoignez le salon depuis cet écran uniquement.</p>
   <div class="slay-online-decks">
     <label for="triadeOnlineDeckSelect">Mon deck pour le PVP en ligne</label>
     <select id="triadeOnlineDeckSelect" aria-label="Deck local à prévisualiser"></select>
@@ -19,20 +19,20 @@ panel.innerHTML = `
     <button type="button" class="menu-btn secondary" id="triadeOnlineRefreshDecks">Actualiser mes decks</button>
   </div>
   <button type="button" class="menu-btn" id="triadeOnlineCustomDuel">⚔ Jouer avec mes decks (test)</button>
-  <div class="slay-online-controls">
+  <div class="slay-online-controls" hidden aria-hidden="true">
     <button type="button" class="menu-btn" id="slayOnlineCreate">Créer un duel en ligne</button>
     <label for="slayOnlineCode">Code d'invitation (6 caractères)</label>
     <input id="slayOnlineCode" maxlength="6" placeholder="ABC123" autocomplete="off" aria-label="Code d'invitation">
     <button type="button" class="menu-btn secondary" id="slayOnlineJoin">Rejoindre un duel</button>
   </div>
-  <div id="slayOnlineRoom" hidden>
+  <div id="slayOnlineRoom" hidden aria-hidden="true">
     <strong>Code de la salle : <span id="slayOnlineRoomCode"></span></strong>
     <button type="button" class="menu-btn secondary" id="slayOnlineCopy">📋 Copier le code</button>
     <p id="slayOnlinePlayers"></p>
   </div>
   <p id="slayOnlineStatus" role="status" aria-live="polite">Prêt à créer une salle.</p>
-  <p class="slay-online-warning">⚠ Le bouton « Lancer la partie » du menu PVP principal démarre uniquement un duel local. Pour jouer sur deux appareils, utilise le laboratoire synchronisé ci-dessous.</p>
-  <a class="menu-btn slay-online-test-link" href="online/synced-test.html" target="_blank" rel="noopener">⚔ Ouvrir le duel synchronisé (decks de test)</a>
+  <p class="slay-online-warning">⚠ Pour jouer en ligne avec tes cartes, utilise exclusivement « Jouer avec mes decks (test) » sur les DEUX appareils. Le bouton « Lancer la partie » reste réservé au PVP local.</p>
+
 `;
 card.insertBefore(panel, actions);
 const style = document.createElement('style');
