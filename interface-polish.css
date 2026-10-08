@@ -757,3 +757,17 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 @media(max-width:650px){
  #gameApp .score[data-ornament="rainbow"] #pScore{width:30px;height:30px;flex-basis:30px;margin:-5px -4px;font-size:15px}
 }
+
+/* Keep played cards at their full original size across every board theme. */
+#gameApp #board .cell{padding:0!important;min-width:0;min-height:0}
+#gameApp #board .cell > .card{
+  box-sizing:border-box!important;
+  height:100%!important;
+  block-size:100%!important;
+  width:auto!important;
+  max-height:100%!important;
+  max-width:100%!important;
+  aspect-ratio:5/7;
+  margin:auto!important;
+  flex-shrink:0;
+}
