@@ -51,7 +51,27 @@ function renderChallenges(){
    const reward=document.createElement('p');reward.textContent='Récompense : '+challenge.reward;
    if(challenge.id==='grandTriadeWin'){
     const p=grandTriadeProgress(),detail=document.createElement('p');
-    detail.textContent='Partie rapide : '+(p.quick?'✓':'—')+' · Histoire : '+(p.story?'✓':'—')+' · Règles Jouer : '+p.rules.length+'/8';article.append(detail);
+    detail.textContent='Progression : '+(Number(p.quick)+Number(p.story)+p.rules.length)+'/10 victoires';article.append(detail);
+    const tasks=[
+     ['Remporter une partie rapide',p.quick],
+     ['Remporter un duel en mode Histoire',p.story],
+     ['Jouer : Classique — Clair',p.rules.includes('basic-open')],
+     ['Jouer : Classique — Obscur',p.rules.includes('basic-dark')],
+     ['Jouer : Identique — Clair',p.rules.includes('same-open')],
+     ['Jouer : Identique — Obscur',p.rules.includes('same-dark')],
+     ['Jouer : Addition — Clair',p.rules.includes('plus-open')],
+     ['Jouer : Addition — Obscur',p.rules.includes('plus-dark')],
+     ['Jouer : Éléments actifs — Clair',p.rules.includes('elements-open')],
+     ['Jouer : Éléments actifs — Obscur',p.rules.includes('elements-dark')]
+    ];
+    const list=document.createElement('ul');list.className='grand-triade-checklist';list.setAttribute('aria-label','Étapes du défi Grand maître de la Triade');
+    for(const [label,done] of tasks){
+     const item=document.createElement('li');item.className=done?'done':'pending';
+     const mark=document.createElement('span');mark.className='challenge-task-mark';mark.textContent=done?'✓':'○';mark.setAttribute('aria-hidden','true');
+     const description=document.createElement('span');description.textContent=label+(done?' — terminé':' — à faire');
+     item.append(mark,description);list.append(item);
+    }
+    article.append(list);
    }
    const status=document.createElement('small');status.textContent=archived?'✓ Accompli • récompense reçue':challenge.progress+' / '+challenge.total;
    article.append(title,reward,status);if(!archived){const progress=document.createElement('progress');progress.value=challenge.progress;progress.max=challenge.total;progress.setAttribute('aria-label',challenge.title);article.append(progress)}holder.append(article);
@@ -72,3 +92,5 @@ function showLandingFrame(cell){
  Object.assign(frame.style,{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px'});
  frame.dataset.index=cell.dataset.index;
 }
+
+/* Grand maître de la Triade: persistent, readable per-rule checklist. */
