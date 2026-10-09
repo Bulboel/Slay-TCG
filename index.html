@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#111827">\n  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
   <meta name="description" content="Prototype jouable d'un jeu de cartes tactique 1 contre 1 dans l'univers d'Hackénia.">
   <title>Triade d'Hackénia — Prototype</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/hackenia-home-v2-32.png">
@@ -1051,6 +1051,40 @@ window.triadeOnlineDeckPreview = () => {
 })();
 </script>
 <script type="module" src="online/online-panel.js"></script>
+
+<script>
+/* Vérification légère des déploiements GitHub Pages, sans toucher aux sauvegardes. */
+(()=>{const key='triade-last-deployment';let checking=false,lastCheck=0;
+async function checkVersion(){
+ if(checking||Date.now()-lastCheck<60000||!navigator.onLine)return;
+ checking=true;lastCheck=Date.now();
+ try{
+  const response=await fetch('https://api.github.com/repos/Bulboel/Triade-of-Hackenia/commits/main',{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+  if(!response.ok)return;
+  const data=await response.json(),sha=data.sha;
+  if(!sha)return;
+  const previous=localStorage.getItem(key);
+  if(previous&&previous!==sha){
+   let notice=document.getElementById('triade-update-notice');
+   if(!notice){
+    notice=document.createElement('div');notice.id='triade-update-notice';
+    notice.setAttribute('role','status');
+    notice.style.cssText='position:fixed;z-index:999999;bottom:14px;left:12px;right:12px;max-width:480px;margin:auto;padding:14px;background:#102f34;color:#fff0cb;border:2px solid #e5bf72;border-radius:14px;box-shadow:0 8px 30px #0009;display:flex;gap:12px;align-items:center;justify-content:space-between;font:600 14px system-ui';
+    const label=document.createElement('span');label.textContent='✨ Nouvelle version de la Triade disponible !';
+    const button=document.createElement('button');button.textContent='Actualiser';button.style.cssText='padding:10px 12px;border:0;border-radius:9px;background:#e5bf72;color:#241c14;font-weight:800;cursor:pointer';
+    button.onclick=()=>{localStorage.setItem(key,sha);const url=new URL(location.href);url.searchParams.set('update',sha.slice(0,12));location.replace(url.toString())};
+    notice.append(label,button);document.body.append(notice);
+   }
+  }else if(!previous)localStorage.setItem(key,sha);
+ }catch(e){console.info('Vérification de mise à jour indisponible',e)}
+ finally{checking=false}
+}
+window.addEventListener('focus',checkVersion);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkVersion()});
+setTimeout(checkVersion,5000);
+setInterval(checkVersion,180000);
+})();
+</script>
 </body>
 </html>
 
