@@ -538,6 +538,22 @@ body.duel-active #board .cell.drop-target{
  box-shadow:inset 0 0 0 3px #ffe69a,0 0 10px #f8c75b88!important;
 }
 #board .cell.drop-target:after{pointer-events:none}
+
+/* Pioche Souvenirs : taille de vraie miniature, même en portrait mobile. */
+@media(max-width:850px){
+ body.duel-active #onlineMemoryZone{display:flex!important;flex-direction:row!important;justify-content:center!important;align-items:center!important;gap:9px!important;min-height:0!important;padding:2px 8px!important}
+ body.duel-active #onlineMemoryZone .memory-title{font-size:10px!important;flex:0 0 auto!important}
+ body.duel-active #onlineMemoryPile{position:relative!important;display:block!important;flex:0 0 62px!important;width:62px!important;height:49px!important;min-height:0!important;min-width:0!important;margin:0!important;padding:0!important;transform:none!important;overflow:visible!important}
+ body.duel-active #onlineMemoryPile .card-back{position:absolute!important;inset:auto!important;top:50%!important;left:50%!important;width:43px!important;height:61px!important;max-width:none!important;min-height:0!important;margin:0!important;transform:translate(-50%,-50%) rotate(90deg)!important;border-width:2px!important;border-radius:5px!important}
+ body.duel-active #onlineMemoryHint{min-height:0!important}
+}
+/* L'image du dos choisi par le créateur s'applique aussi à la pioche.
+   Ne pas utiliser l'ancienne illustration Souvenirs en arrière-plan. */
+body.duel-active #onlineMemoryPile .card-back.back-official{background:#071d2d url('../assets/card-back-official.webp') center/cover no-repeat!important;border-color:#e5bd55!important}
+body.duel-active #onlineMemoryPile .card-back.back-official::before,
+body.duel-active #onlineMemoryPile .card-back.back-official::after{content:none!important}
+body.duel-active #onlineMemoryPile .card-back.back-sun{background:radial-gradient(circle at 50% 50%,#d3eab51f 0 19%,transparent 20%),repeating-conic-gradient(from 45deg,#0b4550 0 12deg,#0c3944 12deg 24deg)!important}
+body.duel-active #onlineMemoryPile .card-back.back-mist{background:radial-gradient(ellipse at 10% 10%,#67b9ad55,transparent 34%),radial-gradient(ellipse at 90% 90%,#458ba655,transparent 38%),linear-gradient(145deg,#082f42,#0b5555)!important}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
