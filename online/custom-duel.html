@@ -565,6 +565,19 @@ body.duel-active #onlineMemoryPile .card-back.back-mist{background:radial-gradie
  body.duel-active #onlineMemoryPile .card-back::after{pointer-events:none}
  body.duel-active #onlineMemoryHint:empty{display:none!important}
 }
+
+/* Dos de récompenses : mêmes identifiants et illustrations que le jeu principal. */
+#onlineMemoryPile .card-back.back-treasure-gold{background:#321a0d url('../assets/Dos%20de%20carte%20dor%C3%A9e.png') center/100% 100% no-repeat!important;border:0!important;box-shadow:0 4px 15px #6d380d88!important}
+#onlineMemoryPile .card-back.back-caleizis-crying{background:#1a1230 url('../assets/Cale%C3%AFzis%20qui%20pleure.png') center/contain no-repeat!important;border:2px solid #d6a44f!important}
+#onlineMemoryPile .card-back.back-jordan-cool{background:#102b42 url('../assets/jordan%20sp%C3%A9cial.png') center/100% 100% no-repeat!important;border:0!important}
+#onlineMemoryPile .card-back.back-element-water{background-image:url('../assets/backs/element-water.webp')!important}
+#onlineMemoryPile .card-back.back-element-wind{background-image:url('../assets/backs/element-wind.webp')!important}
+#onlineMemoryPile .card-back.back-element-fire{background-image:url('../assets/backs/element-fire.webp')!important}
+#onlineMemoryPile .card-back.back-element-earth{background-image:url('../assets/backs/element-earth.webp')!important}
+#onlineMemoryPile .card-back.back-element-ice{background-image:url('../assets/backs/element-ice.webp')!important}
+#onlineMemoryPile .card-back.back-element-lightning{background-image:url('../assets/backs/element-lightning.webp')!important}
+#onlineMemoryPile .card-back:is(.back-treasure-gold,.back-caleizis-crying,.back-jordan-cool)::before,
+#onlineMemoryPile .card-back:is(.back-treasure-gold,.back-caleizis-crying,.back-jordan-cool)::after{content:none!important;display:none!important}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
@@ -596,7 +609,7 @@ function setDecks(rows){for(const player of ['host','guest']){const row=rows.fin
 let roomId=null,role=null,game=null,room=null,selected=null,working=false;
 const onlineThemes=['classic','arcane','jordan','elements-wheel','treasure'];
 const myOnlineBoardTheme=()=>{try{const theme=JSON.parse(localStorage.getItem('hackenia-options')||'{}').boardTheme;return onlineThemes.includes(theme)?theme:'classic'}catch{return 'classic'}};
-const onlineBacks=['official','sun','mist'];
+const onlineBacks=['official','sun','mist','treasure-gold','caleizis-crying','jordan-cool',...['water','wind','fire','earth','ice','lightning'].map(element=>'element-'+element)];
 const onlineOrnaments=['none','treasure','rainbow'];
 const ownOnlineCosmetics=()=>{try{const settings=JSON.parse(localStorage.getItem('hackenia-options')||'{}');return {theme:onlineThemes.includes(settings.boardTheme)?settings.boardTheme:'classic',back:onlineBacks.includes(settings.back)?settings.back:'official',ornament:onlineOrnaments.includes(settings.scoreOrnament)?settings.scoreOrnament:'none'}}catch{return {theme:'classic',back:'official',ornament:'none'}}};
 function applyOnlineBoardTheme(){const pileBack=$('onlineMemoryPile')?.querySelector('.card-back');if(pileBack){pileBack.className='card card-back back-'+onlineCardBack();pileBack.dataset.creatorBack=onlineCardBack();}const theme=onlineThemes.includes(room?.board_theme)?room.board_theme:'classic';$('board').dataset.theme=theme;const ornament=onlineOrnaments.includes(room?.score_ornament)?room.score_ornament:'none';$('onlineScore').dataset.ornament=ornament;}
