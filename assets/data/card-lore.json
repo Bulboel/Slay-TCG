@@ -293,21 +293,21 @@
       "name": "Bosco",
       "number": "#010",
       "rarity": "Peu commune",
-      "lore": "Jeune aarakocra du plan de l'air, il est tombé dans le village de voleur ou il a été élevé par une vieille naine affectueuse. Victimisé durant des années malgré la défense qu'apportait sa mère adoptive, il fuya son village le jour du décès de cette derniere. Il emmena avec lui un précieux collier en or ornements de perles précieuses, sûrement de très grande valeur mais Bosco ne le vendra jamais.\nIl est chanceux mais ne porte pas chance, il est espiègle et un peu direct, il s'attache trés vite dés qu'on lui fait confiance. C'est Maebril qui l'adopter officieusement, le prenant sous son aile depuis plusieurs années maintenant."
+      "lore": "Jeune aarakocra du plan de l'air, il est tombé dans le village de voleur ou il a été élevé par une vieille naine affectueuse. Victimisé durant des années malgré la défense qu'apportait sa mère adoptive, il fuya son village le jour du décès de cette dernière. Il emmena avec lui un précieux collier en or orné de perles précieuses, sûrement de très grande valeur mais Bosco ne le vendra jamais.\nIl est chanceux mais ne porte pas chance, il est espiègle et un peu direct, il s'attache très vite dés qu'on lui fait confiance. C'est Maebril qui l'adoptera officieusement, le prenant sous son aile depuis plusieurs années maintenant."
     },
     {
       "id": "p55",
       "name": "Bulbalina",
       "number": "#008",
       "rarity": "Peu commune",
-      "lore": "C'est une grande collectionneuse de canards et a pour objectif de creer un orchestre symphonique avec des canards de toute race et de toute région. Elle s'avérera un peu dangereuse dans sa folie, n'hésitant pas à vouloir s'emparer d'un canourson sauvage malgré la présence de deux énormes canons prêt à n'en faire qu'une bouchée.\nLors d'un contact avec Messire Balai, elle aura une vision prophétique qui semblerait se lier avec ce qui arrivait aux aventuriers. Aprés avoir donné un ultime coup de main avec Velmarys à Kierzan, elle repartira à Dassom."
+      "lore": "C'est une grande collectionneuse de canards et a pour objectif de creer un orchestre symphonique avec des canards de toute race et de toute région. Elle s'avérera un peu dangereuse dans sa folie, n'hésitant pas à vouloir s'emparer d'un canourson sauvage malgré la présence de deux énormes canours prêt à n'en faire qu'une bouchée.\nLors d'un contact avec Messire Balai, elle aura une vision prophétique qui semblerait se lier avec ce qui arrivait aux aventuriers. Aprés avoir donné un ultime coup de main avec Velmarys à Kierzan, elle repartira à Dassom."
     },
     {
       "id": "p56",
       "name": "Caleizis",
       "number": "#011",
       "rarity": "Rare",
-      "lore": "Déborde d'une haine qui s'est attisé avec les années. C'est un ennemi extrêmement redoutable et semble posséder une aura étrange..."
+      "lore": "Déborde d'une haine qui s'est attisée avec les années. C'est un ennemi extrêmement redoutable et semble posséder une aura étrange..."
     },
     {
       "id": "p57",
@@ -398,14 +398,14 @@
       "name": "Les jumeaux du Lac",
       "number": "#020",
       "rarity": "Rare",
-      "lore": "Les nouveaux jumeaux de la mission. Ils sont la nouvelle generation de protecteur du continent d'Hackénia. Ils sont toujours endormis mais les rapprocher de leur parthénios devrait peut-être pouvoir les éveiller..."
+      "lore": "Les nouveaux jumeaux de la mission. Ils sont la nouvelle generation de protecteurs du continent d'Hackénia. Ils sont toujours endormis mais les rapprocher de leur parthénios devrait peut-être pouvoir les éveiller..."
     },
     {
       "id": "p70",
       "name": "Maebril",
       "number": "#025",
       "rarity": "Commune",
-      "lore": "Tavernier(e) et chef(fe) de la guide du Griffon Doré. Iel est la meilleure connaissance possible à avoir sur Dassom. De par ses contacts et de tous les membres de sa guilde, iel possède des informations parfois capitales. Heureusement, iel s'entend très bien avec les jumeaux et est un allié précieux. Il a fabriqué son système de médaillon magique lui permettant de communiquer à distance avec une contrepartie loufoque (peu importe qui passe par le médaillon, le tissu, les plumes disparaissent).\nIel change constamment de sexe, on suppose qu'iel a un peu trop joué avec des rituels pour son médaillon."
+      "lore": "Tavernier(e) et chef(fe) de la guide du Griffon Doré. Iel est la meilleure connaissance possible à avoir sur Dassom. De par ses contacts et de tous les membres de sa guilde, iel possède des informations parfois capitales. Heureusement, iel s'entend très bien avec les jumeaux et est un allié précieux. Iel a fabriqué son système de médaillon magique lui permettant de communiquer à distance avec une contrepartie loufoque (peu importe qui passe par le médaillon, le tissu, les plumes disparaissent).\nIel change constamment de sexe, on suppose qu'iel a un peu trop joué avec des rituels pour son médaillon."
     },
     {
       "id": "p71",
@@ -636,7 +636,7 @@
       "name": "Griselda",
       "number": "#016",
       "rarity": "Commune",
-      "lore": "Vendeuse de vetements chaud à Forfalla, installé juste à coté de l'auberge. Ses prix sont un peu élevés mais ses habits sont de la meilleure qualité qui soit. Elle connaît très bien Forfalla et son histoire."
+      "lore": "Vendeuse de vêtements chaud à Forfalla, installée juste à coté de l'auberge. Ses prix sont un peu élevés mais ses habits sont de la meilleure qualité qui soit. Elle connaît très bien Forfalla et son histoire."
     },
     {
       "id": "p104",
@@ -671,7 +671,7 @@
       "name": "Krek et Krak",
       "number": "#017",
       "rarity": "Commune",
-      "lore": "Égoutiers assigné aux nettoyages et au bon fonctionnement des égouts de Forfalla. Ils ont longtemps erré dans ses cavernes, inconscient du danger qui les entourait sans se rendre compte qu'une simple \"promesse\" les protégeait de ce mal. Tant qu'il n'agissent pas contre le temple, rien ne peut les atteindre. Mais à partir du moment qu'ils ont décidés d'assister les aventuriers à entrer dans la salle divine, le charme fut rompu."
+      "lore": "Égoutiers assignés aux nettoyages et au bon fonctionnement des égouts de Forfalla. Ils ont longtemps erré dans ces cavernes, inconscients du danger qui les entourait sans se rendre compte qu'une simple \"promesse\" les protégeaient de ce mal. Tant qu'il n'agissent pas contre le temple, rien ne peut les atteindre. Mais à partir du moment qu'ils ont décidés d'assister les aventuriers à entrer dans la salle divine, le charme fut rompu."
     },
     {
       "id": "p109",
@@ -706,7 +706,7 @@
       "name": "Les Sans-chiffres",
       "number": "#024",
       "rarity": "Peu commune",
-      "lore": "Guilde de voleur assassins vénèrent le dieu Sans-chiffres, ce dernier aurait fabriqué une dague qui aura assouvi sa soif uniquement lorsqu'elle aura tué un nombre incalculable de personnes, creatures, etc. Les dernières rumeurs disent que la guilde était trés tumultueuse, probablement dû à l'arrivée imminente de leur Dieu. La branche de recherche de la guilde a supposé encore un certain nombres d'âmes à récupérer et qui se rapprocherait de la fin..."
+      "lore": "Guilde de voleurs assassins vénèrant le dieu Sans-chiffres, ce dernier aurait fabriqué une dague qui aura assouvi sa soif uniquement lorsqu'elle aura tué un nombre incalculable de personnes, creatures, etc. Les dernières rumeurs disent que la guilde était très tumultueuse, probablement dû à l'arrivée imminente de leur Dieu. La branche de recherche de la guilde a supposé encore un certain nombres d'âmes à récupérer et qui se rapprocherait de la fin..."
     },
     {
       "id": "p114",
@@ -909,7 +909,7 @@
       "name": "Les gardes de Lunargent",
       "number": "#021",
       "rarity": "Peu commune",
-      "lore": "Unité spécialisé aux renforts de Forfalla."
+      "lore": "Unité spécialisée aux renforts de Forfalla."
     },
     {
       "id": "p144",
