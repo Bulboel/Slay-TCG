@@ -1038,3 +1038,23 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #gameApp .score .turn{
  margin-left:12px!important;
 }
+
+/* Score numbers follow the player colors chosen in Options, for every ornament. */
+#gameApp .score #pScore,
+#gameApp .score[data-ornament="none"] #pScore,
+#gameApp .score[data-ornament="treasure"] #pScore,
+#gameApp .score[data-ornament="rainbow"] #pScore{
+ color:var(--player)!important;
+ text-shadow:0 1px 2px #090c0d,0 0 5px #090c0d,0 0 9px currentColor!important;
+}
+#gameApp .score #aScore{
+ color:var(--opponent)!important;
+ text-shadow:0 1px 2px #090c0d,0 0 5px #090c0d,0 0 9px currentColor!important;
+}
+/* A thicker ownership glow on cards actually placed on the board. */
+#gameApp #board .cell > .card{
+ box-shadow:0 0 0 2px var(--player),0 0 7px 2px var(--player),0 0 13px 2px color-mix(in srgb,var(--player),transparent 42%)!important;
+}
+#gameApp #board .cell > .card.enemy{
+ box-shadow:0 0 0 2px var(--opponent),0 0 7px 2px var(--opponent),0 0 13px 2px color-mix(in srgb,var(--opponent),transparent 42%)!important;
+}
