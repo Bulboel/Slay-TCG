@@ -906,3 +906,13 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
   margin-left:calc((min(100vw - 14px, 100vw) - 5 * clamp(100px,27vw,132px))/4)!important;
  }
 }
+
+/* Hide the brown score-bar tip behind unlocked hexagonal score ornaments. */
+#gameApp .score:is([data-ornament="treasure"],[data-ornament="rainbow"]){
+ background:linear-gradient(to right,transparent 0 25px,#2b1b11e8 25px 100%)!important;
+ border-left-color:transparent!important;
+ box-shadow:inset 0 0 14px #ffffff06!important;
+}
+#gameApp .score:is([data-ornament="treasure"],[data-ornament="rainbow"]) #pScore{
+ z-index:1;
+}
