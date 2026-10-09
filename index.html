@@ -957,55 +957,8 @@ $('#cardZoom').onclick=e=>{if(e.target.id==='cardZoom'&&Date.now()>duelTouchZoom
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCardZoom()});
 $('#storyBtn').onclick=showStoryMenu;$('#chapter1Btn').onclick=startChapter1;$('#chapter1Part2Btn').onclick=startForestPart;$('#chapter1Part3Btn').onclick=startCabinPart;$('#chapter1Part4Btn').onclick=startMinePart;$('#chapter1Part5Btn').onclick=startFinalMinePart;$('#chapter1Part6Btn').onclick=startRescuePart;$('#chapter1Part6bisBtn').onclick=startNewFacesPart;$('#chapter1Part7Btn').onclick=startCavePart;$('#chapter1Part8Btn').onclick=startLakePart;$('#chapter1Part9Btn').onclick=startFinalePart;$('#chapter2Btn').onclick=previewChapter2;$('#storyNextBtn').onclick=nextStoryBeat;$('#storyExitBtn').onclick=()=>{$('#storyScene').classList.add('hidden');showStoryMenu()};$('#newBtn').onclick=()=>currentMode==='story'?startStoryGame():currentMode==='story-forest'?startForestGame():currentMode==='story-lake-finale'?startFinaleGame():currentMode==='story-caleizis'?restartLakePart():currentMode==='story-ven'?startNewFacesGame():currentMode==='story-ghosts'?startCaveGame():currentMode==='story-wolves'?startRescueGame():currentMode==='story-mine-finale'?startFinalMineGame():currentMode==='story-mine'?startMineGame():newGame(currentMode);
 /* Shareable Jordan preview: launches one Obscur quick match without unlocking the reward. */
-/* Optional QA profile: explicitly confirmed, with an automatic backup of the current save. */
-function downloadTestSlot(slot,filename){
- const blob=new Blob([JSON.stringify(slot,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');
- link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
-}
-function buildCompleteSaveSlot(){
- const now=new Date().toISOString(),challengeIds=['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete','onlineFiveWins'];
- const challenges=Object.fromEntries(challengeIds.map(id=>[id,{completedAt:Date.now()}]));
- challenges.grandTriadeProgressV2={quick:true,story:true,rules:[...grandTriadeRules]};
- return {
-  version:3,label:'Sauvegarde ultime — tous les défis',updatedAt:now,
-  profile:{
-   collection:{version:CATALOG_VERSION,counts:Object.fromEntries(catalog.map(c=>[c.id,40])),foils:Object.fromEntries(catalog.map(c=>[c.id,20])),starterBoosters:0},
-   decks:decks.map(d=>({id:d.id,name:d.name,cards:[...d.cards]})),
-   activeDeckId,
-   story:{...story},
-   settings:{...settings,back:'treasure-gold',boardTheme:'treasure',scoreOrnament:'rainbow'},
-   economy:{...economy,gold:999999999,unlimitedGold:true,challenges,storyRewards:{part1:true,part2:true,part3:true}}
-  },match:null
- };
-}
 const testParams=new URLSearchParams(location.search);
-if(false){
- const slot=buildCompleteSaveSlot();
- if(confirm('Installer la sauvegarde complète permanente (toutes les cartes, défis débloqués, or illimité) ? Votre sauvegarde actuelle sera téléchargée avant remplacement.')){
-  try{
-   const existing=readSaved(SAVE_KEY,null);
-   if(existing)downloadTestSlot(existing,'triade-sauvegarde-avant-complete.json');
-   localStorage.setItem(SAVE_KEY,JSON.stringify(slot));
-   saveSlotActive=true;
-   loadProfile(slot.profile);
-   // Reapply all collection finishes after legacy progress recovery.
-   collection.counts=Object.fromEntries(catalog.map(c=>[c.id,40]));
-   collection.foils=Object.fromEntries(catalog.map(c=>[c.id,20]));
-   // Verify unlocks after importing the profile, including on older local saves.
-   const testChallenges=challengeState();
-   for(const id of ['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete','onlineFiveWins'])testChallenges[id] ||= {completedAt:Date.now()};
-   settings.back='treasure-gold';settings.boardTheme='treasure';settings.scoreOrnament='rainbow';
-   applySettings();renderChallenges();renderCollection();
-   persistWorkingProgress();writeSaveSlot(null);
-   $('#startupScreen').classList.add('hidden');
-   $('#gameApp').classList.remove('jordan-preview');
-   applyRulePreset('basic-dark');
-   newGame('quick');
-   downloadTestSlot(slot,'triade-sauvegarde-ultime-tous-defis.json');
-  }catch(error){console.error('Sauvegarde complète impossible',error);alert('La sauvegarde complète n’a pas pu être installée.')}
- }
- history.replaceState(null,'',location.pathname);
-}else if(testParams.get('jordan-test')==='1'){
+if(testParams.get('jordan-test')==='1'){
  $('#gameApp').classList.add('jordan-preview');
  applyRulePreset('basic-dark');
  newGame('quick');
