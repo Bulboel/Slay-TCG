@@ -428,6 +428,68 @@ body:not(.duel-active) main{max-width:720px}
 #lobbyPreparation #deckPanel select{max-width:none}
 #lobbyChecklist{line-height:1.8;text-align:center}
 @media(max-width:500px){.lobby-card{padding:13px!important}.lobby-steps span{font-size:11px;padding:9px 3px}#lobbyPreparation #hostRules{display:grid}#lobbyPreparation #ruleSelect{width:100%}}
+
+/* Duel compact : écran de préparation caché, score prioritaire et arène visible. */
+body.duel-active #lobbySteps,body.duel-active .lobby-steps,body.duel-active #lobbyPreparation{display:none!important}
+body.duel-active #onlineOriginalHeader{margin-bottom:2px}
+body.duel-active #status{font-size:12px;min-height:0;padding:2px 5px;margin:0 auto 2px}
+body.duel-active #duelExit{margin:0 auto 3px}
+body.duel-active #gamePanel{gap:7px}
+body.duel-active .online-arena{gap:5px}
+body.duel-active #onlineScore{order:0;gap:9px;padding:3px 12px;min-height:47px}
+body.duel-active #onlineScore b{width:45px;height:47px;font-size:20px}
+body.duel-active #onlineTurnLabel{font-size:11px;letter-spacing:.04em}
+body.duel-active #onlineMemoryZone{order:1;min-height:0;padding:4px 9px;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+body.duel-active #onlineMemoryZone .memory-title{font-size:10px;white-space:nowrap}
+body.duel-active #onlineMemoryPile{width:88px;height:57px;min-height:0;padding:2px 5px;transform:none;margin:0}
+body.duel-active #onlineMemoryPile .card-back{width:76px;height:49px;max-width:100%}
+body.duel-active #onlineMemoryHint:empty{display:none}
+body.duel-active #onlineBoardWrap{order:2;transform:none;margin:0 auto;padding:6px;border-radius:14px}
+body.duel-active #onlineBoardWrap:after{content:none}
+body.duel-active #board{gap:4px;padding:5px}
+@media(min-width:851px){
+ body.duel-active main{max-width:100%;padding:0 12px}
+ body.duel-active #gamePanel{grid-template-columns:minmax(125px,190px) minmax(0, min(70vh,680px)) minmax(125px,190px);gap:12px;max-width:1150px}
+ body.duel-active #onlineBoardWrap{width:100%;max-width:100%}
+ body.duel-active #onlineMemoryZone{order:1}
+ body.duel-active #onlineBoardWrap{order:2}
+ body.duel-active #hostSide,body.duel-active #guestSide{padding-top:50px}
+ body.duel-active .online-side .hand button{width:clamp(85px,10vh,112px);margin-bottom:clamp(-58px,-5vh,-35px)}
+ body.duel-active #onlineHistory{min-height:0;max-height:110px;overflow:auto;padding:7px}
+}
+@media(max-width:850px){
+ body.duel-active #onlineOriginalHeader{min-height:48px;margin:0}
+ body.duel-active main{padding:0 4px}
+ body.duel-active #status{font-size:11px;line-height:1.1}
+ body.duel-active #gamePanel,body.duel-active #gamePanel.guest-view{gap:2px}
+ body.duel-active #gamePanel .online-arena{display:contents}
+ body.duel-active #onlineScore{order:0!important;align-self:center;min-height:39px;padding:2px 9px;gap:7px}
+ body.duel-active #onlineScore b{width:39px;height:41px;font-size:17px}
+ body.duel-active #onlineTurnLabel{font-size:10px}
+ body.duel-active #onlineMemoryZone{order:2!important;min-height:0;width:100%;padding:2px 6px;margin:0;gap:8px;border-radius:8px}
+ body.duel-active #onlineMemoryZone .memory-title{flex:0 0 auto;font-size:10px}
+ body.duel-active #onlineMemoryPile{width:80px;height:48px;transform:none;margin:0;padding:2px}
+ body.duel-active #onlineMemoryPile .card-back{width:70px;height:42px}
+ body.duel-active #onlineMemoryHint{flex:0 1 auto;font-size:9px}
+ body.duel-active #onlineBoardWrap{order:3!important;width:min(100%,calc(100dvh - 275px));max-width:100%;padding:3px;margin:0 auto!important}
+ body.duel-active #board{width:100%;gap:2px;padding:3px}
+ body.duel-active #gamePanel .online-player-head{min-height:23px;gap:7px;justify-content:center}
+ body.duel-active #gamePanel .online-player-head .online-player-name{font-size:10px}
+ body.duel-active #gamePanel .online-memory-orbs .memory-orb{width:16px;height:16px}
+ body.duel-active #gamePanel #hostSide .online-player-head,body.duel-active #gamePanel #guestSide .online-player-head{order:1!important}
+ body.duel-active #gamePanel #hostSide .online-player-head:has(+ .label + .own-hand),body.duel-active #gamePanel #guestSide .online-player-head:has(+ .label + .own-hand){order:4!important}
+ body.duel-active #gamePanel .opponent-hand{display:none!important}
+ body.duel-active #gamePanel .own-hand{order:5!important;display:flex!important}
+ body.duel-active #gamePanel .hand button{width:20%;max-width:20%;margin:0!important;padding:1px}
+ body.duel-active #gamePanel .hand button .card{aspect-ratio:3/4}
+ body.duel-active #onlineHistory{display:none!important}
+}
+@media(max-width:850px) and (max-height:740px){
+ body.duel-active #onlineOriginalHeader{min-height:42px;padding-top:2px;padding-bottom:2px}
+ body.duel-active #onlineBoardWrap{width:min(100%,calc(100dvh - 245px))}
+ body.duel-active #onlineMemoryZone{padding:1px 4px}
+ body.duel-active #gamePanel .online-player-head{min-height:19px}
+}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
