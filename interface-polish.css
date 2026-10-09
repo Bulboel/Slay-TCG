@@ -925,3 +925,19 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  border-bottom-color:transparent!important;
  box-shadow:none!important;
 }
+
+/* Slightly larger horizontal Souvenir draw card, without moving the board or hand. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp .memory-pile{
+  width:96px!important;min-width:96px!important;
+  flex:0 0 96px!important;height:54px!important;
+  display:grid!important;place-items:center!important;
+ }
+ #gameApp .memory-pile .card{
+  width:42px!important;height:59px!important;
+  aspect-ratio:5/7!important;
+  transform:rotate(90deg)!important;
+  transform-origin:center!important;
+  flex:none!important;
+ }
+}
