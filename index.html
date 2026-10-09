@@ -962,7 +962,7 @@ function downloadTestSlot(slot,filename){
  const blob=new Blob([JSON.stringify(slot,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');
  link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
 }
-function buildCompleteTestSlot(){
+function buildCompleteSaveSlot(){
  const now=new Date().toISOString(),challengeIds=['quickWin','collection100','grandTriadeWin','additionWin','identicalWin','jordanSweep','caleizisVictory','treasureComplete','onlineFiveWins'];
  const challenges=Object.fromEntries(challengeIds.map(id=>[id,{completedAt:Date.now()}]));
  challenges.grandTriadeProgressV2={quick:true,story:true,rules:[...grandTriadeRules]};
@@ -979,12 +979,12 @@ function buildCompleteTestSlot(){
  };
 }
 const testParams=new URLSearchParams(location.search);
-if(['1','2','3'].includes(testParams.get('full-test-save'))){
- const slot=buildCompleteTestSlot();
- if(confirm('Installer une sauvegarde de TEST complète (20 exemplaires de chaque carte, défis terminés, or illimité) ? Votre sauvegarde actuelle sera téléchargée en sauvegarde de sécurité avant remplacement.')){
+if(testParams.get('full-save')==='1'||['1','2','3'].includes(testParams.get('full-test-save'))){
+ const slot=buildCompleteSaveSlot();
+ if(confirm('Installer la sauvegarde complète permanente (toutes les cartes, défis débloqués, or illimité) ? Votre sauvegarde actuelle sera téléchargée avant remplacement.')){
   try{
    const existing=readSaved(SAVE_KEY,null);
-   if(existing)downloadTestSlot(existing,'triade-sauvegarde-avant-test.json');
+   if(existing)downloadTestSlot(existing,'triade-sauvegarde-avant-complete.json');
    localStorage.setItem(SAVE_KEY,JSON.stringify(slot));
    saveSlotActive=true;
    loadProfile(slot.profile);
@@ -1002,7 +1002,7 @@ if(['1','2','3'].includes(testParams.get('full-test-save'))){
    applyRulePreset('basic-dark');
    newGame('quick');
    downloadTestSlot(slot,'triade-sauvegarde-ultime-tous-defis.json');
-  }catch(error){console.error('Sauvegarde test impossible',error);alert('La sauvegarde de test n’a pas pu être installée.')}
+  }catch(error){console.error('Sauvegarde complète impossible',error);alert('La sauvegarde complète n’a pas pu être installée.')}
  }
  history.replaceState(null,'',location.pathname);
 }else if(testParams.get('jordan-test')==='1'){
