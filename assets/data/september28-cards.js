@@ -929,6 +929,7 @@ window.HACKENIA_NEW_CARDS = [
     ],
     "element": "multi",
     "rarity": "alternative",
+    "baseRarity": "rare",
     "kind": "playable",
     "image": {
       "src": "assets/cards/set-finale/p148.webp",
