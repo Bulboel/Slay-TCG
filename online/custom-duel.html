@@ -578,7 +578,18 @@ body.duel-active #onlineMemoryPile .card-back.back-mist{background:radial-gradie
 #onlineMemoryPile .card-back.back-element-lightning{background-image:url('../assets/backs/element-lightning.webp')!important}
 #onlineMemoryPile .card-back:is(.back-treasure-gold,.back-caleizis-crying,.back-jordan-cool)::before,
 #onlineMemoryPile .card-back:is(.back-treasure-gold,.back-caleizis-crying,.back-jordan-cool)::after{content:none!important;display:none!important}
-</style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
+</style>
+<style id="online-opponent-hand-visibility-fix">
+/* Keep the opponent's five remaining cards visible on every screen size. */
+body.duel-active #gamePanel .opponent-hand,
+body.duel-active #gamePanel #hostSide .opponent-hand,
+body.duel-active #gamePanel #guestSide .opponent-hand{display:flex!important;order:2!important;justify-content:center;align-items:center;flex-wrap:nowrap;gap:3px;width:100%;max-width:100%;min-width:0;margin:2px auto 5px;overflow:hidden}
+body.duel-active #gamePanel .opponent-hand button{flex:0 1 48px!important;width:clamp(22px,9vw,48px)!important;max-width:48px!important;min-width:0!important;padding:0!important;margin:0!important;pointer-events:none}
+body.duel-active #gamePanel .opponent-hand .card{width:100%;max-width:100%;height:auto;aspect-ratio:3/4;min-width:0}
+body.duel-active #gamePanel .opponent-label{display:block!important;order:1!important;font-size:clamp(10px,2.5vw,13px);margin:2px 0!important}
+@media(max-width:850px){body.duel-active #gamePanel .opponent-hand{order:2!important}body.duel-active #gamePanel .opponent-hand button{flex-basis:clamp(22px,9vw,42px)!important}}
+</style>
+</head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
 <div id="lobbyPreparation" hidden>
@@ -676,7 +687,7 @@ function renderOnlineScore(){
  log.textContent='Cartes posées : '+game.move_count+' / 9';
 }
 
-function render(){updateRematchControls();const stateKey=JSON.stringify({roomId,role,host_nickname:room?.host_nickname,guest_nickname:room?.guest_nickname,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected,memory_pending:game.memory_pending,memory_reveal:game.memory_reveal,memory_reaction:game.memory_reaction,memory_draws:game.memory_draws,memory_joker:game.memory_joker,memory_joker_choices:game.memory_joker_choices,memory_blind:game.memory_blind,privateHand});
+function render(){updateRematchControls();const stateKey=JSON.stringify({roomId,role,host_nickname:room?.host_nickname,guest_nickname:room?.guest_nickname,custom_rule:room?.custom_rule,board:game.board,turn:game.turn,winner:game.winner,move_count:game.move_count,selected,memory_pending:game.memory_pending,memory_reveal:game.memory_reveal,memory_reaction:game.memory_reaction,memory_draws:game.memory_draws,memory_joker:game.memory_joker,memory_joker_choices:game.memory_joker_choices,memory_blind:game.memory_blind,privateHand});
 if(onlineDrag)return;if(stateKey===lastRenderedState)return;
 lastRenderedState=stateKey;
 renderOnlineScore();
