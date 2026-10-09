@@ -593,8 +593,8 @@ if(typeof fetch==='function')fetch('assets/data/card-lore.json',{cache:'no-store
 let cardGalleryItems=[],cardGalleryIndex=-1;
 function openCardGallery(card,element,selector){
  const items=[...document.querySelectorAll(selector)].filter(el=>el.getAttribute('aria-label')?.startsWith('Agrandir ')||el.classList.contains('collection-item')&&!el.classList.contains('locked'));
- cardGalleryItems=items;cardGalleryIndex=items.indexOf(element);
  openCardZoom(card);
+ cardGalleryItems=items;cardGalleryIndex=items.indexOf(element);
  updateCardGalleryNav();
 }
 function updateCardGalleryNav(){
