@@ -10,7 +10,7 @@ const panel = document.createElement('section');
 panel.id = 'slayOnlinePanel';
 panel.className = 'slay-online-panel';
 panel.innerHTML = `
-  <h3>⚔ PVP en ligne</h3>
+  <h3>🌐 PVP en ligne</h3>
   <p>Choisis ton deck puis crée un duel en ligne, ou rejoins le salon d'un ami.</p>
   <div class="slay-online-decks">
     <label for="triadeOnlineDeckSelect">Mon deck pour le PVP en ligne</label>
@@ -35,8 +35,19 @@ panel.innerHTML = `
 
 `;
 card.insertBefore(panel, actions);
+panel.hidden=true;
+const onlineChoice=document.getElementById('pvpOnlineChoice');
+const offlineChoice=document.getElementById('pvpOfflineChoice');
+const offlineDetails=document.getElementById('pvpOfflineDetails');
+const modeBack=document.getElementById('pvpModeBack');
+function openOnlineMode(){offlineDetails.hidden=true;panel.hidden=false;refreshDeckPreview();panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
+onlineChoice?.addEventListener('click',openOnlineMode);
+offlineChoice?.addEventListener('click',()=>{panel.hidden=true});
+modeBack?.addEventListener('click',()=>{panel.hidden=true});
+document.getElementById('pvpBtn')?.addEventListener('click',()=>{panel.hidden=true});
 const style = document.createElement('style');
 style.textContent = `
+.slay-online-panel[hidden]{display:none!important}
 .slay-online-panel{margin:24px 0;padding:18px;border:2px solid #9c753c;border-radius:16px;background:#fff5d18c;text-align:left}
 .slay-online-panel h3{margin:0 0 8px;font:700 1.45rem Georgia,serif;color:#4d3016}
 .slay-online-panel h3 small{font:500 .8rem system-ui}
