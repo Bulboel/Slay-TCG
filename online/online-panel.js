@@ -41,7 +41,7 @@ const offlineChoice=document.getElementById('pvpOfflineChoice');
 const offlineDetails=document.getElementById('pvpOfflineDetails');
 const modeBack=document.getElementById('pvpModeBack');
 function openOnlineMode(){offlineDetails.hidden=true;panel.hidden=false;refreshDeckPreview();panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
-onlineChoice?.addEventListener('click',openOnlineMode);
+// Le choix en ligne est un lien HTML direct : ne pas intercepter sa navigation.
 offlineChoice?.addEventListener('click',()=>{panel.hidden=true});
 modeBack?.addEventListener('click',()=>{panel.hidden=true});
 document.getElementById('pvpBtn')?.addEventListener('click',()=>{panel.hidden=true});
