@@ -1033,3 +1033,8 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 
 /* Bronze is the standard selectable ornament in Options. */
 .score-ornament-preview.none{background:url('assets/hexagone_bronze_anime.svg') center/contain no-repeat!important;border:0!important;border-radius:0!important;color:#fff0d7!important;text-shadow:0 1px 3px #201008!important}
+
+/* Keep the turn ribbon entirely to the right of the player's hexagon. */
+#gameApp .score .turn{
+ margin-left:12px!important;
+}
