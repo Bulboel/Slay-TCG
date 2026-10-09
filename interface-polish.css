@@ -931,13 +931,26 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
  #gameApp .memory-pile{
   width:96px!important;min-width:96px!important;
   flex:0 0 96px!important;height:54px!important;
-  display:grid!important;place-items:center!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
  }
  #gameApp .memory-pile .card{
-  width:42px!important;height:59px!important;
+  width:40px!important;height:56px!important;
   aspect-ratio:5/7!important;
   transform:rotate(90deg)!important;
   transform-origin:center!important;
   flex:none!important;
+ }
+}
+
+/* Keep the arrow and enlarged landscape card side by side inside the draw button. */
+@media(max-width:900px) and (orientation:portrait){
+ #gameApp .memory-pile .memory-draw-arrow{
+  display:block!important;position:relative!important;
+  width:25px!important;min-width:25px!important;
+  height:22px!important;flex:0 0 25px!important;
+ }
+ #gameApp .memory-pile .card{
+  position:relative!important;inset:auto!important;
+  margin:0!important;flex:0 0 40px!important;
  }
 }
