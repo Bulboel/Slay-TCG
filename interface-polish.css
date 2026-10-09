@@ -595,7 +595,7 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 .story-scene.forest{background:linear-gradient(#10281b22,#10251b66),url('assets/story/forest-background.webp') center/cover no-repeat!important}.story-scene.forest:before{content:none!important}
 .story-scene.mine{background:linear-gradient(#07182011,#07151dcc),url('assets/story/mine-background.webp') center/cover no-repeat!important}.story-scene.mine:before{content:none!important}
 
-.menu-actions #pvpBtn{grid-column:1/-1}
+.menu-actions #pvpBtn{grid-column:auto}
 /* Let placed cards fill the cell and recover unused vertical spacing. */
 #gameApp .cell{padding:0}
 #gameApp .cell .card{height:100%;block-size:100%;max-height:100%;max-width:100%;margin:0}
