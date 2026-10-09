@@ -521,6 +521,23 @@ body.duel-active #onlineMemoryPile .card-back.back-mist{background:radial-gradie
  body.duel-active #gamePanel .hand button{width:20%!important;max-width:20%!important}
  body.duel-active #onlineHistory{display:none!important}
 }
+
+/* Survol d'une case : aucun déplacement, redimensionnement ou remplacement
+   du fragment de fond (important pour les plateaux en image 3x3). */
+#board .cell:not(:disabled):hover,
+#board .cell.drop-target,
+body.duel-active #board .cell:not(:disabled):hover,
+body.duel-active #board .cell.drop-target{
+ transform:none!important;
+ background-color:transparent!important;
+ background-image:inherit;
+ background-size:inherit;
+ background-position:inherit;
+ transition:box-shadow .15s ease,border-color .15s ease!important;
+ border-color:#f7e09a!important;
+ box-shadow:inset 0 0 0 3px #ffe69a,0 0 10px #f8c75b88!important;
+}
+#board .cell.drop-target:after{pointer-events:none}
 </style></head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small>Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
