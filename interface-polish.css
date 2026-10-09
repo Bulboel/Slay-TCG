@@ -916,3 +916,12 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #gameApp .score:is([data-ornament="treasure"],[data-ornament="rainbow"]) #pScore{
  z-index:1;
 }
+
+/* Final score-ornament seam: remove the tiny exposed rounded border and fill. */
+#gameApp .score:is([data-ornament="treasure"],[data-ornament="rainbow"]){
+ background:linear-gradient(90deg,transparent 0,transparent 34px,#2b1b11e8 34px,#2b1b11e8 100%)!important;
+ border-left:0!important;
+ border-top-color:transparent!important;
+ border-bottom-color:transparent!important;
+ box-shadow:none!important;
+}
