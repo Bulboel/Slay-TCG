@@ -1058,3 +1058,20 @@ h1,h2,h3,.menu-title,.panel-card h2,.chapter-card h3,.rules h2,.card-zoom-copy h
 #gameApp #board .cell > .card.enemy{
  box-shadow:0 0 0 2px var(--opponent),0 0 7px 2px var(--opponent),0 0 13px 2px color-mix(in srgb,var(--opponent),transparent 42%)!important;
 }
+
+/* Browse enlarged cards from Collection and My Decks without closing the viewer. */
+#cardZoom .card-gallery-nav{position:fixed;inset:0;z-index:5;pointer-events:none}
+#cardZoom .card-gallery-nav.hidden{display:none!important}
+#cardZoom .card-gallery-nav button{
+ position:absolute;top:34%;transform:translateY(-50%);
+ pointer-events:auto;width:42px;height:58px;border:1px solid #dfc080;
+ border-radius:12px;background:linear-gradient(155deg,#234d4b,#102b2e);
+ color:#ffe4a8;font-size:42px;line-height:1;cursor:pointer;
+ box-shadow:0 3px 12px #0008;
+}
+#cardZoom #cardGalleryPrev{left:max(4px,env(safe-area-inset-left))}
+#cardZoom #cardGalleryNext{right:max(4px,env(safe-area-inset-right))}
+#cardZoom .card-gallery-nav button:disabled{opacity:.24;pointer-events:none}
+@media(max-width:650px){
+ #cardZoom .card-gallery-nav button{width:32px;height:50px;font-size:35px;top:33%}
+}
