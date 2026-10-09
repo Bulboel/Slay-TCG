@@ -43,7 +43,7 @@ export async function joinOnlineRoom(code) {
 export async function getOnlineRoom(roomId) {
   await ensureOnlineIdentity();
   const { data, error } = await supabase.from('slay_rooms')
-    .select('id,room_code,host_id,guest_id,status,expires_at,custom_rule,custom_rule_version,custom_rule_accepted_version,host_nickname,guest_nickname,board_theme')
+    .select('id,room_code,host_id,guest_id,status,expires_at,custom_rule,custom_rule_version,custom_rule_accepted_version,host_nickname,guest_nickname,board_theme,card_back,score_ornament')
     .eq('id', roomId).single();
   if (error) throw error;
   return data;
