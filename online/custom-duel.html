@@ -632,6 +632,18 @@ body.duel-active #onlineMemoryPile .card.card-back.back-jordan-cool{background:#
  body.duel-active #gamePanel .hand .card-back{opacity:1!important;visibility:visible!important}
 }
 </style>
+
+<style id="online-memory-mobile-orientation-guide">
+/* Keep the card illustration upright while its landscape card container stays rotated. */
+@media(max-width:850px){
+ body.duel-active #onlineMemoryPile .card-back{transform:rotate(90deg)!important;background-size:100% 100%!important}
+ body.duel-active #onlineMemoryPile{overflow:visible!important}
+ body.duel-active #onlineMemoryZone .memory-title{position:relative!important}
+ body.duel-active #onlineMemoryZone .memory-title::after{content:'➜';display:inline-block;margin-left:9px;color:#a16c20;font-size:22px;font-weight:900;vertical-align:middle;animation:online-memory-guide-pulse 1.8s ease-in-out infinite;pointer-events:none}
+ body.duel-active #onlineMemoryPile.available{outline:2px solid #e8bf69!important;outline-offset:2px!important}
+}
+@keyframes online-memory-guide-pulse{0%,100%{opacity:.65;transform:translateX(0)}50%{opacity:1;transform:translateX(5px)}}
+</style>
 </head><body><header class="topbar" id="onlineOriginalHeader"><div class="brand"><img class="online-official-crest" src="../assets/icons/hackenia-home-v2-192.png" alt="Blason d’Hackénia"><div><span class="online-edition">UN NOUVEAU DÉPART</span><h1>Triade <span>d’Hackénia</span></h1><small id="onlineHeaderRule">Duel en ligne • 1 contre 1</small></div></div><div class="actions"><a class="ghost" href="../index.html">← Menu</a></div></header><main><h1>⚔ Duel en ligne</h1><p class="note lobby-intro">Crée un salon ou rejoins un ami, prépare ton deck, puis lancez le duel !</p>
 <div id="lobbySteps" class="lobby-steps" aria-label="Préparation du duel"><span class="active" id="lobbyStep1">1 · Salon</span><span id="lobbyStep2">2 · Préparation</span><span id="lobbyStep3">3 · Duel</span></div>
 <section id="roomPanel" class="lobby-card"><h2>1 · Ton salon</h2><div class="online-nickname-settings"><label for="onlineNickname">Ton pseudo</label><input id="onlineNickname" type="text" maxlength="20" minlength="2" placeholder="Ton pseudo" autocomplete="nickname"><button id="saveOnlineNickname" type="button" hidden>Modifier mon pseudo</button></div><div id="lobbyEntry" class="lobby-entry"><button id="create" class="lobby-primary">⚔ Créer mon salon</button><div class="lobby-or">ou rejoindre un ami</div><div class="lobby-join"><input id="code" maxlength="6" placeholder="Code à 6 caractères" aria-label="Code du salon"><button id="join">Rejoindre</button></div></div><div id="roomInfo"></div><div class="actions"><button id="copy" hidden>📋 Copier le code d'invitation</button></div></section>
