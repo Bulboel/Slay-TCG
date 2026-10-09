@@ -450,7 +450,7 @@ $('gamePanel').hidden=false;$('start').hidden=true;const ended=game.winner!==nul
    const key='hackenia-online-victories-v1';
    const ids=JSON.parse(localStorage.getItem(key)||'[]');
    const distinct=Array.isArray(ids)?ids.filter(id=>typeof id==='string'):[];
-   const id=String(roomId);
+   const id=String(roomId)+':'+String(rematchRound);
    if(!distinct.includes(id)){distinct.push(id);localStorage.setItem(key,JSON.stringify(distinct.slice(-1000)))}
   }catch(error){console.warn('Sauvegarde des victoires en ligne impossible',error)}
  }
