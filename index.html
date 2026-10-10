@@ -250,6 +250,14 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
 #gameApp .score[data-ornament="water-bubble"] #pScore::before,#gameApp .score[data-ornament="water-bubble"] #pScore::after{content:none!important}
 @media(max-width:650px){#gameApp .score[data-ornament="water-bubble"] #pScore{width:36px;height:36px;flex-basis:36px;margin:-5px -4px;font-size:15px}}
 </style>
+<style>
+#pantheonDefeat{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:22px;background:#080f1ee8}
+#pantheonDefeat.hidden{display:none!important}
+.pantheon-defeat-dialog{width:min(560px,100%);padding:clamp(28px,6vw,52px);border:2px solid #c9ad72;border-radius:24px;background:radial-gradient(ellipse at top,#293d48,#14242f 75%);box-shadow:0 20px 80px #0008,inset 0 0 0 7px #e4c98c0b;text-align:center;color:#fff0c8}
+.pantheon-defeat-dialog .motif{font-size:38px;color:#d9bf80}
+.pantheon-defeat-dialog p{margin:24px 0 32px;font:clamp(22px,4.5vw,30px)/1.5 Georgia,serif}
+.pantheon-defeat-dialog button{max-width:100%;white-space:normal}
+</style>
 </head>
 <body>
 <section class="startup-screen" id="startupScreen">
@@ -734,7 +742,7 @@ function endGame(){
 
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&battleResultDone){e.preventDefault();finishBattleResult()}});
-function finishGameResults(){passing=false;memoryPending=false;locked=true;matchInProgress=false;$('#turnCover').classList.add('hidden');$('#memoryReveal').classList.add('hidden');$('#memoryChoice').classList.add('hidden');const c=board.reduce((x,s)=>{if(s)x[s.owner]++;return x},{p:0,a:0});render();$('#turn').textContent='Partie terminée';if(c.p===9&&board.every(s=>s&&s.owner==='p')&&awardJordanSweep())msg('Jordan, l’étalon !','Défi accompli : 200 pièces d’or et un dos de carte exclusif débloqués !');if(c.p>c.a&&recordGrandTriadeWin(currentMode,currentRuleKey))msg('Grand défi accompli !','Le Cercle des Six Éléments est disponible dans Options → Plateau de jeu.');if(c.p>c.a&&currentRuleKey.startsWith('same-')){if(unlockIdenticalBoard())msg('Nouveau plateau débloqué !','Sceau des Arcanes disponible dans Options → Plateau de jeu.')}
+function finishGameResults(){passing=false;memoryPending=false;locked=true;matchInProgress=false;$('#turnCover').classList.add('hidden');$('#memoryReveal').classList.add('hidden');$('#memoryChoice').classList.add('hidden');const c=board.reduce((x,s)=>{if(s)x[s.owner]++;return x},{p:0,a:0});render();$('#turn').textContent='Partie terminée';if(currentMode.startsWith('pantheon-')&&c.p<c.a){showPantheonDefeat();return}if(c.p===9&&board.every(s=>s&&s.owner==='p')&&awardJordanSweep())msg('Jordan, l’étalon !','Défi accompli : 200 pièces d’or et un dos de carte exclusif débloqués !');if(c.p>c.a&&recordGrandTriadeWin(currentMode,currentRuleKey))msg('Grand défi accompli !','Le Cercle des Six Éléments est disponible dans Options → Plateau de jeu.');if(c.p>c.a&&currentRuleKey.startsWith('same-')){if(unlockIdenticalBoard())msg('Nouveau plateau débloqué !','Sceau des Arcanes disponible dans Options → Plateau de jeu.')}
 if((c.p!==c.a)&&(gameType==='local'||c.p>c.a)&&currentRuleKey.startsWith('plus-')){if(unlockAdditionBoard())msg('Nouveau plateau débloqué !','Les Petits Chevaux de Jordan disponible dans Options → Plateau de jeu.')}if(currentMode==='pantheon-velcan'){if(c.p>c.a){const earned=awardVelcanVictory();renderEarnedBacks();renderChallenges();showVelcanVictory();msg('Velcan vaincu !',(earned?'Première victoire : +50 pièces d’or ! ':'')+'Défi « Gagnez contre Velcan dans le panthéon » accompli : dos Velcan manga débloqué dans Options.')}else msg('Velcan tient bon !','Réessaie de le battre dans le Panthéon.');return}if(currentMode==='pantheon-georges'){if(c.p>c.a){if(!pantheonGeorgesWon()){try{localStorage.setItem(pantheonGeorgesKey,'1')}catch{}const challenges=economy.challenges||(economy.challenges={});challenges.pantheonGeorges={completedAt:Date.now()};awardGold(50);if(saveSlotActive)syncProgressSave();msg('Georges vaincu !','Première victoire : 50 pièces d’or ! Prochain duel débloqué. Défi Georges accompli.')}else msg('Georges vaincu !','Le garde reconnaît à nouveau ta valeur !')}else msg('Georges tient bon !','Réessaie pour ouvrir les portes du Panthéon.');updatePantheonGeorges();renderEarnedBacks();renderChallenges();if(c.p>c.a)showGeorgesVictory();return}if(currentMode==='story-lake-finale'){endFinaleGame(c);return}if(currentMode==='story-caleizis'){endLakeGame(c);return}if(currentMode==='story-ven'){endNewFacesGame(c);return}if(currentMode==='story-ghosts'){endCaveGame(c);return}if(currentMode==='story-wolves'){endRescueGame(c);return}if(currentMode==='story-mine-finale'){endFinalMineGame(c);return}if(currentMode==='story-mine'){endMineGame(c);return}if(currentMode==='story-forest'){try{localStorage.removeItem('hackenia-story-match')}catch{}if(c.p>c.a){msg('Victoire contre Grimgors !',`${c.p} cartes à ${c.a}. Le chemin continue.`);story.stage='part2-victory';saveStory();setTimeout(showForestVictory,1450)}else{msg(c.p===c.a?'Égalité contre Grimgors':'Défaite contre Grimgors',`${c.p} cartes à ${c.a}. Il faudra rejouer cette partie.`);story.part2='retry';story.stage='part2-retry';saveStory();setTimeout(showForestDefeat,1450)}return}let earned=0;if(!matchRewarded&&gameType==='ai'&&(currentMode==='quick'||currentMode==='deck')){earned=awardGold(c.p>c.a?30:1);if(currentMode==='quick'&&c.p>c.a)earned+=checkChallenges(true);matchRewarded=true}const rewardText=earned?` • +${earned} pièce${earned>1?'s':''} d’or.`:'';if(gameType==='local'){if(c.p>c.a)msg('Victoire du joueur 1 !',`${c.p} cartes à ${c.a}.`);else if(c.a>c.p)msg('Victoire du joueur 2 !',`${c.a} cartes à ${c.p}.`);else msg('Égalité',`${c.p} cartes partout.`)}else if(c.p>c.a)msg('Victoire !',`${c.p} cartes à ${c.a}.${rewardText}`);else if(c.a>c.p)msg('Défaite',`${c.a} cartes à ${c.p}.${rewardText}`);else msg('Égalité',`${c.p} cartes partout.${rewardText}`);$('#turn').textContent='Partie terminée';if(currentMode==='story'){story.stage='part1-epilogue';saveStory();try{localStorage.removeItem('hackenia-story-match')}catch{}setTimeout(showStoryEpilogue,1550)}else if(saveSlotActive)syncProgressSave()}
 function msg(a,b){$('#message').innerHTML=`<strong>${a}</strong><small>${b}</small>`}
 function applyBoardTheme(){
@@ -1037,6 +1045,14 @@ async function showPantheonVictory(opponent){
  overlay.classList.remove('hidden');overlay.style.display='flex';
  $('#georgesStoryNext').focus();
 }
+function showPantheonDefeat(){
+ openPanel('#pantheonScreen');
+ const overlay=$('#pantheonDefeat');
+ overlay.classList.remove('hidden');overlay.setAttribute('aria-hidden','false');
+ const back=$('#pantheonDefeatBack');
+ back.onclick=()=>{overlay.classList.add('hidden');overlay.setAttribute('aria-hidden','true');openPanel('#pantheonScreen');$('#pantheonScreen button:not(:disabled)')?.focus()};
+ back.focus();
+}
 function showGeorgesVictory(){return showPantheonVictory('georges')}
 function showVelcanVictory(){return showPantheonVictory('velcan')}
 
@@ -1199,6 +1215,7 @@ enhance();new MutationObserver(enhance).observe(holder,{childList:true});
 })();
 </script>
 
+<div id="pantheonDefeat" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pantheonDefeatText"><div class="pantheon-defeat-dialog"><div class="motif" aria-hidden="true">✧</div><p id="pantheonDefeatText">N'abandonne pas, je suis sûr que tu peux y arriver</p><button type="button" id="pantheonDefeatBack">Retour au Panthéon</button></div></div>
 </body>
 </html>
 
