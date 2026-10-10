@@ -268,7 +268,18 @@ body{overflow-x:clip;overflow-y:visible}
 #gameApp,#gameApp *{overflow-anchor:none}
 #gameApp .board-wrap{contain:layout}
 #gameApp .score .turn{width:118px;flex:0 0 118px!important}
-@media(max-width:650px){#gameApp .score .turn{width:96px;flex-basis:96px!important}}
+/* Equal badge columns keep the mobile ribbon centered between both scores. */
+@media(max-width:650px){
+ #gameApp .score{grid-template-columns:34px minmax(0,1fr) 34px!important}
+ #gameApp .score #pScore,#gameApp .score #aScore{justify-self:center;margin-left:0!important;margin-right:0!important}
+ #gameApp .score .turn{
+  width:100%;max-width:100%;min-width:0!important;flex:1 1 auto!important;
+  justify-self:stretch;margin:0!important;
+  font-size:8px;letter-spacing:.02em;
+  white-space:normal!important;overflow-wrap:anywhere;
+  min-height:24px;line-height:1.15;
+ }
+}
 </style>
 </head>
 <body>
