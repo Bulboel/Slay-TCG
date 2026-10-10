@@ -257,6 +257,9 @@ html{scrollbar-gutter:stable;overflow-y:scroll}
 .pantheon-defeat-dialog .motif{font-size:38px;color:#d9bf80}
 .pantheon-defeat-dialog p{margin:24px 0 32px;font:clamp(22px,4.5vw,30px)/1.5 Georgia,serif}
 .pantheon-defeat-dialog button{max-width:100%;white-space:normal}
+#pantheonDefeatBack{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:14px 24px;line-height:1.3}
+#pantheonDefeatBack:focus-visible{outline:3px solid #f6d994;outline-offset:5px}
+#pantheonDefeatBack:active{transform:translateY(2px);box-shadow:0 1px 0 #081e20}
 </style>
 <style id="duel-stable-viewport">
 /* Keep animated card overflow out of root scrolling and disable scroll anchoring during redraws. */
@@ -460,7 +463,7 @@ const pool=[
  playable('p24','Jordan',[1,4,6,5],'earth','alternative',24),playable('p25','Jordan',[1,4,6,5],'earth','common',25),
  playable('p26','Kala',[6,7,4,5],'earth','alternative',26),playable('p27','Kala',[6,7,4,5],'earth','common',27),
  playable('p28','Kayla',[8,10,9,7],'wind','alternative',28),playable('p29','Kayla',[8,10,9,7],'wind','rare',29),
- ({...playable('p30','Dédé la bricole',[2,3,8,6],'fire','parallel',30),image:fullArt('assets/file_000000002a1881f48fc23e9347559a2c.png')}),playable('p31','Les mineurs de Berdésa',[1,4,5,2],'earth','uncommon',31),
+ ({...playable('p30','Dédé la bricole',[2,3,8,6],'fire','parallel',30),image:fullArt('assets/Dédé la bricole carte finale.png')}),playable('p31','Les mineurs de Berdésa',[1,4,5,2],'earth','uncommon',31),
  playable('p32','Melinda',[2,3,5,6],'earth','common',32),playable('p33','Messire Balai',[8,5,3,5],'lightning','alternative',33),playable('p34','Messire Balai',[8,5,3,5],'lightning','rare',34),
  playable('p35','Mirahel',[3,7,2,7],'water','parallel',35),playable('p36','Miroir de communication',[2,1,7,1],'ice','common',36),
  playable('p37','Soldats fantomatiques',[5,4,3,6],'ice','common',37),playable('p38','Source élémentaire',[1,3,7,1],'ice','common',38),
@@ -1237,7 +1240,7 @@ enhance();new MutationObserver(enhance).observe(holder,{childList:true});
 })();
 </script>
 
-<div id="pantheonDefeat" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pantheonDefeatText"><div class="pantheon-defeat-dialog"><div class="motif" aria-hidden="true">✧</div><p id="pantheonDefeatText">N'abandonne pas, je suis sûr que tu peux y arriver</p><button type="button" id="pantheonDefeatBack">Retour au Panthéon</button></div></div>
+<div id="pantheonDefeat" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pantheonDefeatText"><div class="pantheon-defeat-dialog"><div class="motif" aria-hidden="true">✧</div><p id="pantheonDefeatText">N'abandonne pas, je suis sûr que tu peux y arriver</p><button type="button" id="pantheonDefeatBack" class="menu-btn"><span aria-hidden="true">←</span> Retour au Panthéon</button></div></div>
 </body>
 </html>
 
