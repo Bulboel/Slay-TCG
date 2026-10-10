@@ -1147,7 +1147,14 @@ let source=null,previousFocus=null,previousOverflow='';
 function close(){if(modal.classList.contains('hidden'))return;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.body.style.overflow=previousOverflow;previousFocus?.focus({preventScroll:true});source=null}
 function open(button,trigger){
  source=button;previousFocus=trigger;previousOverflow=document.body.style.overflow;
- const art=button.querySelector('.card').cloneNode(true);art.removeAttribute('id');art.setAttribute('aria-hidden','true');
+ const original=button.querySelector('.card'),background=getComputedStyle(original).backgroundImage;
+ const match=background.match(/url\(["']?(.*?)["']?\)/);
+ const viewportHeight=window.visualViewport?.height||window.innerHeight,viewportWidth=window.visualViewport?.width||window.innerWidth;
+ const width=Math.max(90,Math.min(350,viewportWidth-76,(viewportHeight-240)*5/7)),height=width*7/5;
+ let art;
+ if(match){art=document.createElement('img');art.src=match[1];art.alt=button.querySelector('span:not(.card)')?.textContent||'Dos de carte';art.className='back-large-image';art.style.cssText='display:block;width:'+width+'px;height:'+height+'px;object-fit:contain;border-radius:12px';}
+ else{art=original.cloneNode(true);art.removeAttribute('id');art.setAttribute('aria-hidden','true');art.style.setProperty('display','block','important');art.style.setProperty('width',width+'px','important');art.style.setProperty('height',height+'px','important');art.style.setProperty('max-width','none','important');art.style.setProperty('aspect-ratio','auto','important');}
+ document.getElementById('backLargeArt').style.height=height+'px';
  document.getElementById('backLargeArt').replaceChildren(art);
  document.getElementById('backLargeName').textContent=button.querySelector('span:not(.card)')?.textContent||'Dos de carte';
  document.getElementById('backLargeStatus').textContent=button.querySelector('.back-lock')?.textContent||'Disponible';
