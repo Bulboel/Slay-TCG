@@ -1130,6 +1130,43 @@ setTimeout(checkVersion,5000);
 setInterval(checkVersion,180000);
 })();
 </script>
+
+<style id="back-large-preview-style">
+.back-preview-item{display:grid;gap:8px;min-width:0}.back-preview-item>.back-choice{width:100%;height:100%;margin:0}.back-preview-open{padding:10px;border:1px solid #c7a467;border-radius:9px;background:#163a3c;color:#fff0ce;font-weight:700;cursor:zoom-in}
+#backLargePreview{position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;padding:14px;background:#080d16ed;overflow:auto}#backLargePreview.hidden{display:none!important}
+.back-large-dialog{position:relative;display:grid;justify-items:center;gap:12px;width:min(94vw,460px);max-height:96dvh;overflow:auto;padding:48px 18px 20px;background:#142a30;border:2px solid #c6a36a;border-radius:18px;color:#fff0ce;box-shadow:0 20px 60px #0009}
+.back-large-dialog h2{margin:0;text-align:center;font-size:1.2rem}.back-large-dialog .card{width:min(76vw,350px,calc((100dvh - 225px)*.714));height:auto;margin:0;flex:none;transform:none!important;pointer-events:none}.back-large-dialog p{margin:0;text-align:center;font-size:.9rem}.back-large-dialog .menu-btn{margin:0;width:auto}.back-large-close{position:absolute;right:10px;top:10px;width:36px;height:36px;background:#e6c682;border:0;border-radius:50%;font-size:22px;color:#142a30;cursor:pointer}
+</style>
+<section id="backLargePreview" class="hidden" aria-hidden="true"><article class="back-large-dialog" role="dialog" aria-modal="true" aria-labelledby="backLargeName"><button type="button" class="back-large-close" id="backLargeClose" aria-label="Fermer l’aperçu">×</button><h2 id="backLargeName"></h2><div id="backLargeArt"></div><p id="backLargeStatus"></p><button type="button" class="menu-btn" id="backLargeChoose">Choisir ce dos</button></article></section>
+<script>
+(()=>{
+const holder=document.querySelector('.back-options'),modal=document.getElementById('backLargePreview');
+if(!holder||!modal)return;
+const closeButton=document.getElementById('backLargeClose'),choose=document.getElementById('backLargeChoose');
+let source=null,previousFocus=null,previousOverflow='';
+function close(){if(modal.classList.contains('hidden'))return;modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.body.style.overflow=previousOverflow;previousFocus?.focus({preventScroll:true});source=null}
+function open(button,trigger){
+ source=button;previousFocus=trigger;previousOverflow=document.body.style.overflow;
+ const art=button.querySelector('.card').cloneNode(true);art.removeAttribute('id');art.setAttribute('aria-hidden','true');
+ document.getElementById('backLargeArt').replaceChildren(art);
+ document.getElementById('backLargeName').textContent=button.querySelector('span:not(.card)')?.textContent||'Dos de carte';
+ document.getElementById('backLargeStatus').textContent=button.querySelector('.back-lock')?.textContent||'Disponible';
+ choose.disabled=button.disabled;choose.textContent=button.disabled?'Dos verrouillé':'Choisir ce dos';
+ modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';closeButton.focus();
+}
+function enhance(){for(const button of holder.querySelectorAll('button.back-choice')){
+ if(button.parentElement.classList.contains('back-preview-item'))continue;
+ const wrapper=document.createElement('div');wrapper.className='back-preview-item';button.before(wrapper);wrapper.append(button);
+ const preview=document.createElement('button');preview.type='button';preview.className='back-preview-open';preview.textContent='Voir en grand';
+ preview.setAttribute('aria-label','Voir en grand : '+(button.querySelector('span:not(.card)')?.textContent||'dos de carte'));preview.onclick=()=>open(button,preview);wrapper.append(preview);
+}}
+closeButton.onclick=close;choose.onclick=()=>{if(source&&!source.disabled){source.click();close()}};
+modal.addEventListener('click',event=>{if(event.target===modal)close()});
+document.addEventListener('keydown',event=>{if(modal.classList.contains('hidden'))return;if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();close()}else if(event.key==='Tab'){const last=choose.disabled?closeButton:choose;if(event.shiftKey&&document.activeElement===closeButton){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();closeButton.focus()}}},true);
+enhance();new MutationObserver(enhance).observe(holder,{childList:true});
+})();
+</script>
+
 </body>
 </html>
 
