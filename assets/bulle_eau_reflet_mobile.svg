@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Bulle d’eau au reflet dansant</title>
+  <desc id="desc">Ornement de compteur animé sur fond transparent. Le centre reste dégagé pour le score.</desc>
+  <defs>
+    <radialGradient id="water" cx="35%" cy="25%" r="76%">
+      <stop offset="0" stop-color="#d2f8ff" stop-opacity=".24"/>
+      <stop offset=".36" stop-color="#3cb4d0" stop-opacity=".08"/>
+      <stop offset=".72" stop-color="#156186" stop-opacity=".21"/>
+      <stop offset=".93" stop-color="#5fd9ef" stop-opacity=".49"/>
+      <stop offset="1" stop-color="#d1f9ff" stop-opacity=".82"/>
+    </radialGradient>
+    <linearGradient id="prism" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffc7ff"/><stop offset=".18" stop-color="#9b9aff"/>
+      <stop offset=".36" stop-color="#85eaff"/><stop offset=".54" stop-color="#8bffce"/>
+      <stop offset=".72" stop-color="#fff3a3"/><stop offset=".88" stop-color="#ffaaa0"/>
+      <stop offset="1" stop-color="#e6a6ff"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff" stop-opacity=".92"/><stop offset="1" stop-color="#defcff" stop-opacity=".08"/>
+    </linearGradient>
+    <filter id="soft" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="5"/></filter>
+    <clipPath id="inside"><circle cx="128" cy="128" r="91"/></clipPath>
+    <linearGradient id="movingLight"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#dfffff" stop-opacity=".25"/><stop offset=".6" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0 1;0 -3;0 1" dur="5s" repeatCount="indefinite"/>
+    <circle cx="128" cy="128" r="94" fill="none" stroke="#70dfff" stroke-width="7" opacity=".23" filter="url(#glow)">
+      <animate attributeName="opacity" values=".16;.32;.16" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="128" cy="128" r="91" fill="url(#water)" stroke="#c0f3ff" stroke-opacity=".66" stroke-width="1.4"/>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 128 128" to="360 128 128" dur="22s" repeatCount="indefinite"/>
+      <circle cx="128" cy="128" r="88" fill="none" stroke="url(#prism)" stroke-width="9" opacity=".61" filter="url(#soft)"/>
+      <circle cx="128" cy="128" r="91" fill="none" stroke="url(#prism)" stroke-width="2.6" opacity=".92"/>
+      <circle cx="128" cy="128" r="83" fill="none" stroke="url(#prism)" stroke-width="2.5" stroke-dasharray="90 45 30 80 70 207" opacity=".38"/>
+    </g>
+    <g clip-path="url(#inside)" fill="none" stroke-linecap="round">
+      <path d="M42 175 Q86 192 128 179 T217 173" stroke="#77e8ff" stroke-width="2" opacity=".2">
+        <animate attributeName="d" values="M42 175 Q86 192 128 179 T217 173;M42 182 Q86 169 128 181 T217 181;M42 175 Q86 192 128 179 T217 173" dur="6s" repeatCount="indefinite"/>
+      </path>
+      <path d="M48 184 Q90 201 131 190 T210 186" stroke="url(#prism)" stroke-width="3" opacity=".3">
+        <animate attributeName="opacity" values=".18;.4;.18" dur="4s" repeatCount="indefinite"/>
+      </path>
+      <ellipse cx="91" cy="64" rx="33" ry="10" transform="rotate(-32 91 64)" fill="url(#shine)" stroke="none" opacity=".79">
+        <animate attributeName="opacity" values=".65;.93;.65" dur="5s" repeatCount="indefinite"/>
+      </ellipse>
+      <path d="M57 106 A78 78 0 0 1 98 56" stroke="#fff" stroke-width="3.5" opacity=".78"/>
+      <path d="M53 119 A78 78 0 0 1 56 108" stroke="#f1fdff" stroke-width="2" opacity=".68"/>
+      <path d="M163 197 A78 78 0 0 0 201 149" stroke="#d9faff" stroke-width="2.7" opacity=".67">
+        <animate attributeName="opacity" values=".4;.8;.4" dur="4s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g clip-path="url(#inside)">
+      <g transform="translate(-100 0)">
+        <animateTransform attributeName="transform" type="translate" values="-100 0;155 0;155 0" keyTimes="0;.75;1" dur="3.2s" repeatCount="indefinite"/>
+        <path d="M65 35 Q105 73 75 123 L104 123 Q143 69 95 35Z" fill="url(#movingLight)"/>
+        <ellipse cx="90" cy="67" rx="17" ry="7" fill="#fff" opacity=".9"/>
+        <animate attributeName="opacity" values="0;.9;.9;0;0" keyTimes="0;.15;.55;.75;1" dur="3.2s" repeatCount="indefinite"/>
+      </g>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" values="-30 128 128;70 128 128;-30 128 128" dur="4.8s" repeatCount="indefinite"/>
+        <path d="M61 89 A78 78 0 0 1 115 51" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".85"/>
+      </g>
+    </g>
+    <g fill="#e6fbff" stroke="#b6efff" stroke-width=".7">
+      <circle cx="192" cy="72" r="3.2" opacity=".8"><animate attributeName="opacity" values=".3;.95;.3" dur="3.5s" repeatCount="indefinite"/></circle>
+      <circle cx="182" cy="63" r="1.6" opacity=".75"/>
+      <circle cx="62" cy="170" r="2.4" opacity=".65"><animate attributeName="cy" values="174;164;174" dur="5s" repeatCount="indefinite"/></circle>
+    </g>
+    <g transform="translate(198 85)" stroke="#fff" stroke-linecap="round" opacity=".7">
+      <animate attributeName="opacity" values=".2;.95;.2" dur="4s" repeatCount="indefinite"/>
+      <path d="M-5 0H5M0-5V5" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>
