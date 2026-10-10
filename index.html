@@ -1124,28 +1124,34 @@ window.triadeOnlineDeckPreview = () => {
 <script>
 /* Anonymous shared visit counter; no fingerprinting or personal data.
    Counts one visit per browser tab session, not unique human beings. */
-(async function initSiteVisitorCounter(){
-  const number=document.getElementById('siteVisitorCount');
-  const status=document.getElementById('siteVisitorStatus');
-  if(!number||!status)return;
-  const key='triade-visit-counted-v1';
-  const url='https://uewpcnyewfyicsszqrjj.supabase.co/rest/v1/rpc/triade_site_visit_count';
-  const apikey='sb_publishable_8L3GgKLt_CAqcV5Hb1oO5A_ECIbTu6B';
-  let alreadyCounted=false;
-  try{alreadyCounted=sessionStorage.getItem(key)==='1'}catch{}
+(function initSiteVisitorCounter(){
+ const number=document.getElementById('siteVisitorCount'),status=document.getElementById('siteVisitorStatus');
+ if(!number||!status)return;
+ const key='triade-visit-counted-v1';
+ const url='https://uewpcnyewfyicsszqrjj.supabase.co/rest/v1/rpc/triade_site_visit_count';
+ const apikey='sb_publishable_8L3GgKLt_CAqcV5Hb1oO5A_ECIbTu6B';
+ let alreadyCounted=false,busy=false;
+ try{alreadyCounted=sessionStorage.getItem(key)==='1'}catch{}
+ async function refresh(increment=false){
+  if(busy)return;busy=true;
   try{
-    const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','apikey':apikey},body:JSON.stringify({p_increment:!alreadyCounted}),cache:'no-store'});
-    if(!response.ok)throw new Error('Le compteur n’est pas encore activé');
-    const count=await response.json();
-    if(!Number.isSafeInteger(Number(count))||Number(count)<0)throw new Error('Réponse invalide');
-    number.textContent=Number(count).toLocaleString('fr-FR');
-    status.textContent='Visites enregistrées depuis l’activation du compteur';
-    if(!alreadyCounted){try{sessionStorage.setItem(key,'1')}catch{}}
+   const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json',apikey},body:JSON.stringify({p_increment:increment}),cache:'no-store'});
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   const count=Number(await response.json());
+   if(!Number.isSafeInteger(count)||count<0)throw new Error('Réponse invalide');
+   number.textContent=count.toLocaleString('fr-FR');
+   status.textContent='Visites cumulées • une par session d’onglet';
+   if(increment){try{sessionStorage.setItem(key,'1')}catch{}}
   }catch(error){
-    number.textContent='—';
-    status.textContent='Statistiques temporairement indisponibles';
-    console.info('Compteur de visites :',error.message);
-  }
+   status.textContent=number.textContent==='—'?'Statistiques temporairement indisponibles':'Actualisation temporairement indisponible';
+   console.info('Compteur de visites :',error.message);
+  }finally{busy=false}
+ }
+ refresh(!alreadyCounted);
+ // Refresh reads never create additional visits.
+ setInterval(()=>{if(!document.hidden)refresh(false)},60000);
+ window.addEventListener('focus',()=>refresh(false));
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh(false)});
 })();
 </script>
 <script type="module" src="online/online-panel.js"></script>
