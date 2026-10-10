@@ -1171,7 +1171,28 @@ window.triadeOnlineDeckPreview = () => {
 
 <script>
 /* Vérification légère des déploiements GitHub Pages, sans toucher aux sauvegardes. */
-(()=>{const key='triade-last-deployment';let checking=false,lastCheck=0;
+(()=>{const key='triade-last-deployment';let checking=false,lastCheck=0,pendingSha=null;
+function mainMenuVisible(){
+ const menu=document.getElementById('menuScreen');
+ if(!menu||menu.classList.contains('hidden'))return false;
+ const blockers=document.querySelectorAll('.startup-screen,.panel-screen,.booster-reveal,.story-scene,.reward-dialog,.tutorial-dialog,.turn-cover,.memory-reveal');
+ return !Array.from(blockers).some(element=>!element.classList.contains('hidden')&&getComputedStyle(element).display!=='none'&&getComputedStyle(element).visibility!=='hidden');
+}
+function syncNotice(){
+ let notice=document.getElementById('triade-update-notice');
+ const show=!!pendingSha&&mainMenuVisible();
+ if(!show){if(notice&&notice.style.display!=='none')notice.style.display='none';return}
+ if(!notice){
+  notice=document.createElement('div');notice.id='triade-update-notice';
+  notice.setAttribute('role','status');
+  notice.style.cssText='position:fixed;z-index:999999;bottom:14px;left:12px;right:12px;max-width:480px;margin:auto;padding:14px;background:#102f34;color:#fff0cb;border:2px solid #e5bf72;border-radius:14px;box-shadow:0 8px 30px #0009;display:flex;gap:12px;align-items:center;justify-content:space-between;font:600 14px system-ui';
+  const label=document.createElement('span');label.textContent='✨ Nouvelle version de la Triade disponible !';
+  const button=document.createElement('button');button.textContent='Actualiser';button.style.cssText='padding:10px 12px;border:0;border-radius:9px;background:#e5bf72;color:#241c14;font-weight:800;cursor:pointer';
+  button.onclick=()=>{if(!mainMenuVisible()||!pendingSha)return;localStorage.setItem(key,pendingSha);const url=new URL(location.href);url.searchParams.set('update',pendingSha.slice(0,12));location.replace(url.toString())};
+  notice.append(label,button);document.getElementById('menuScreen').append(notice);
+ }
+ if(notice.style.display!=='flex')notice.style.display='flex';
+}
 async function checkVersion(){
  if(checking||Date.now()-lastCheck<60000||!navigator.onLine)return;
  checking=true;lastCheck=Date.now();
@@ -1181,21 +1202,12 @@ async function checkVersion(){
   const data=await response.json(),sha=data.sha;
   if(!sha)return;
   const previous=localStorage.getItem(key);
-  if(previous&&previous!==sha){
-   let notice=document.getElementById('triade-update-notice');
-   if(!notice){
-    notice=document.createElement('div');notice.id='triade-update-notice';
-    notice.setAttribute('role','status');
-    notice.style.cssText='position:fixed;z-index:999999;bottom:14px;left:12px;right:12px;max-width:480px;margin:auto;padding:14px;background:#102f34;color:#fff0cb;border:2px solid #e5bf72;border-radius:14px;box-shadow:0 8px 30px #0009;display:flex;gap:12px;align-items:center;justify-content:space-between;font:600 14px system-ui';
-    const label=document.createElement('span');label.textContent='✨ Nouvelle version de la Triade disponible !';
-    const button=document.createElement('button');button.textContent='Actualiser';button.style.cssText='padding:10px 12px;border:0;border-radius:9px;background:#e5bf72;color:#241c14;font-weight:800;cursor:pointer';
-    button.onclick=()=>{localStorage.setItem(key,sha);const url=new URL(location.href);url.searchParams.set('update',sha.slice(0,12));location.replace(url.toString())};
-    notice.append(label,button);document.body.append(notice);
-   }
-  }else if(!previous)localStorage.setItem(key,sha);
+  if(previous&&previous!==sha){pendingSha=sha;syncNotice()}
+  else{pendingSha=null;syncNotice();if(!previous)localStorage.setItem(key,sha)}
  }catch(e){console.info('Vérification de mise à jour indisponible',e)}
  finally{checking=false}
 }
+new MutationObserver(syncNotice).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style']});
 window.addEventListener('focus',checkVersion);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkVersion()});
 setTimeout(checkVersion,5000);
